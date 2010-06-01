@@ -1,0 +1,42 @@
+load_file("2sramp.ses")
+objref gvec, tvec, sum, tsum
+gvec = new Vector()
+tvec = new Vector()
+soma cvode.record(&Test[0].g, gvec, tvec)
+
+tsum = new Vector()
+tsum.indgen(0, 25, dt)
+sum = new Vector(tsum.size)
+
+proc avg() { local i
+	sum.fill(0)
+	for i=0, $1-1 {
+		run()
+		if (stoprun) {i=i-1  break }
+		sum.add(gvec.interpolate(tsum, tvec))
+	}
+	sum.div(i)
+	sum.line(Graph[1], tsum, 2, 1)
+	printf("Averaged %d runs", i)
+}
+
+cvode_active(1)
+
+navg_ = 100
+xpanel("average")
+xvalue("N", "navg_", 1)
+xbutton("N single channel runs averaged together", "doavg()")
+xbutton("One run with N single channels", "do1run()")
+xpanel(100, 200)
+
+proc doavg() {
+	Test[0].Nsingle = 1
+	Test[0].gmax = .1
+	avg(navg_)
+}
+
+proc do1run() {
+	Test[0].Nsingle = navg_
+	Test[0].gmax = .1/navg_
+	run()
+}

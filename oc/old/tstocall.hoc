@@ -1,0 +1,10 @@
+begintemplate A
+public p
+proc p () {
+	print $o1, $o2
+}
+endtemplate A
+
+objectvar a,b,c
+a = new A()
+a.p(b, c)

@@ -1,0 +1,55 @@
+
+begintemplate A
+public b
+b=7
+print b
+endtemplate A
+
+objectvar a
+a = new A()
+a.b = 2
+c = a.b
+c
+objectvar g
+g=a
+g.b
+g.b=4
+a.b
+g = new A()
+g.b
+g.b=6
+g.b
+a.b
+
+begintemplate B
+public b
+strdef b
+endtemplate B
+
+a = new B()
+g = new B()
+a.b="hello"
+strdef s
+s=a.b
+print s
+g.b = "goodbye"
+s = g.b
+print s
+print a.b, g.b
+
+begintemplate C
+public b, c, s
+strdef s
+func b() {
+	sprint(s,"%s","hello")
+	return $1*$2
+}
+proc c() {
+	print "proc c", $1
+}
+endtemplate C
+
+a = new C()
+a.s = "good"
+a.b(3, 4)
+printf("%s", a.s)

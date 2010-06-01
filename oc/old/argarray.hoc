@@ -1,0 +1,22 @@
+double x[10]
+proc one() {local i
+	for i=0,9 {
+		$&1[i] = i
+	}
+}
+proc add() {local i
+	for i=0,9 {
+		$&1[i] += 2*$&2[i]
+	}
+}
+proc pr() {local i
+	for i=0,9 {
+		print i, $&1[i]
+	}
+}
+
+one(&x)
+pr(&x)
+add(&x, &x)
+pr(&x)
+

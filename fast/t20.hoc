@@ -1,0 +1,20 @@
+{load_file("t20.ses")}
+tstop = 2
+
+func t20() {local v1  localobj ss
+	run()
+	v1 = v
+	stdinit()
+	continuerun(1)
+	ss = new SaveState()
+	ss.save()
+	stdinit()
+	ss.restore()
+	continuerun(tstop)
+	// print v1, v
+	return v == v1
+}
+
+b = t20()
+{cvode_active(1)}
+b = (b && t20())

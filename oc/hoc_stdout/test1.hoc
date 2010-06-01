@@ -1,0 +1,6 @@
+create a, b, c
+
+hoc_stdout("foo.dat")
+forall psection()
+hoc_stdout()
+

@@ -1,0 +1,19 @@
+// -np 1
+
+{load_file("nrngui.hoc")}
+{load_file("ms9.ses")}
+objref pc
+pc = new ParallelContext()
+
+{
+	cable pc.multisplit(0, 1, 2)
+	cable pc.multisplit(1, 2, 2)
+	soma pc.multisplit(0, 3, 2)
+	pc.multisplit()
+}
+
+tstop=100
+run()
+print "t=", t
+forall for(x) print secname(), " ", x, v(x)
+print "done"

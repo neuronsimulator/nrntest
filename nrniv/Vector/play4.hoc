@@ -1,0 +1,11 @@
+load_file("nrngui.hoc")
+load_file("play4.ses")
+objref svec, tvec
+svec = new Vector()
+svec.append(0,0,1,1,0,0,1,0,0,1,2,2,0)
+tvec = new Vector()
+tvec.append(0,1,1,2,2,3,4,5,6,6,7,8,8)
+svec.play(&IClamp[0].amp, tvec, 1)
+cvode_active(1)
+run()
+

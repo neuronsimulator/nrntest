@@ -1,0 +1,14 @@
+// Can we pick a mark vector. Can we label it?
+
+load_file("nrngui.hoc")
+objref xvec, yvec, g
+xvec = new Vector(10)
+xvec.indgen()
+yvec = xvec.c.mul(xvec)
+yvec.label("test")
+
+g = new Graph()
+yvec.mark(g, xvec, "O", 10, 2, 1)
+yvec.line(g, xvec, 0, 0)
+
+g.exec_menu("View = plot")

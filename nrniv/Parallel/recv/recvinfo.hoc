@@ -1,0 +1,34 @@
+objref recv_tvec, recv_srcvec, recv_tarvec
+
+proc activate_recv_info() { local i, gid  localobj cell, pp
+	recv_tvec = new Vector()
+	recv_srcvec = new Vector()
+	recv_tarvec = new Vector()
+	for pcitr(&i, &gid) {
+		cell = pc.gid2cell(gid)
+		if (celltype == 1) { // HHCell
+			cell = cell.synlist.object(0)
+		}
+		cell.gid = gid
+		cell.set_record(recv_tvec, recv_srcvec, recv_tarvec)
+	}
+}
+
+proc postrecv() {
+	pc.post("postrecv", pc.id, recv_tvec, recv_srcvec, recv_tarvec)
+}
+proc print_recv_info() {local i, j, id  localobj f
+	f = new File()
+	f.wopen($s1)
+	pc.context("postrecv()\n")
+	for i=0, recv_tvec.size - 1 {
+f.printf("%g %d %d\n", recv_tvec.x[i], recv_srcvec.x[i], recv_tarvec.x[i])
+	}
+	for j=1, pc.nhost-1 {
+		pc.take("postrecv", &id, recv_tvec, recv_srcvec, recv_tarvec)
+		for i=0, recv_tvec.size - 1 {
+f.printf("%g %d %d\n", recv_tvec.x[i], recv_srcvec.x[i], recv_tarvec.x[i])
+		}
+	}
+	f.close
+}

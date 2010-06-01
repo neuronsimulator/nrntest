@@ -1,0 +1,11 @@
+create a1, a2
+access a1
+
+a1{nseg=5 diam(0:1)=5:10}
+a2{nseg=5 diam=1}
+for (x) print x, diam(x)
+a2 connect a1(1), 0
+print ""
+for (x) print x, diam(x)
+
+topology()

@@ -1,0 +1,20 @@
+//nrnpython("import sys")
+//nrnpython("sys.path.append('/home/hines/lib64/python')")
+//nrnpython("import neuron")
+objref p, o
+p = new PythonObject()
+o = p.eval("[1,2,3]")
+
+nrnpython("a = [1,2,3]")
+o = p.a
+nrnpython("import hoc")
+nrnpython("h = hoc.HocObject()")
+nrnpython("print h.o")
+
+
+objref p, o
+nrnpython("import hoc")
+nrnpython("h = hoc.HocObject()")
+nrnpython("import __main__")
+nrnpython("h.p = __main__.__builtins__")
+o = p.eval("[1,2,3]")

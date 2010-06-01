@@ -1,0 +1,6 @@
+(
+for i in *.hoc ; do
+	echo "*** $i ***"
+	nrniv $i
+done
+) &> temp.out

@@ -1,0 +1,20 @@
+load_file("nrngui.hoc")
+load_file("yzw.ses")
+strdef tstr
+objref nc[3], nil
+nc[0] = new NetCon(&YZW[0].y, nil)
+nc[1] = new NetCon(&YZW[0].z, nil)
+nc[2] = new NetCon(&YZW[0].w, nil)
+
+for i=0, 2 {
+	nc[i].delay = 0
+	nc[i].threshold = -40 + i*10
+	sprint(tstr, "p(%d)", i)
+	nc[i].record(tstr)
+}
+
+proc p() {
+	printf("i=%d thresh=%g t=%g v=%g\n", $1, nc[$1].threshold, t, v)
+}
+
+

@@ -1,0 +1,16 @@
+// t6 with threads and multisplit
+objref pc
+pc = new ParallelContext()
+if (execute1("{pc.nthread(3,1)}",0) == 0) {printf("%d\n", 2) quit()}
+{load_file("t6.hoc")}
+for i=1, n-1 cable[i] {
+	disconnect()
+	cable[i-1] pc.multisplit(1, i)
+	pc.multisplit(0, i)
+}
+{pc.multisplit()}
+
+t6run()
+b = t3result()
+if (b != 1) { quit() }
+

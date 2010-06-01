@@ -1,0 +1,34 @@
+// some things to test that weren't covered before
+// found with tcov
+
+begintemplate A
+public x, s, o
+x = 0
+strdef s
+objectvar o
+endtemplate A
+
+objectvar a
+a = new A()
+
+a.x = 25
+execute("print a.x")
+execute("print x", a)
+
+allobjects()
+allobjectvars()
+
+begintemplate Cell
+public soma, x
+create soma
+x=0
+endtemplate Cell
+a = new Cell()
+hoc_pointer_(&a.soma.cm)
+hoc_pointer_(&a.x)
+hoc_pointer_(&a.soma.L)
+
+objectvar l
+l = new List()
+l.append(a)
+print l.object(0)

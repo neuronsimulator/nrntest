@@ -1,0 +1,12 @@
+ivoc_style("dismiss_button", "a really really really long string can go here")
+doEvents()
+objref g
+g=new Graph(0)
+g.view(1,2,3,4,100, 200,30,30)
+
+
+g.exec_menu("Color/Brush")
+
+// on and before 5.6 "2004/03/22 Main (55)" the color/brush background did
+// not fill the window with long dismiss buttons.
+

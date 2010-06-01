@@ -1,0 +1,29 @@
+{load_file("net.hoc")}
+ncell = 3
+mkcells()
+mknet()
+
+{load_file("cvodeevent.ses")}
+//{load_file("temp.ses")}
+
+objref fih
+fih = new FInitializeHandler(1, "setv()")
+proc setv() {local i, gid  localobj str, cell
+	str = new String()
+	for itr(&i, &gid) {
+		cell = pc.gid2cell(gid)
+		cell.soma.v = -30 + gid
+		sprint(str.s, "pv(%d)", gid)
+		cvode.event(t+2, str.s, cell.synlist.object(0), 1)
+		cvode.event(gid*.5+.5, str.s, cell.synlist.object(0), 1)
+	}
+}
+
+proc pv() {localobj cell, str
+	str = new String()
+	cell = pc.gid2cell($1)
+	cell.soma.v += 5
+	printf("%d %g %g\n", $1, t, cell.soma.v)
+	sprint(str.s, "pv(%d)", $1)
+	cvode.event(t + 2, str.s, cell.synlist.object(0), 1)
+}

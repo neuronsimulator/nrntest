@@ -1,0 +1,41 @@
+//performace comparisons using alias
+
+begintemplate A
+public a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p
+proc init() {
+	a = b = c = d = e = f = g = h = i = j = k = l = m = n = o = p = 0
+}
+endtemplate A
+
+begintemplate B
+endtemplate B
+
+objref sf
+sf = new StringFunctions()
+objref a, b
+a = new A()
+b = new B()
+strdef tstr
+j=0
+sscanf("a", "%c", &j)
+for i=0, 15 {
+	sprint(tstr, "sf.alias(b, \"%c\", &a.%c)", j+i, j+i)
+	execute(tstr)
+}
+
+tt = startsw()
+for i=1, 1000000 {a.a = a.p}
+print startsw() - tt, " for one million old style assignment"
+
+tt = startsw()
+for i=1, 1000000 {b.a = b.p}
+print startsw() - tt, " for one million alias style assignment"
+
+tt = startsw()
+for i=1, 1000000 {sprint(tstr, "a.a = a.p") execute(tstr)}
+print startsw() - tt, " for one million execute old style assignment"
+
+tt = startsw()
+for i=1, 1000000 {sprint(tstr, "b.a = b.p") execute(tstr)}
+print startsw() - tt, " for one million execute alias style assignment"
+

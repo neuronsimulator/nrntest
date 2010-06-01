@@ -1,0 +1,82 @@
+1 == 1
+1 != 1
+1 != 2
+1 == 2
+objref a, b
+a == b
+a != b
+a = new List()
+a != b
+a == b
+b = new List()
+a != b
+a == b
+a = b
+a == b
+a != b
+//strdef x, y
+//x == y
+//x != y
+//x = "hello"
+//x != y
+//x == y
+//y = "goodbye"
+//x != y
+//x == y
+//y = "hello"
+//x == y
+//x != y
+//x = y
+//x == y
+//x != y
+
+begintemplate String
+public s
+strdef s
+proc init() {
+	if (numarg() == 1) {
+		s = $s1
+	}
+}
+endtemplate String
+objref x, y
+x = new String()
+y = new String()
+x.s == y.s
+x.s != y.s
+x.s = "hello"
+x.s != y.s
+x.s == y.s
+y.s = "goodbye"
+x.s != y.s
+x.s == y.s
+y.s = "hello"
+x.s == y.s
+x.s != y.s
+x.s = y.s
+x.s == y.s
+x.s != y.s
+
+
+func oeq() {
+	return $o1 == $o2
+}
+
+func oneq() {
+	return $o1 != $o2
+}
+
+oneq(new List(), new List())
+oeq( new List(), new List())
+oeq(a, b)
+oneq(a, b)
+
+execute1("a == 1")
+execute1("x.s == 1")
+execute1("x.s == a")
+
+execute1("1 == a")
+execute1("1 == x.s")
+execute1("a == x.s")
+
+

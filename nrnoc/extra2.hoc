@@ -1,0 +1,65 @@
+
+// should produce same results for v+vext no matter what passive structure
+// as long as e_pas = 0
+
+// first without extracellular
+
+// default extracellular
+proc f0() {
+	forall insert extracellular
+}
+
+// reproduce membrane in layer 1
+proc f1() {local xold
+	forall {
+		xold=0
+	  for (x) if (x > 0 && x < 1) {
+		xc(x) = cm(x)
+		xg(x) = g_pas(x)
+		xraxial(x) = ri(x)/(L*(x - xold)*1e-4)
+		xold = x
+	  }
+	}
+	forall {
+		g_pas = 1e6
+		Ra = 1e9
+	}
+}
+
+// reproduce  layer 1 in layer 2
+proc f2() {
+	forall for (x) if (x > 0 && x < 1) {
+		xc[1](x) = xc[0](x)
+		xg[1](x) = xg[0](x)
+		xraxial[1](x) = xraxial[0](x)
+	}
+	forall {
+		xg[0] = 1e6
+		xraxial[0] = 1e9
+	}
+}
+
+/*
+create a,b
+access a
+a connect b(0), 0
+create c
+a connect c(0), 0
+forall {nseg=10
+L=1000
+diam=3
+insert pas
+g_pas=.001
+e_pas=0
+}
+topology()
+xopen("$(NEURONHOME)/lib/hoc/noload.hoc")
+pwman_place(0,0)
+*/
+forall { uninsert hh insert pas g_pas=.001 e_pas=0}
+topology()
+
+f0()
+f1()
+finitialize(-65)
+fadvance()

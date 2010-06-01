@@ -1,0 +1,10 @@
+// t6 with ida
+{load_file("t6.hoc")}
+{cvode.use_daspk(1)}
+t6run()
+vec = new Vector()
+{vec.append(-40.037619989516983, -55.032413584792977)}
+{vec.append(-48.285557971651969, -59.927043712401343, -64.019558941495177)}
+b = t3result()
+if (b != 1) { quit() }
+

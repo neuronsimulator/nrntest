@@ -1,0 +1,21 @@
+objref m,m2, f
+m = new Matrix(3,4)
+for i=0,m.nrow-1 for j=0,m.ncol-1 m.x[i][j] = 10*i + j
+f = new File()
+f.wopen("temp.dat")
+m.fprint(f)
+f.close()
+f.ropen("temp.dat")
+m2 = new Matrix()
+m2.scanf(f)
+f.close()
+m2.printf
+f.wopen("temp.dat")
+m.fprint(0, f)
+f.close()
+m2 = new Matrix()
+f.ropen("temp.dat")
+m2.scanf(f, 4, 3)
+f.close()
+m2.printf()
+

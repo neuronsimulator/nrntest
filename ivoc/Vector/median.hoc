@@ -1,0 +1,7 @@
+objref a
+a = new Vector()
+a.append(10, 9, 8, 2, 0)
+a.median == 8
+a.append(-1)
+a.median == (8+2)/2
+

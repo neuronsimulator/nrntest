@@ -1,0 +1,28 @@
+begintemplate A
+endtemplate A
+
+objref a, sf
+sf = new StringFunctions()
+
+a = new A()
+x = 4
+y = 5
+
+{sf.alias(a, "test", &x)}
+
+x == 4
+a.test == 4
+a.test = 10
+x == 10
+
+y == 5
+{sf.alias(a, "test", &y)}
+a.test == 5
+a.test = 6
+y == 6
+x == 10
+
+
+objref a
+{allobjects()}
+

@@ -1,0 +1,12 @@
+load_file("nrngui.hoc")
+load_java("java.lang.String", "JS")
+load_java("neuron.NrnClassLoader", "NCL")
+objref ncl
+ncl = new NCL()
+ncl.add("file:/usr/java/j2sdk1.4.0_01/demo/jfc/Notepad/Notepad.jar")
+//ncl.add("file:/c:/Java/jdk1.5.0_01/demo/jfc/Notepad/Notepad.jar")
+ncl.load("Notepad")
+load_java("Notepad", "Notepad")
+objref np
+np = new Notepad()
+np

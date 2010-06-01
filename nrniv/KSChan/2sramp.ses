@@ -1,0 +1,208 @@
+{load_file("nrngui.hoc")}
+objectvar save_window_, rvp_
+objectvar scene_vector_[7]
+objectvar ocbox_, ocbox_list_, scene_, scene_list_
+{ocbox_list_ = new List()  scene_list_ = new List()}
+{pwman_place(0,0,0)}
+
+//Begin ChannelBuild[0] managed KSChan[0]
+{
+load_file("chanbild.hoc", "ChannelBuild")
+}
+{ocbox_ = new ChannelBuild(0)}
+{object_push(ocbox_)}
+{genprop.set_data("Test", 0, 1, -1, "NonSpecific")}
+{genprop.set_defstr(0, 0)}
+tobj = new ChannelBuildKSGate(this)
+{gatelist.append(tobj)}
+{tobj.begin_restore(1)}
+{tobj.set_state("C", 0, 100, 110)}
+{tobj.set_state("O", 1, 150, 110)}
+{tobj.set_trans(0, 1, 1)}
+{tobj.transitions.object(0).settype(1, "")}
+{tobj1 = new Vector(3)  for (i=0; i < 3; i += 1) tobj1.x[i] = fscan() }
+1
+-0.1
+-20
+{tobj.transitions.object(0).set_f(0, 4, tobj1)}
+{tobj1 = new Vector(1)  for (i=0; i < 1; i += 1) tobj1.x[i] = fscan() }
+0.2
+{tobj.transitions.object(0).set_f(1, 1, tobj1)}
+{tobj.end_restore()}
+end_restore()
+{genprop.set_single(1)}
+{object_pop()}
+{
+ocbox_.map("ChannelBuild[0] managed KSChan[0]", 27, 502, 230.4, 273.6)
+}
+objref ocbox_
+//End ChannelBuild[0] managed KSChan[0]
+
+
+//Begin SingleCompartment
+{
+load_file("single.hoc")
+}
+ocbox_ = new SingleCompartment(0)
+ocbox_.inserter = new Inserter(0)
+{object_push(ocbox_.inserter)}
+{
+}
+{object_pop() doNotify()}
+{object_push(ocbox_)}
+{inserter.v1.map()}
+{endbox()}
+{object_pop() doNotify()}
+{
+ocbox_ = ocbox_.vbox
+ocbox_.map("SingleCompartment", 391, 21, 91.2, 96)
+}
+objref ocbox_
+//End SingleCompartment
+
+
+//Begin PointProcessManager
+{
+load_file("pointman.hoc")
+}
+{
+soma ocbox_ = new PointProcessManager(0)
+}
+{object_push(ocbox_)}
+{
+mt.select("Test") i = mt.selected()
+ms[i] = new MechanismStandard("Test")
+ms[i].set("Nsingle", 1, 0)
+ms[i].set("gmax", 0.1, 0)
+ms[i].set("e", 0, 0)
+mt.select("Test") i = mt.selected() maction(i)
+hoc_ac_ = 0.5
+sec.sec move() d1.flip_to(0)
+}
+{object_pop() doNotify()}
+{
+ocbox_ = ocbox_.v1
+ocbox_.map("PointProcessManager", 299, 236, 222.72, 373.44)
+}
+objref ocbox_
+//End PointProcessManager
+
+{
+xpanel("RunControl", 0)
+v_init = -65
+xvalue("Init","v_init", 1,"stdinit()", 1, 1 )
+xbutton("Init & Run","run()")
+xbutton("Stop","stoprun=1")
+runStopAt = 5
+xvalue("Continue til","runStopAt", 1,"{continuerun(runStopAt) stoprun=1}", 1, 1 )
+runStopIn = 1
+xvalue("Continue for","runStopIn", 1,"{continuerun(t + runStopIn) stoprun=1}", 1, 1 )
+xbutton("Single Step","steprun()")
+t = 25
+xvalue("t","t", 2 )
+tstop = 25
+xvalue("Tstop","tstop", 1,"tstop_changed()", 0, 1 )
+dt = 0.025
+xvalue("dt","dt", 1,"setdt()", 0, 1 )
+steps_per_ms = 40
+xvalue("Points plotted/ms","steps_per_ms", 1,"setdt()", 0, 1 )
+xcheckbox("Quiet",&stdrun_quiet,"")
+realtime = 0
+xvalue("Real Time","realtime", 0,"", 0, 1 )
+xpanel(12,104)
+}
+{
+save_window_ = new Graph(0)
+save_window_.size(0,25,-80,40)
+scene_vector_[3] = save_window_
+{save_window_.view(0, -80, 25, 120, 532, 23, 300.48, 200.32)}
+graphList[0].append(save_window_)
+save_window_.save_name("graphList[0].")
+save_window_.addexpr("v(.5)", 1, 1, 0.8, 0.9, 2)
+}
+{
+save_window_ = new Graph(0)
+save_window_.size(0,25,0,0.1)
+scene_vector_[4] = save_window_
+{save_window_.view(0, 0, 25, 0.1, 546, 612, 300.48, 200.32)}
+graphList[2].append(save_window_)
+save_window_.save_name("graphList[2].")
+save_window_.addexpr("Test[0].g", 1, 1, 0.8, 0.9, 2)
+}
+
+//Begin VariableTimeStep
+{
+ocbox_ = NumericalMethodPanel[0]
+}
+{object_push(ocbox_)}
+{
+atol_ = 0.001  CVode[0].atol(atol_)
+restore(12, 1)
+}
+{object_pop()}
+{
+ocbox_.map("VariableTimeStep", 868, 37, 272.64, 113.28)
+}
+objref ocbox_
+//End VariableTimeStep
+
+
+//Begin LinearCircuit[0]
+{
+load_file("lincir.hoc", "LinearCircuit")
+}
+{
+ocbox_ = new LinearCircuit(1)
+}
+{object_push(ocbox_)}
+{mkelm(6, 160, 120, 2, 0)}
+1e+06
+0
+{mklabel(0, "Ramp", -2.719, 2.218)}
+{mklabel(3, "V", 13.863, 4.136)}
+{mkelm(5, 120, 80, 2, 0)}
+{mkelm(3, 80, 120, 2, -1.5708)}
+{mklabel(0, "Vc", -22.4583, 5.095)}
+{sel.extra_info.restore()}
+3
+2 0
+20 1
+1e+09 0
+{mkelm(5, 80, 80, 2, 0)}
+{mkelm(7, 200, 50, 2, 0)}
+{mklabel(0, "soma(0.5)", -1.481, -15.0541)}
+{sel.extra_info.set("soma", 0.5) sel.extra_info.name(sel)}
+{mkelm(0, 200, 95, 2.5, -1.5708)}
+{mkelm(1, 100, 140, 2, 0)}
+1
+{mklabel(0, "R", 2.616, 13.865)}
+{mkelm(2, 160, 190, 4, 0)}
+0.2
+{mklabel(0, "C", 0.158, 27.161)}
+{mkelm(0, 120, 165, 2.5, 1.5708)}
+{mkelm(0, 200, 155, 3.5, -1.5708)}
+{parasitic_ = 0  noconsist_ = 0}
+{g.exec_menu("Simulate")  tool(2)}
+{sel = nil}
+{object_pop()}
+{
+{
+save_window_=ocbox_.g
+save_window_.size(0,300,0,200)
+scene_vector_[5] = save_window_
+ocbox_.g = save_window_
+save_window_.save_name("ocbox_.g")
+save_window_.label(157.281, 122.218, "Ramp", 1, 1, 0.5, 0.5, 1)
+save_window_.label(213.863, 124.136, "V", 1, 1, 0.5, 0.5, 1)
+save_window_.label(57.5417, 125.095, "Vc", 1, 1, 0.5, 0.5, 1)
+save_window_.label(198.519, 34.9459, "soma(0.5)", 1, 1, 0.5, 0.5, 1)
+save_window_.label(102.616, 153.865, "R", 1, 1, 0.5, 0.5, 1)
+save_window_.label(160.158, 217.161, "C", 1, 1, 0.5, 0.5, 1)
+}
+ocbox_.map("LinearCircuit[0]", 542, 287, 519.36, 283.2)
+}
+objref ocbox_
+//End LinearCircuit[0]
+
+objectvar scene_vector_[1]
+{doNotify()}

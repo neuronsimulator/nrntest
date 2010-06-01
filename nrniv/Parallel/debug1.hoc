@@ -1,0 +1,8 @@
+load_file("nrngui.hoc")
+objref g, a, b
+g = new Graph()
+clipboard_retrieve("out_soma.dat")
+hoc_obj_[1].line(g,1,2, 1)
+clipboard_retrieve("tmp/out_soma.dat")
+hoc_obj_[1].line(g,1,1, 1)
+g.exec_menu("View = plot")

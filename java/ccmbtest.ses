@@ -1,0 +1,41 @@
+objectvar save_window_, rvp_
+objectvar scene_vector_[2]
+objectvar ocbox_, ocbox_list_, scene_, scene_list_
+{ocbox_list_ = new List()  scene_list_ = new List()}
+{pwman_place(0,0,0)}
+/*Begin catacomb.channel.KSChannel */
+{load_java("nrnccmb.Channels", "nrnccmb_Channels")}
+ocbox_ = new nrnccmb_Channels()
+{ocbox_.map() ocbox_.load("./ccmbtest.ses.ccm")}
+{PWManager[0].jwindow(ocbox_, 1, 379, 1, 536, 479)}
+objref ocbox_
+/*End catacomb.channel.KSChannel */
+
+//Begin SingleCompartment
+{
+load_file("single.hoc")
+}
+ocbox_ = new SingleCompartment(0)
+ocbox_.inserter = new Inserter(0)
+{object_push(ocbox_.inserter)}
+{
+mt.select("kch") i = mt.selected()
+ms[i] = new MechanismStandard("kch")
+ms[i].set("gbar_kch", 0, 0)
+mstate[i]= 1
+maction(i)
+}
+{object_pop() doNotify()}
+{object_push(ocbox_)}
+{inserter.v1.map()}
+{endbox()}
+{object_pop() doNotify()}
+{
+ocbox_ = ocbox_.vbox
+ocbox_.map("SingleCompartment", 256, 117, 91.2, 115.2)
+}
+objref ocbox_
+//End SingleCompartment
+
+objectvar scene_vector_[1]
+{doNotify()}

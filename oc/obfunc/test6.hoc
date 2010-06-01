@@ -1,0 +1,19 @@
+// recursion test
+
+obfunc of() {local i localobj tobj
+	if ($1 < 0) {
+		return new Vector()
+	}
+	tobj = of($1-1)
+	tobj.append($1)
+	return tobj
+}
+
+objref o, vec
+// the recursion depth of an obfunc is limited by the NTYPESTACK in hoc_oop.c
+// #define NTYPESTACK  30
+o = of(20)
+vec = new Vector(21)
+{vec.indgen}
+o.eq(vec)
+

@@ -1,0 +1,15 @@
+/* there was a bug in that the return value of the procedure (0) was
+	not popped
+*/
+begintemplate A
+public b
+i=0
+proc init() { i=0 }
+proc b() {
+	i = i+1
+}
+endtemplate A
+
+objectvar a
+a = new A()
+for i=1,10000 a.b()

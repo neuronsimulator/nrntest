@@ -1,0 +1,36 @@
+begintemplate A
+public x, s, y, pr
+N=5
+double y[N]
+strdef s
+
+proc init() {local i
+	N=5
+	x = 10
+	s = "hello"
+	for i=0,N-1 {
+		y[i] = i
+	}
+}
+
+proc pr() {local i
+	print "x=",x
+	print "s=",s
+	printf("y[0 - %d]:", N-1)
+	for i=0,N-1 printf(" %g", y[i])
+}
+
+endtemplate A
+
+objectvar a,b
+a=new A()
+a.pr()
+a.x=20
+a.s = "goodbye"
+for i=0,4 a.y[i] = 10+i
+a.pr()
+b=new A()
+b.pr()
+a.pr()
+a=b
+a.pr()

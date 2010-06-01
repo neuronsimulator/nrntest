@@ -1,0 +1,18 @@
+//coredump_on_error(1)
+
+create a, b
+access a
+a connect b(0), 1
+objref stim
+stim = new IClamp(.5)
+
+finitialize(-65)
+b.v
+fadvance()
+b.v
+b disconnect()
+b stim.loc(0)
+finitialize(-65)
+b.v
+fadvance()
+b.v

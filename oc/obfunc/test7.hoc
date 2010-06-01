@@ -1,0 +1,20 @@
+// test of external obfunc
+
+obfunc ofun() {localobj tobj
+	tobj = new List()
+	return tobj
+}
+
+begintemplate Test
+public list
+external ofun
+objref list
+
+proc init() {
+	list = ofun()
+}
+endtemplate Test
+
+objref o[5]
+for i=0, 4 o[i] = new Test()
+for i=0, 4 print o[i].list == List[i]

@@ -1,0 +1,5 @@
+rm temp1
+for i in *.hoc ; do
+	echo ZZZ $i >> temp1
+	nrniv $i 1>>temp1 2>&1
+done

@@ -1,0 +1,40 @@
+load_file("/home/hines/papers/localstep/tccx/hines.hoc")
+mcell_ran4_init(0)
+tstop = 500
+objref ss, file
+ss = new SaveState()
+file = new File("tccxtst.dat")
+
+proc conrun() {
+	NStim[0].seed(0)
+	continuerun($1)
+}
+
+proc first() {
+	NStim[0].seed(0)
+	stdinit()
+	continuerun($1)
+	ss.save()
+	ss.fwrite(file)
+	conrun(tstop)
+}
+proc test() {
+	stdinit()
+	ss.restore()
+	if (cvode.active()) {
+		cvode.re_init()
+	}
+	frecord_init()
+	conrun(tstop)
+}
+
+proc firstlaunch() {
+	first(200)
+	test()
+	test()
+}
+
+proc secondlaunch() {
+	ss.fread(file)
+	test()
+}

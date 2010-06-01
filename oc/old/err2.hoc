@@ -1,0 +1,4 @@
+print "test of parse error message"
+strdef s
+x = 3
+s = x

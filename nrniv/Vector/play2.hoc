@@ -1,0 +1,20 @@
+load_file("nrngui.hoc")
+// can one play a vector into more than one variable by using
+// multiple invocations of Vector.play?
+create soma
+access soma
+x = 0
+y = 0
+objref vec
+vec = new Vector(20)
+vec.indgen
+vec.play(&x, .1)
+vec.play(&y, .05)
+
+proc advance() {
+	print t, x, y
+	fadvance()
+}
+tstop = 2
+run()
+

@@ -1,0 +1,17 @@
+begintemplate A
+endtemplate A
+
+objref a, sf
+sf = new StringFunctions()
+
+a = new A()
+
+{sf.alias(a, "test", new Vector())}
+
+a.test.resize(1).x[0] == 0
+a.test.x[0] = 1
+Vector[0].x[0] == 1
+
+objref a
+{allobjects()}
+

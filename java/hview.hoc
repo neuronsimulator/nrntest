@@ -1,0 +1,8 @@
+coredump_on_error(1)
+load_file("nrngui.hoc")
+load_java("HView")
+objref h
+h = new HView()
+h.show0()
+
+

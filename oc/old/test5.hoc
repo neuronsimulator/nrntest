@@ -1,0 +1,34 @@
+begintemplate Tstack
+public test
+xopen("stack.hoc")
+objectvar s
+print s
+proc init() {
+	s = new Stack()
+	print s
+}
+
+proc test() {local i
+	print s
+	for i=0,9 s.push(i)
+	while(s.isempty == 0) {
+		print s.pop()
+	}
+}
+endtemplate Tstack
+
+begintemplate Ttest3
+public a
+xopen("test5.1.hoc")
+proc init() {
+	a = new A()
+}
+endtemplate Ttest3
+
+objectvar tt
+
+tt = new Tstack()
+tt.test()
+
+tt = new Ttest3()
+tt.a.b(3,4)

@@ -1,0 +1,12 @@
+begintemplate A
+public b
+objectvar b
+endtemplate A
+
+objectvar a, b
+a = new A()
+a.b = a
+
+
+
+

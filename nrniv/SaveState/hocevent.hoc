@@ -1,0 +1,72 @@
+load_file("nrngui.hoc")
+load_file("hh.ses")
+
+objref fi, vvec, tvec, vvec_stand, tvec_stand
+fi = new FInitializeHandler("heinit()")
+vvec = new Vector()
+tvec = new Vector()
+soma cvode.record(&v(.5), vvec, tvec)
+
+proc heinit() {
+	cvode.event(1, "ev()")
+}
+
+proc ev() {
+	printf("ev t=%g v=%g\n", t, v)
+}
+
+run()
+
+//-----------------
+
+objref ss, f
+ss = new SaveState()
+
+proc dotest() {local i
+	init()
+	continuerun(.5)
+	cvode.print_event_queue()
+	ss = new SaveState()
+	ss.save()
+	f = new File("hocevent.dat")
+	ss.fwrite(f)
+	print "SaveState.fwrite"
+	frecord_init()
+	continuerun(tstop)
+	cvode.print_event_queue()
+	vvec_stand = vvec.c
+	tvec_stand = tvec.c
+	for i=0, 1 irun()
+	print "SaveState::fread"
+	ss = new SaveState()
+	ss.fread(f)
+	irun()
+}
+
+proc irun() {local x
+	stdinit()
+	ss.restore()
+	if (cvode_active()) {
+		cvode.re_init()
+	}
+	frecord_init()
+	initPlot()
+	printf("irun from t=%g v=%g\n", t, v)
+	cvode.print_event_queue()
+	continuerun(tstop)
+	x = vvec.interpolate(tvec_stand, tvec).sub(vvec_stand).sumsq
+	printf("sq diff = %g\n", x)
+	cvode.print_event_queue()
+}
+
+print "fixed step"
+dotest()
+
+print "global variable"
+cvode_active(1)
+dotest()
+
+print "local variable"
+cvode_local(1)
+dotest()
+

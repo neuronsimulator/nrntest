@@ -1,0 +1,80 @@
+create soma
+access soma
+proc p3d() {
+	for i=0, n3d()-1 { print i, x3d(i), y3d(i), z3d(i), arc3d(i), diam3d(i) }
+}
+
+proc a() { area(.5) } // make empty to check new method
+proc a() {}
+
+{pt3dclear()}
+{pt3dadd(-5,0,0,10)}
+{pt3dadd(0,0,0,2)}
+a()
+
+print "diam(0.5) should be 6, evaluation is ", diam(0.5)
+print "L should be 5, evaluation is ", L
+{pt3dadd(5,0,0,2)}
+a()
+print "L should be 10, evaluation is ", L
+print "diam(0.5) should be 4, evaluation is ", diam(0.5)
+
+{pt3dadd(15,0,0,2)}
+p3d()
+L *= 2
+print "L should be 40, evaluation is ", L
+p3d()
+
+L = 20
+p3d()
+print "L should be 20, evaluation is ", L
+
+{pt3dclear()}
+{pt3dadd(-5,0,0,10)}
+{pt3dadd(0,0,0,10)}
+a()
+diam *= 2
+a()
+p3d()
+print "diam should be 20, evaluation is ", diam
+
+{pt3dclear()}
+{pt3dadd(-5,0,0,5)}
+{pt3dadd(0,0,0,5)}
+{pt3dadd(5,0,0,5)}
+a()
+p3d()
+diam(.5) *= 2
+a()
+p3d()
+print "diam(0.5) should be 10, evaluation is ", diam(0.5)
+
+{pt3dclear()}
+{pt3dadd(-5,0,0,2)}
+{pt3dadd(0,0,0,2)}
+a()
+x = diam
+print "x should be 2, evaluation is ", x
+
+{pt3dclear()}
+{pt3dadd(-5,0,0,2)}
+{pt3dadd(0,0,0,2)}
+a()
+diam(.5) = 10
+print "diam(0.5) should be 10, evaluation is ", diam(0.5)
+
+
+
+nseg=3
+{pt3dclear()}
+{pt3dadd(-5,0,0,1)}
+{pt3dadd(0,0,0,2)}
+{pt3dadd(5,0,0,1)}
+a()
+p3d()
+for (x, 0) print x, diam(x)
+diam(.5) = 10
+a()
+p3d()
+for (x, 0) print x, diam(x)
+

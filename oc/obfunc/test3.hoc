@@ -1,0 +1,24 @@
+// basic test of obfunc inside a template with chaining
+
+begintemplate Test
+public of, op, i
+objref this
+
+proc init() {
+	i = 0
+}
+obfunc of() {
+	i += $1
+	return this
+}
+obfunc op() {
+	return new Test()
+}
+endtemplate Test
+
+objref o
+o = new Test()
+o.of(0) == Test[0]
+o.of(1).of(2).of(3).i == 6
+o.op(1).op(2).op(3) == Test[3]
+

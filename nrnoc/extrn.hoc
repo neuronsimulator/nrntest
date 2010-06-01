@@ -1,0 +1,32 @@
+objref o
+o = new List()
+create sec
+strdef s
+s = "hello"
+x = 2
+
+begintemplate A
+public e, a
+external o, sec, s, x
+proc e() {
+	print o
+	print s
+	sec print secname()
+	print "x=",x
+}
+proc a() {
+	o = $o1
+	s = $s2
+	x = $3
+}
+endtemplate A
+
+objref a
+a = new A()
+a.e()
+a.a(a, "goodbye", 5)
+a.e()
+o
+s
+x
+

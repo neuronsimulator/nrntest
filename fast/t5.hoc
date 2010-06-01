@@ -1,0 +1,10 @@
+// try t4.hoc with threads
+// note that one cannot change nthread when multisplit is active
+// so we set nthread first
+objref pc
+pc = new ParallelContext()
+if (execute1("{pc.nthread(3,1)}",0) == 0) {printf("%d\n", 2) quit()}
+{load_file("t4.hoc")}
+cable[2] { b = (pc.sec_in_thread() == 2) }
+if (b != 1) { quit() }
+

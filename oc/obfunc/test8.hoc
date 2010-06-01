@@ -1,0 +1,13 @@
+// test of returning an obfunc
+obfunc of1() {
+	return new List()
+}
+
+obfunc of2() {
+	return of1()
+}
+
+objref o
+o = of2()
+o == List[0]
+

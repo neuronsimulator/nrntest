@@ -1,0 +1,187 @@
+//interaction with Vector.record
+{load_file("../net.hoc")}
+{cvode.use_long_double(1)}
+ncell = 3
+mkcells()
+mknet()
+
+ts=4.9 // also should test with 6.0
+rinit=1
+
+objref fih
+fih = new FInitializeHandler(1, "setv()")
+proc setv() {local i, gid  localobj str
+	str = new String()
+	for itr(&i, &gid) {
+		pc.gid2cell(gid).soma.v = -30 + gid
+		sprint(str.s, "pv(%d)", gid)
+		cvode.event(t+2, str.s, pc.gid2cell(gid).synlist.object(0), rinit)
+	}
+	cvode.event(.5, "pv1()")
+	cvode.event(ts)
+//	cvode.event(ts, "stoprun=1") // check the stop mechanism
+	cvode.event(0, "pv2()") // check t=0 event
+}
+
+objref vvec, tvec, idvec, trec[ncell], vrec[ncell], tstd[ncell], vstd[ncell]
+vvec = new Vector()
+tvec = vvec.c
+idvec = vvec.c
+for i=0, ncell-1 { trec[i] = new Vector()  vrec[i] = new Vector() }
+proc pv() {localobj cell, str
+	str = new String()
+	cell = pc.gid2cell($1)
+	vvec.append(cell.soma.v)
+	tvec.append(t)
+	idvec.append($1)
+	sprint(str.s, "pv(%d)", $1)
+	cvode.event(t + 2, str.s, cell.synlist.object(0), rinit)
+}
+
+proc pv1() {local i, gid  
+	for itr(&i, &gid) {
+		//printf("%d %g %g\n", gid, t, pc.gid2cell(gid).soma.v)
+		vvec.append(pc.gid2cell(gid).soma.v)
+		tvec.append(t)
+		idvec.append(gid)
+	}
+}
+
+proc pv2() {
+	pv2_ += 1 + t
+}
+
+proc rec() {local i, gid  localobj cell
+	for itr(&i, &gid) {
+		cell = pc.gid2cell(gid)
+		cell.soma trec[gid].record(&t)
+		cell.soma vrec[gid].record(&v(.5))
+	}
+}
+
+proc prun() {
+	stoprun = 0
+	rec()
+	pv2_ = 0
+	vvec.resize(0)
+	tvec.resize(0)
+	idvec.resize(0)
+	pc.nthread($2, 1)
+	if ($1 == 0) {
+		run()
+	}else{
+		pc.set_maxstep(10)
+		stdinit()
+		pc.psolve(tstop)
+	}
+	srtv()
+}
+
+proc srtv() {localobj srt
+	srt = idvec.c.mul(100000).add(tvec).sortindex
+	idvec.index(idvec, srt)
+	tvec.index(tvec, srt)
+	vvec.index(vvec, srt)
+}
+
+objref tt, ii, vv
+func chk() {local b, i
+	prun(0, 1)
+	tt = tvec.c  ii = idvec.c  vv = vvec.c	
+	for i=0, ncell-1 { tstd[i] = trec[i].c  vstd[i] = vrec[i].c }
+	b = 1
+	b = (b && cmp(0, 3))
+	b = (b && cmp(1, 1))
+	b = (b && cmp(1, 3))
+	b = (b && cmp(0, 4)) // what if one thread is empty
+	b = (b && cmp(1, 4))
+	return b
+}
+
+obfunc ps() {localobj s
+	s = new String()
+	if (cvode_local()) {
+		s.s = "lvardt"
+	}else if (cvode_active()) {
+		s.s = "gvardt"
+	}else{
+		s.s = "fixed"
+	}
+	sprint(s.s, "psolve=%d nthread=%d %s", $1, $2, s.s)
+	return s
+}
+
+proc pp() {
+	if (numarg() == 4) {
+		printf("fail: %s[%d] %s\n", $s1, $4, ps($2, $3).s)
+	}else{
+		printf("fail: %s %s\n", $s1, ps($2, $3).s)
+	}
+}
+
+func cmp() {local b, i, x
+	prun($1, $2)
+	b = 1
+	if (!ii.eq(idvec)) {b = 0 pp("idvec", $1, $2)}
+	if (!tt.eq(tvec))  {b = 0 pp("tvec", $1, $2)}
+	if (cvode_active() && !cvode_local()) {
+		x = (tvec.c.sub(tt).abs.max < 1e-10)
+	}else{
+		x = tvec.eq(tt)
+	}
+	if (!x)  {b = 0 pp("vvec", $1, $2)}
+	if (ts < tstop) {
+		if (t != ts){ print t, ts, t - ts b = 0 }
+	}else{
+		if (t != tstop){ print t, tstop, t - tstop b = 0 }
+	}
+	if (pv2_ != 1) { print "t=0 event pv2_=", pv2_  b = 0 }
+	for i=0, ncell-1 {
+		if (trec[i].x[trec[i].size-1] != t) {printf("fail: last trec[%d]=%g is not %g %s\n", i, trec[i].x[trec[i].size-1], t, ps($1, $2).s) b=0 }
+		if (trec[i].size != tstd[i].size) {print trec[i].size, tstd[i].size }
+		if (!cvode.use_long_double() && cvode_active() && !cvode_local() && trec[i].size == tstd[i].size) {
+			x = trec[i].c.sub(tstd[i]).abs.max if (x > 1e-10) {print x pp("trec", $1, $2, i)  b = 0}
+			x = vrec[i].c.sub(vstd[i]).abs.max if (x > 1e-10) {print x pp("vrec", $1, $2, i)  b = 0}
+		}else{
+			if (!trec[i].eq(tstd[i])) { pp("trec", $1, $2, i)  b = 0}
+			if (!vrec[i].eq(vstd[i])) { pp("vrec", $1, $2, i)  b = 0}
+		}
+	}
+	return b
+}
+
+proc p() {
+	prun($1, $2)
+	for i = 0, idvec.size-1 {
+		printf("%d %g %g\n", idvec.x[i], tvec.x[i], vvec.x[i])
+	}
+}
+
+func series() {local b
+	{cvode_active(0)}
+	b = 1
+	b = (b && chk())
+	{cvode_active(1)}
+	b = (b && chk())
+	{cvode_local(1)}
+	b = (b && chk())
+	return b
+}
+
+func all() {local b
+	b = series()
+
+// what if thread 0 finishes first
+pc.gid2cell(0).dend.nseg = 1
+pc.gid2cell(1).dend.nseg = 100
+pc.gid2cell(2).dend.nseg = 100
+	b = (b && series())
+// what if thread 0 finishes last
+pc.gid2cell(0).dend.nseg = 100
+pc.gid2cell(1).dend.nseg = 1
+pc.gid2cell(2).dend.nseg = 1
+	b = (b && series())
+	return b
+}
+
+all()

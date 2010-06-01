@@ -1,0 +1,60 @@
+{load_file("invl.hoc")}
+{load_file("hhcell.hoc")}
+
+objref nil
+
+obfunc mkcell() {localobj cell
+	if (celltype == 0) {
+		cell = new IF_IntervalFire($1)
+	}else{
+		cell = new HHCell($1)
+	}
+	return cell
+}
+
+proc create_cells() { local i, gid  localobj cell, nc
+	for pcitr(&i, &gid) {
+		pnm.set_gid2node(gid, pc.id)
+		pnm.gid_exists(gid)
+		cell = mkcell(gid*ranoffset_ + 1)
+		pnm.cells.append(cell)
+		cell.connect2target(nil, nc)
+		pnm.pc.cell(gid, nc)
+		pnm.pc.outputcell(gid)
+	}
+}
+
+proc connect_cells() { local i, j, k, gid, r, d, npre   localobj cell
+	// random connections but not self
+	d = 1
+	mcell_ran4_init(connect_random_low_start_)
+	for pcitr(&i, &gid) {
+		cell = pnm.cells.object(i)
+		cell.ranstart()
+		npre = cell.r.discunif(ncon - nconrange/2, ncon + nconrange/2)
+		cell.r.discunif(1, ncell-1) // 0 refers to "this"
+		cell.ranstart()
+		for j=0, npre-1 {
+			r = (cell.r.repick + gid)%ncell // can never be gid
+			k = pnm.nc_append(r, gid, celltype-1, 0, d)
+			if (k > -1) {
+				pnm.nclist.object(k).weight[1] = r
+			}
+		}
+	}
+}
+
+
+proc init_run_random() {local i, gid  localobj cell
+	if (celltype == 1) return
+	mcell_ran4_init($1)
+	for pcitr(&i, &gid) {
+		cell = pnm.cells.object(i)
+		cell.r.uniform(mininvl,maxinvl) //interval variation
+		cell.ranstart()
+	}
+}
+
+create_cells()
+connect_cells()
+

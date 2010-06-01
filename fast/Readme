@@ -1,0 +1,32 @@
+#!/bin/sh
+
+if false ; then
+
+A series of fast tests that can be run to verify NEURON functionality.
+Each test, if successful, should print nothing and set the value
+of b to 1.
+e.g
+	nrniv -nobanner t1.hoc -c '{printf("%d\n", b)}'
+
+When this Readme is executed by the shell, it runs all the t*.hoc and
+stops at the first test that prints anything or has b != 1.  Tests that
+need more than one file should still have the same prefix but use
+different extensions, e.g.  t1.mod or t1.2.mod etc.  The t*.hoc file
+should have a comment at the beginning explaining what is being tested. 
+Note that it is fair for any test to "load_file" any other test.
+
+fi
+
+for i in t*.hoc ; do
+	a="`nrniv -nobanner -nogui $i -c '{printf(\"%d\n\", b)}'`"
+	if test "$a" = "2" ; then
+		echo "$i invalid test"
+		continue
+	fi
+	if test "$a" != "1" ; then
+		echo "$i failed"
+		exit 1
+	fi
+done
+echo "all tests succeeded"
+

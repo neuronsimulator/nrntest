@@ -1,0 +1,32 @@
+y = 30
+proc p() {
+	print $s1
+	print y
+}
+
+func f() {
+	return $1*$2
+}
+
+begintemplate A
+public val
+external p, f
+y=40
+
+p("hello")
+
+proc init() {
+	x = f($1,$2)
+	print y
+}
+
+proc val() {
+	print x
+	p($s1)
+}
+endtemplate A
+
+objectvar a
+a = new A(4,5)
+{a.val("goodbye")}
+

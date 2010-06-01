@@ -1,0 +1,13 @@
+print "Here I am"
+hoc_stdout("temp1.tmp")
+print "hello"
+hoc_stdout()
+print "I'm back"
+proc p() {
+	hoc_stdout("temp2.tmp")
+	print "goodbye"
+	hoc_stdout()
+	print "back again"
+}
+p()
+

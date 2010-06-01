@@ -1,0 +1,11 @@
+load_file("nrngui.hoc")
+load_file("../SaveState/hh.ses")
+objref nc, nil
+soma nc = new NetCon(&v(.5), nil)
+nc.record("event()")
+
+proc event() {
+	printf("t=%g  v=%g\n", t, soma.v(.5))
+}
+
+run()

@@ -1,0 +1,15 @@
+objref p
+p = new PythonObject() // access to anything in Python
+nrnpython("import hoc")
+nrnpython("h = hoc.HocObject()")
+
+nrnpython("ev = lambda arg : eval(arg)")
+
+objref a
+a = p.ev("[1,2,3]")
+nrnpython("print h.a")
+nrnpython("print h.a[1]")
+nrnpython("print h.a.__getitem__(1)")
+print a, a._[1]
+a.__getitem__(0)
+

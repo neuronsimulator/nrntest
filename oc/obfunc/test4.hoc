@@ -1,0 +1,17 @@
+// existence of localobj and proper unreffing
+
+begintemplate Test
+public of
+
+proc init() {
+}
+obfunc of() {localobj tobj
+	tobj = new List()
+	return tobj
+}
+endtemplate Test
+
+objref o
+o = new Test()
+o.of == List[0]
+execute1("print List[0]", 0) == 0

@@ -1,0 +1,34 @@
+// -np 4
+{load_file("nrngui.hoc")}
+{load_file("ms3.ses")}
+cvode_active(1)
+objref pc
+pc = new ParallelContext()
+{load_file("msout.hoc")}
+
+proc split() {local i, n  localobj sid
+	i = 0 forall {
+		if (i % pc.nhost != pc.id) {
+			delete_section()
+		}
+		i += 1
+	}
+	forall {
+		i=0  if (issection("a[0]")) {i = 1}
+		pc.multisplit(i, 1)
+		printf("%d %s multisplit(%g, 1)\n", pc.id, secname(), i)
+	}
+}
+if (pc.nhost > 1) {split()}
+record_all()
+
+if (pc.nhost > 1) {pc.multisplit()}
+//pc.multisplit(0,1001)
+//tstop=0.025
+run()
+precord_all()
+
+{pc.runworker()}
+{pc.done()}
+quit()
+

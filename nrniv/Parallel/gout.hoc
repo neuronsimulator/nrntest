@@ -1,0 +1,31 @@
+load_file("nrngui.hoc")
+objref g
+g = new Graph()
+strdef tstr
+
+if (0) {
+
+i=0
+clipboard_retrieve("out_a_0_1.dat")
+hoc_obj_.line(g, hoc_obj_[1], i+=1, 1)
+clipboard_retrieve("out_a_1_0.dat")
+hoc_obj_.line(g, hoc_obj_[1], i+=1, 1)
+clipboard_retrieve("out_a_1_1.dat")
+hoc_obj_.line(g, hoc_obj_[1], i+=1, 1)
+clipboard_retrieve("out_a_2_0.dat")
+hoc_obj_.line(g, hoc_obj_[1], i+=1, 1)
+g.size(0, 5, 0, .12)
+
+}else{
+
+for i=0, 2 {
+	sprint(tstr, "out_a_%d.dat", i)
+	clipboard_retrieve(tstr)
+	hoc_obj_.line(g, hoc_obj_[1], i+1, 1)
+}
+//g.size(0, hoc_obj_[1].x[hoc_obj_[1].size-1], 0, .12)
+g.exec_menu("View = plot")
+
+}
+
+

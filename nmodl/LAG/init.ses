@@ -1,0 +1,212 @@
+{load_file("nrngui.hoc")}
+objectvar save_window_, rvp_
+objectvar scene_vector_[6]
+objectvar ocbox_, ocbox_list_, scene_, scene_list_
+{ocbox_list_ = new List()  scene_list_ = new List()}
+{pwman_place(0,0,0)}
+
+//Begin SingleCompartment
+{
+load_file("single.hoc")
+}
+ocbox_ = new SingleCompartment(0)
+ocbox_.inserter = new Inserter(0)
+{object_push(ocbox_.inserter)}
+{
+mt.select("kd2b") i = mt.selected()
+ms[i] = new MechanismStandard("kd2b")
+ms[i].set("gkbar_kd2b", 0.036, 0)
+mstate[i]= 1
+maction(i)
+}
+{object_pop() doNotify()}
+{object_push(ocbox_)}
+{inserter.v1.map()}
+{endbox()}
+{object_pop() doNotify()}
+{
+ocbox_ = ocbox_.vbox
+ocbox_.map("SingleCompartment", 383, 20, 91.2, 115.2)
+}
+objref ocbox_
+//End SingleCompartment
+
+
+//Begin CellBuild[0]
+{
+load_file("celbild.hoc", "CellBuild")
+}
+{ocbox_ = new CellBuild(1)}
+{object_push(ocbox_)}
+{
+version(5.1)
+continuous = 1
+}
+{object_push(topol)}
+{
+first = 0
+slist.remove_all()
+sname = "soma2"
+objref tobj
+}
+{
+tobj = new CellBuildSection("soma2",0, 0, tobj, 0) slist.append(tobj)
+  tobj.position(0,-45,0,-30) tobj.lx=-7.5 tobj.ly=-30 tobj.i3d=0
+all_init()
+}
+for i=0, slist.count-1 {slist.object(i).rdses()}
+{object_pop()}
+{
+}
+{object_push(subsets)}
+{first = 0}
+{consist()}
+{object_pop()}
+{
+}
+{object_push(geom)}
+{
+first = 0
+tobj = new GeoSpec(2)
+tobj.value = 100
+bild.topol.slist.object(0).geo.append(tobj)
+set_default()
+}
+{object_pop()}
+{
+}
+{object_push(memb)}
+{first=0}
+{
+tobj = new MechanismStandard("hh")
+tobj.set("gnabar_hh", 0.12, 0)
+tobj.set("gkbar_hh", 0.036, 0)
+tobj.set("gl_hh", 0.0003, 0)
+tobj.set("el_hh", -54.3, 0)
+tobj = new MStanWrap(tobj, 1)
+bild.subsets.snlist.object(0).ml.append(tobj)
+}
+{
+tobj = new MechanismStandard("kd2b")
+tobj.set("gkbar_kd2b", 0.036, 0)
+tobj = new MStanWrap(tobj, 1)
+bild.topol.slist.object(0).ml.append(tobj)
+}
+{object_pop()}
+{
+}
+{object_push(manage)}
+{
+first = 0
+classname = "Cell"
+etop=1 esub=1 egeom=1 emem=1
+itop=1 isub=0 igeom=0 imem=0
+bild.topol.names_off = 0
+bild.topol.circles_off = 0
+output_index = 0  output_x = 1
+}
+{object_pop()}
+{
+cexport()
+}
+{object_pop()}
+{
+save_window_=ocbox_.gtopol
+save_window_.size(-200,200,-150,150)
+scene_vector_[4] = save_window_
+ocbox_.gtopol = save_window_
+save_window_.save_name("ocbox_.gtopol")
+}
+{
+ocbox_.map("CellBuild[0]", 381, 83, 822.72, 374.4)
+}
+objref ocbox_
+//End CellBuild[0]
+
+
+//Begin PointProcessGroupManager
+{
+load_file("pointgrp.hoc")
+}
+{
+ocbox_ = new PointProcessGroupManager(0)
+}
+{object_push(ocbox_)}
+{
+ms = new MechanismStandard("SEClamp")
+ms.set("rs", 0.1, 0)
+ms.set("dur1", 100, 0)
+ms.set("amp1", -10, 0)
+ms.set("dur2", 0, 0)
+ms.set("amp2", 0, 0)
+ms.set("dur3", 0, 0)
+ms.set("amp3", 0, 0)
+mnews("SEClamp", ms)
+select(0)
+execute("soma ocbox_.move(0.5)")
+ms = new MechanismStandard("SEClamp")
+ms.set("rs", 0.1, 0)
+ms.set("dur1", 100, 0)
+ms.set("amp1", 10, 0)
+ms.set("dur2", 0, 0)
+ms.set("amp2", 0, 0)
+ms.set("dur3", 0, 0)
+ms.set("amp3", 0, 0)
+mnews("SEClamp", ms)
+select(1)
+execute("soma2 ocbox_.move(0.5)")
+}
+{object_pop() doNotify()}
+{
+ocbox_ = ocbox_.v1
+ocbox_.map("PointProcessGroupManager", 28, 510, 556.8, 295.68)
+}
+objref ocbox_
+//End PointProcessGroupManager
+
+{
+save_window_ = new Graph(0)
+save_window_.size(0,5,-80,40)
+scene_vector_[2] = save_window_
+{save_window_.view(0, -80, 5, 120, 436, 22, 300.48, 200.32)}
+graphList[0].append(save_window_)
+save_window_.save_name("graphList[0].")
+save_window_.addvar("soma.v( 0.5 )", 1, 1, 0.589137, 1.05335, 2)
+save_window_.addvar("soma2.v( 0.5 )", 2, 1, 0.592332, 1.05335, 2)
+}
+{
+xpanel("RunControl", 0)
+v_init = -65
+xvalue("Init","v_init", 1,"stdinit()", 1, 1 )
+xbutton("Init & Run","run()")
+xbutton("Stop","stoprun=1")
+runStopAt = 5
+xvalue("Continue til","runStopAt", 1,"{continuerun(runStopAt) stoprun=1}", 1, 1 )
+runStopIn = 1
+xvalue("Continue for","runStopIn", 1,"{continuerun(t + runStopIn) stoprun=1}", 1, 1 )
+xbutton("Single Step","steprun()")
+t = 5
+xvalue("t","t", 2 )
+tstop = 5
+xvalue("Tstop","tstop", 1,"tstop_changed()", 0, 1 )
+dt = 0.025
+xvalue("dt","dt", 1,"setdt()", 0, 1 )
+steps_per_ms = 40
+xvalue("Points plotted/ms","steps_per_ms", 1,"setdt()", 0, 1 )
+xcheckbox("Quiet",&stdrun_quiet,"")
+realtime = 0
+xvalue("Real Time","realtime", 0,"", 0, 1 )
+xpanel(77,108)
+}
+{
+save_window_ = new Graph(0)
+save_window_.size(0,5,0,1)
+scene_vector_[3] = save_window_
+{save_window_.view(0, 0, 5, 1, 433, 290, 300.48, 200.32)}
+graphList[2].append(save_window_)
+save_window_.save_name("graphList[2].")
+save_window_.addvar("soma.n_kd2b( 0.5 )", 1, 1, 0.410223, 0.986262, 2)
+save_window_.addvar("soma2.n_kd2b( 0.5 )", 2, 1, 0.410224, 0.991054, 2)
+}
+objectvar scene_vector_[1]
+{doNotify()}

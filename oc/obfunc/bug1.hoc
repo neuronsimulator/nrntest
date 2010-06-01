@@ -1,0 +1,15 @@
+//NEURON -- Version 5.7 2005-1-6 16:21:22 Main (93)
+// parsing trouble with localobj names when those names are also method names
+// needed to add AUTOOBJ to anyname production
+
+begintemplate A
+
+proc init() {localobj vec, size
+	vec = new Vector(10)
+	print vec.size
+}
+
+endtemplate A
+
+objref a
+a = new A()

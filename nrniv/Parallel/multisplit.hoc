@@ -1,0 +1,65 @@
+objref pc
+pc = new ParallelContext()
+
+create a
+access a
+forall nseg=5
+diam(0:1) = 1:2
+Ra=100
+topology()
+{area(.5)}
+printf("\nclassical\n")
+pc.multisplit(0,1000)
+for (x) print x, area(x), ri(x)
+
+proc do1() {
+	pc.gid_clear()
+	a pc.multisplit($1, 1)
+	area(.5)
+	printf("\nmultisplit at %g\n", $1)
+	pc.multisplit(0,1000) // prints matrix
+	for (x) print x, area(x), ri(x)
+}
+
+//do1(0)
+//do1(.5)
+//do1(1)
+
+objref s1, s2
+a s1 = new SectionRef()
+a s2 = new SectionRef()
+
+proc do2() {
+	pc.gid_clear()
+	s1.sec pc.multisplit($1, 1)
+	s2.sec pc.multisplit($2, 2)
+	area(.5)
+	printf("\nmultisplit at %g and %g\n", $1, $2)
+	pc.multisplit(0,1000) // prints matrix
+	forall for (x) print secname(), " ", x, area(x), ri(x)
+}
+
+
+//do2(0,1)
+//do2(1,0)
+
+create b
+connect b(0), 0
+forall nseg=3
+a.diam(0:1) = 1:2
+b.diam(0:1) = 1:3
+b s1 = new SectionRef()
+a s2 = new SectionRef()
+Ra=100
+topology()
+{area(.5)}
+printf("\nclassical\n")
+pc.multisplit(0,1000)
+forall for (x) print secname(), " ", x, area(x), ri(x)
+
+do2(1,1)
+
+
+finitialize(-65)
+fcurrent()
+pc.multisplit(0,1001)

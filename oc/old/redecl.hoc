@@ -1,0 +1,20 @@
+// test redeclaration of built-in names
+
+begintemplate A
+
+double PI[2]
+strdef plot
+objref graph
+proc init() {
+	PI[0] = 5
+	plot = "hello"
+	print plot, PI[0]
+	print graph
+}
+
+endtemplate A
+
+objref a
+a = new A()
+
+objref PI	// error

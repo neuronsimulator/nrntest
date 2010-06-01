@@ -1,0 +1,17 @@
+load_file("nrngui.hoc")
+load_file("kliggate.ses")
+
+Grapher[0].g.exec_menu("Keep Lines")
+for i=1,4 {
+	ChannelBuild[0].aliases.aCO.A = .01*10^i
+	KSTrans[0].stoichiometry(i)
+	Grapher[0].doplt()
+
+	ki=.001
+	stdinit()
+	ki=.1
+	continuerun(200)
+}
+Grapher[0].g.exec_menu("Keep Lines")
+
+

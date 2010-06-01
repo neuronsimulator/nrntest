@@ -1,0 +1,9 @@
+{load_file("stdgui.hoc")}
+create a
+access a
+insert test
+cvode.cache_efficient(0)
+init()
+step()
+
+print "Area from HOC: ", area(0.5)

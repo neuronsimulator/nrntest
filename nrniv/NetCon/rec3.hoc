@@ -1,0 +1,30 @@
+create acell_home_
+access acell_home_
+objref stim[2], nc[2], nil, tvec, idvec
+tvec = new Vector()
+idvec = new Vector()
+
+for i=0,1 {
+	stim[i] = new NetStim(.5)
+	nc[i] = new NetCon(stim[i], nil)
+	stim[i].start = 0
+	stim[i].interval = 5+i
+}
+
+
+for i=0, 1 {
+	nc[i].record(tvec, idvec)
+}
+
+tstop = 100
+run()
+hoc_obj_ = tvec.c
+hoc_obj_[1] = idvec.c
+
+for i=0, 1 {
+	nc[i].record(tvec, idvec, 10+i)
+}
+run()
+tvec.eq(hoc_obj_)
+idvec.eq(hoc_obj_[1].add(10))
+

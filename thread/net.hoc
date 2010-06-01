@@ -1,0 +1,44 @@
+{load_file("nrngui.hoc")}
+{load_file("hhcell.hoc")}
+objref pc, cells, nclist
+pc = new ParallelContext()
+ncell = 10
+
+iterator itr() {local i, gid
+	i = 0
+	for (gid=pc.id; gid < ncell; gid += pc.nhost) {
+		$&1 = i
+		$&2 = gid
+		iterator_statement
+		i += 1
+	}
+}
+
+proc mkcells() {local i, gid  localobj cell, nc, nil, syn
+	cells = new List()
+	for itr(&i, &gid) {
+		pc.set_gid2node(gid, pc.id)
+		cell = new Cell() cell.dend.nseg = 10
+		cells.append(cell)
+		nc = cell.connect2target(nil)
+		pc.cell(gid, nc, 1)
+		cell.soma syn = new ExpSyn(.5)
+		cell.synlist.append(syn)
+		syn.e = -80
+		syn.tau = 1
+	}
+}
+
+// all to all
+proc mknet() {local i, gid  localobj nc
+	nclist = new List()
+	for itr(&i, &gid) {
+		for j = 0, ncell -1 {
+			nc = pc.gid_connect(j, pc.gid2cell(gid).synlist.object(0))
+			nclist.append(nc)
+			nc.delay = 3
+			nc.weight = .0001
+		}
+	}
+}
+

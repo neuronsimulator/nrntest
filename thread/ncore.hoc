@@ -1,0 +1,3 @@
+objref pc
+pc = new ParallelContext()
+pc.thread_how_many_proc()

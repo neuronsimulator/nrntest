@@ -1,0 +1,286 @@
+load_file("nrngui.hoc")
+
+{ ion_register("na", 1) }
+objref ks, ksvec, ksgate, ksstates, kstransitions, tobj
+{
+  ksvec = new Vector()
+  ksstates = new List()
+  kstransitions = new List()
+  ks = new KSChan(1)
+}
+// nahh0 Point Process (Allow Single Channels)
+// na ohmic ion current
+//     ina (mA/cm2) = nahh0.g * (v - ena)*(0.01/area)
+{
+  ks.name("nahh0")
+  ks.ion("na")
+  ks.iv_type(0)
+  ks.gmax(0.12)
+  ks.erev(0)
+}
+// g = gmax * m3h1
+// m3h1: 8 state, 10 transitions
+{
+  objref ksgate
+  ksstates.append(ks.add_ksstate(ksgate, "m0h0"))
+  ksgate = ksstates.object(0).gate
+  ksstates.object(0).frac(0)
+  ksstates.append(ks.add_ksstate(ksgate, "m1h0"))
+  ksstates.object(1).frac(0)
+  ksstates.append(ks.add_ksstate(ksgate, "m2h0"))
+  ksstates.object(2).frac(0)
+  ksstates.append(ks.add_ksstate(ksgate, "m3h0"))
+  ksstates.object(3).frac(0)
+  ksstates.append(ks.add_ksstate(ksgate, "m0h1"))
+  ksstates.object(4).frac(0)
+  ksstates.append(ks.add_ksstate(ksgate, "m1h1"))
+  ksstates.object(5).frac(0)
+  ksstates.append(ks.add_ksstate(ksgate, "m2h1"))
+  ksstates.object(6).frac(0)
+  ksstates.append(ks.add_ksstate(ksgate, "m3h1"))
+  ksstates.object(7).frac(1)
+}
+{
+  kstransitions.append(ks.add_transition(ksstates.object(0), ksstates.object(1)))
+  kstransitions.append(ks.add_transition(ksstates.object(1), ksstates.object(2)))
+  kstransitions.append(ks.add_transition(ksstates.object(2), ksstates.object(3)))
+  kstransitions.append(ks.add_transition(ksstates.object(4), ksstates.object(5)))
+  kstransitions.append(ks.add_transition(ksstates.object(5), ksstates.object(6)))
+  kstransitions.append(ks.add_transition(ksstates.object(6), ksstates.object(7)))
+  kstransitions.append(ks.add_transition(ksstates.object(0), ksstates.object(4)))
+  kstransitions.append(ks.add_transition(ksstates.object(1), ksstates.object(5)))
+  kstransitions.append(ks.add_transition(ksstates.object(2), ksstates.object(6)))
+  kstransitions.append(ks.add_transition(ksstates.object(3), ksstates.object(7)))
+}
+{
+  tobj = kstransitions.object(0)
+  tobj.type(0)
+  tobj.set_f(0, 3, ksvec.c.append(3, 0.1, -40))
+  tobj.set_f(1, 2, ksvec.c.append(4, -0.055556, -65))
+}
+{
+  tobj = kstransitions.object(1)
+  tobj.type(0)
+  tobj.set_f(0, 3, ksvec.c.append(2, 0.1, -40))
+  tobj.set_f(1, 2, ksvec.c.append(8, -0.055556, -65))
+}
+{
+  tobj = kstransitions.object(2)
+  tobj.type(0)
+  tobj.set_f(0, 3, ksvec.c.append(1, 0.1, -40))
+  tobj.set_f(1, 2, ksvec.c.append(12, -0.055556, -65))
+}
+{
+  tobj = kstransitions.object(3)
+  tobj.type(0)
+  tobj.set_f(0, 3, ksvec.c.append(3, 0.1, -40))
+  tobj.set_f(1, 2, ksvec.c.append(4, -0.055556, -65))
+}
+{
+  tobj = kstransitions.object(4)
+  tobj.type(0)
+  tobj.set_f(0, 3, ksvec.c.append(2, 0.1, -40))
+  tobj.set_f(1, 2, ksvec.c.append(8, -0.055556, -65))
+}
+{
+  tobj = kstransitions.object(5)
+  tobj.type(0)
+  tobj.set_f(0, 3, ksvec.c.append(1, 0.1, -40))
+  tobj.set_f(1, 2, ksvec.c.append(12, -0.055556, -65))
+}
+{
+  tobj = kstransitions.object(6)
+  tobj.type(0)
+  tobj.set_f(0, 2, ksvec.c.append(0.07, -0.05, -65))
+  tobj.set_f(1, 4, ksvec.c.append(1, -0.1, -35))
+}
+{
+  tobj = kstransitions.object(7)
+  tobj.type(0)
+  tobj.set_f(0, 2, ksvec.c.append(0.07, -0.05, -65))
+  tobj.set_f(1, 4, ksvec.c.append(1, -0.1, -35))
+}
+{
+  tobj = kstransitions.object(8)
+  tobj.type(0)
+  tobj.set_f(0, 2, ksvec.c.append(0.07, -0.05, -65))
+  tobj.set_f(1, 4, ksvec.c.append(1, -0.1, -35))
+}
+{
+  tobj = kstransitions.object(9)
+  tobj.type(0)
+  tobj.set_f(0, 2, ksvec.c.append(0.07, -0.05, -65))
+  tobj.set_f(1, 4, ksvec.c.append(1, -0.1, -35))
+}
+{ ksstates.remove_all  kstransitions.remove_all }
+{ ks.single(1) }
+{objref ks, ksvec, ksgate, ksstates, kstransitions, tobj}
+{ ion_register("k", 1) }
+objref ks, ksvec, ksgate, ksstates, kstransitions, tobj
+{
+  ksvec = new Vector()
+  ksstates = new List()
+  kstransitions = new List()
+  ks = new KSChan(1)
+}
+// khh0 Point Process (Allow Single Channels)
+// k ohmic ion current
+//     ik (mA/cm2) = khh0.g * (v - ek)*(0.01/area)
+{
+  ks.name("khh0")
+  ks.ion("k")
+  ks.iv_type(0)
+  ks.gmax(0.036)
+  ks.erev(0)
+}
+// g = gmax * n4
+// n4: 5 state, 4 transitions
+{
+  objref ksgate
+  ksstates.append(ks.add_ksstate(ksgate, "n0"))
+  ksgate = ksstates.object(0).gate
+  ksstates.object(0).frac(0)
+  ksstates.append(ks.add_ksstate(ksgate, "n1"))
+  ksstates.object(1).frac(0)
+  ksstates.append(ks.add_ksstate(ksgate, "n2"))
+  ksstates.object(2).frac(0)
+  ksstates.append(ks.add_ksstate(ksgate, "n3"))
+  ksstates.object(3).frac(0)
+  ksstates.append(ks.add_ksstate(ksgate, "n4"))
+  ksstates.object(4).frac(1)
+}
+{
+  kstransitions.append(ks.add_transition(ksstates.object(0), ksstates.object(1)))
+  kstransitions.append(ks.add_transition(ksstates.object(1), ksstates.object(2)))
+  kstransitions.append(ks.add_transition(ksstates.object(2), ksstates.object(3)))
+  kstransitions.append(ks.add_transition(ksstates.object(3), ksstates.object(4)))
+}
+{
+  tobj = kstransitions.object(0)
+  tobj.type(0)
+  tobj.set_f(0, 3, ksvec.c.append(0.4, 0.1, -55))
+  tobj.set_f(1, 2, ksvec.c.append(0.125, -0.0125, -65))
+}
+{
+  tobj = kstransitions.object(1)
+  tobj.type(0)
+  tobj.set_f(0, 3, ksvec.c.append(0.3, 0.1, -55))
+  tobj.set_f(1, 2, ksvec.c.append(0.25, -0.0125, -65))
+}
+{
+  tobj = kstransitions.object(2)
+  tobj.type(0)
+  tobj.set_f(0, 3, ksvec.c.append(0.2, 0.1, -55))
+  tobj.set_f(1, 2, ksvec.c.append(0.375, -0.0125, -65))
+}
+{
+  tobj = kstransitions.object(3)
+  tobj.type(0)
+  tobj.set_f(0, 3, ksvec.c.append(0.1, 0.1, -55))
+  tobj.set_f(1, 2, ksvec.c.append(0.5, -0.0125, -65))
+}
+{ ksstates.remove_all  kstransitions.remove_all }
+{ ks.single(1) }
+{objref ks, ksvec, ksgate, ksstates, kstransitions, tobj}
+objref ks, ksvec, ksgate, ksstates, kstransitions, tobj
+{
+  ksvec = new Vector()
+  ksstates = new List()
+  kstransitions = new List()
+  ks = new KSChan(0)
+}
+// leak Density Mechanism
+// NonSpecific ohmic ion current
+//     i_leak (mA/cm2) = g_leak * (v - e_leak)
+{
+  ks.name("leak")
+  ks.iv_type(0)
+  ks.gmax(0.0003)
+  ks.erev(-54.3)
+}
+// g = gmax
+{objref ks, ksvec, ksgate, ksstates, kstransitions, tobj}
+
+// manually constructed
+create soma
+access soma
+{diam=10 L=100/PI/diam}
+{insert leak}
+objref nachan, kchan, stim
+nachan = new nahh0(.5)
+kchan = new khh0(.5)
+
+gmaxna = .12
+gmaxk = .036
+proc nsing() {
+	nachan.gmax = gmaxna
+	kchan.gmax = gmaxk
+	nachan.Nsingle = $1
+	kchan.Nsingle = $1
+	if ($1 > 0) {
+		nachan.gmax /= nachan.Nsingle
+		kchan.gmax /= kchan.Nsingle
+	}
+	stdinit()
+}
+nsing(0)
+
+xpanel("AP with a set of single channels")
+xradiobutton("Continuous", "nsing(0)", 1)
+xradiobutton("1 channel", "nsing(1)")
+xradiobutton("10 channels", "nsing(10)")
+xradiobutton("100 channels", "nsing(100)")
+xradiobutton("1000 channels", "nsing(1000)")
+xradiobutton("10000 channels", "nsing(10000)")
+xpanel(100, 100)
+// end manually constructed
+
+{load_file("nrngui.hoc")}
+objectvar save_window_, rvp_
+objectvar scene_vector_[4]
+objectvar ocbox_, ocbox_list_, scene_, scene_list_
+{ocbox_list_ = new List()  scene_list_ = new List()}
+{pwman_place(0,0,0)}
+
+//Begin PointProcessManager
+{
+load_file("pointman.hoc")
+}
+{
+soma ocbox_ = new PointProcessManager(0)
+}
+{object_push(ocbox_)}
+{
+mt.select("IClamp") i = mt.selected()
+ms[i] = new MechanismStandard("IClamp")
+ms[i].set("del", 0.5, 0)
+ms[i].set("dur", 0.1, 0)
+ms[i].set("amp", 0.3, 0)
+mt.select("IClamp") i = mt.selected() maction(i)
+hoc_ac_ = 0.5
+sec.sec move() d1.flip_to(0)
+}
+{object_pop() doNotify()}
+{
+ocbox_ = ocbox_.v1
+ocbox_.map("PointProcessManager", 383, 4, 208.32, 326.4)
+}
+objref ocbox_
+//End PointProcessManager
+
+{
+save_window_ = new Graph(0)
+save_window_.size(0,5,-80,40)
+scene_vector_[3] = save_window_
+{save_window_.view(0, -80, 5, 120, 617, 3, 300.48, 200.32)}
+graphList[0].append(save_window_)
+save_window_.save_name("graphList[0].")
+save_window_.addexpr("v(.5)", 1, 1, 0.8, 0.9, 2)
+}
+{
+xpanel("Run", 0)
+xcheckbox("Init & Run",&running_,"runbutton()")
+xpanel(266,87)
+}
+objectvar scene_vector_[1]
+{doNotify()}

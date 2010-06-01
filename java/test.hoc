@@ -1,0 +1,4 @@
+load_java("neuron.NrnClassLoader", "NCL")
+objref ncl
+ncl = new NCL()
+ncl.add("file:/home/rcc/ccmb.jar")

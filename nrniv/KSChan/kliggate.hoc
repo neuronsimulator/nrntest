@@ -1,0 +1,8 @@
+load_file("nrngui.hoc")
+load_file("kliggate.ses")
+Grapher[0].doplt()
+ki=.001
+stdinit()
+ki=.1
+continuerun(200)
+

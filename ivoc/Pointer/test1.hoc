@@ -1,0 +1,68 @@
+// prints only 1's
+objref p
+x = 3
+p = new Pointer(&x)
+p.val == 3
+p.val = 5
+x == 5
+x=10
+p.val == 10
+strcmp(p.s, "unknown") == 0
+p.assign(20) == 20
+p.val == 20
+x == 20
+
+x = 3
+p = new Pointer("x")
+p.val == 3
+p.val = 5
+x == 5
+x=10
+p.val == 10
+strcmp(p.s, "x") == 0
+p.assign(20) == 20
+p.val == 20
+x == 20
+
+x = 3
+p = new Pointer("x", "print p.val == $1 && x == $1")
+p.val == 3
+strcmp(p.s, "x") == 0
+p.assign(20) == 20
+
+x = 3
+p = new Pointer(&x, "print p.val == $1 && x == $1")
+p.val == 3
+strcmp(p.s, "unknown") == 0
+p.assign(20) == 20
+
+objref p2
+p2 = new Pointer(&p.val, "print p2.val == $1 && p.val == $1 && x == $1")
+p2.assign(50) == 50
+x == 50
+p2.val == 50
+p.val == 50
+
+create soma, dend
+soma.v = 20
+dend.v = 0
+p = new Pointer("soma.v(.5)", "forall v=$1")
+p.assign(30) == 30
+forall for(x) print v(x) == 30
+
+x=1
+y=2
+p = new Pointer("x", "y")
+p.assign(3) == 3
+x == 3
+y == 3
+
+//Pointers can actually declare a name
+x = 1
+name_declared("z") == 0
+p = new Pointer("x", "z")
+// defined but has default of 0
+z == 0
+p.assign(5) == 5
+execute1("print z == 5")
+

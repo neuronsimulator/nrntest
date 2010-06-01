@@ -1,0 +1,4 @@
+load_java("NrnHelp", "NH", "file:/home/hines/neuron/nrntest/java/")
+objref nh
+nh = new NH()
+nh.setPage("http://www.neuron.yale.edu/neuron/")

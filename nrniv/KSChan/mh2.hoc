@@ -1,0 +1,44 @@
+load_file("nrngui.hoc")
+
+// a hh na channel - m is hh style and h is ks style
+
+objref  ks, vec, kst
+ks = new KSChan()
+ks.name("nach")
+ks.ion("na")
+
+objref vec
+vec = new Vector()
+//cond_model ngate nstate nhhstate ntrans nligand iligtrans
+vec.append(0, 2, 3, 1, 2, 0, 2, \
+0, 1, 3, 1, \
+1, 2, 1, 0, 1, \
+0, 0, 0, -1, \
+1, 2, 0, -1 \
+)
+ks.setstructure(vec)
+ks.state(0).name("m")
+ks.state(1).name("h0")
+ks.state(2).name("h")
+
+// m alpha and beta
+vec = new Vector()
+vec.append(1, .1, -40)
+kst = ks.trans(0)
+kst.set_f(0, 3, vec)
+vec = new Vector()
+vec.append(4, -1/18, -65)
+kst.set_f(1, 2, vec)
+
+// h0<->h alpha and beta
+vec = new Vector()
+vec.append(.07, -1/20, -65)
+kst = ks.trans(1)
+kst.set_f(0, 2, vec)
+vec = new Vector()
+vec.append(1, -.1, -35)
+kst.set_f(1, 4, vec)
+
+ks.pr
+
+load_file("mh.ses")

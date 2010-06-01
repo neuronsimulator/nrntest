@@ -1,0 +1,16 @@
+load_file("cell.hoc")
+
+objref cell[5]
+for i=0, 4 cell[i] = new Cell()
+
+cell[1].dend[1] print secname()
+print cell[1].dend[1]
+
+proc p() { local i
+	i = 1
+	cell[1].dend[1] print secname()
+	print cell[1].dend[1]
+}
+p()
+
+

@@ -1,0 +1,26 @@
+//SectionRef.rename test
+create a, b[1], c[1]
+objref pa, pb[1], pc[1]
+n=5
+
+proc init() {local i
+	forall delete_section()
+	create a, b[1], c[n]
+	objref pa, pb[1], pc[n]
+	a pa = new SectionRef()
+	b pb = new SectionRef()
+	for i=0, n-1 c[i] pc[i] = new SectionRef()
+}
+init()
+
+proc cc() {
+	$o1.sec printf("%s ->", secname())
+	$o1.unname
+	$o1.rename($s2)
+	$o1.sec printf(" %s\n", secname())
+}
+
+//new name for section labeled by scalar
+cc(pa, "x")
+cc(pb, "y")
+cc(pc, "z")

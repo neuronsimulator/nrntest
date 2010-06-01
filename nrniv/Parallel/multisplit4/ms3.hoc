@@ -1,0 +1,60 @@
+{load_file("8dend.ses")}
+forall {d=diam(.5) diam(0:1)=(d+.05):(d-.05)}
+
+objref vvec[2]
+for i=0, 1 vvec[i] = new Vector()
+
+objref pc
+pc = new ParallelContext()
+
+{
+	dend[4] vvec[0].record(&v(.5))
+	run()
+	vvec[0].play_remove()
+}
+
+if (pc.id == 0) {topology()}
+
+forall { disconnect() }
+
+if (pc.nhost == 1) {
+	dend[0] pc.multisplit(0, 10, 2)
+	dend[7] pc.multisplit(0, 10, 2)
+	dend[8] pc.multisplit(0, 10, 2)
+
+	dend[0] pc.multisplit(1, 11, 2)
+	dend[1] pc.multisplit(0, 11, 2)
+	dend[2] pc.multisplit(0, 11, 2)
+
+	dend[1] pc.multisplit(1, 12, 2)
+	dend[3] pc.multisplit(0, 12, 2)
+	dend[4] pc.multisplit(0, 12, 2)
+
+	dend[2] pc.multisplit(1, 13, 2)
+	dend[5] pc.multisplit(0, 13, 2)
+	dend[6] pc.multisplit(0, 13, 2)
+}else if (pc.nhost ==  2) {
+	if (pc.id == 0) {
+		for i=1, 8 dend[i] delete_section()
+		dend[0] pc.multisplit(0, 10, 2)
+		dend[0] pc.multisplit(1, 11, 2)
+	}else if (pc.id == 1) {
+		dend[0] delete_section()
+		dend[1] pc.multisplit(0, 11, 2)
+		dend[2] pc.multisplit(0, 11, 2)
+		dend[7] pc.multisplit(0, 10, 2)
+		dend[8] pc.multisplit(0, 10, 2)
+	}
+}
+{pc.multisplit()}
+
+if (section_exists("dend", 4)) {
+	dend[4] vvec[1].record(&v(.5))
+}
+
+run()
+
+topology()
+if (section_exists("dend", 1)) {
+	print "|vvec[0]-vvec[1]| = ", vvec[0].sub(vvec[1]).abs.sum
+}

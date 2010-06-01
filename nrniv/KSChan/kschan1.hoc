@@ -1,0 +1,10 @@
+{load_file("nrngui.hoc")}
+
+objref  ks, vec
+ks = new KSChan()
+ks.pr
+{load_file("kchan1.ses")}
+run()
+cvode_active(1)
+run()
+

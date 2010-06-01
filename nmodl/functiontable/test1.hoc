@@ -1,0 +1,16 @@
+load_file("nrngui.hoc")
+create soma
+access soma
+
+objref fvec, tvec
+tvec = new Vector(10)
+tvec.indgen
+fvec = tvec.c.mul(tvec)
+
+objref test
+test = new Test(.5)
+
+test.table_f(fvec, tvec)
+
+for (x=0; x < 4; x += .5) { print x, test.f(x) }
+

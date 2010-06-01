@@ -1,0 +1,8 @@
+ion_register("cl", -1) != 0
+ion_charge("cl_ion") == -1
+ion_register("na", 2) != 0
+ion_charge("na_ion") == 1
+ai = 1
+ion_register("a", 1) == -1
+execute1("ion_charge(\"hh\")", 0) == 0
+

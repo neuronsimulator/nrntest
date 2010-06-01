@@ -1,0 +1,11 @@
+strdef a
+a = "0"
+for i=1,1000 {
+	sprint(a, "%s + %d", a, i)
+}
+print a
+wopen("temp")
+fprint("%s\n", a)
+wopen()
+
+xopen("temp")

@@ -1,0 +1,9 @@
+system("echo hello") == 0
+
+system("echo hello > temp") == 0
+system("cat temp") == 0
+
+strdef s
+system("cat system.hoc", s) == 0
+s
+

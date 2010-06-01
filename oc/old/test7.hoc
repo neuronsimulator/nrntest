@@ -1,0 +1,47 @@
+begintemplate String
+public s
+strdef s
+endtemplate String
+
+begintemplate StringArray
+public sa, size
+objectvar sa[1]
+proc init() {
+	sz=$1
+	objectvar sa[sz]
+	for i=0,sz-1 sa[i]=new String()
+}
+func size() {return sz}
+endtemplate StringArray
+
+objectvar sa
+sa = new StringArray(10)
+
+proc set() { local i, n
+	n = $o1.size() - 1
+	for i=0,n {
+		sprint($o1.sa[i].s, "string%d", i)
+	}
+}
+
+proc pstr() { local i, n
+	n = $o1.size() - 1
+	for i=0,n {
+		print $o1.sa[i].s
+	}
+}
+
+set(sa)
+pstr(sa)
+
+objectvar sa3[3]
+for i=0,2 sa3[i] = new StringArray(3+i)
+for i=0,2 set(sa3[i])
+for i=0,2 pstr(sa3[i])
+
+sa = new StringArray(1,2,3,4)
+sa.sa[0].s = "hello"
+print sa.sa[0].s
+sa.sa[1].s = "goodbye"	/* error since out of array bounds */
+
+

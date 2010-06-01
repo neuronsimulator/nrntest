@@ -1,0 +1,80 @@
+load_file("nrngui.hoc")
+load_file("14dend.hoc")
+nden = 14
+ncell = 3 // must be less than nden because of stim and record location
+objref cell[ncell], stim[ncell], vvec[ncell][2]
+for i=0, ncell-1 {
+	cell[i] = new Cell()
+	forsec cell[i].all { // every part of every cell has different geom
+		d = diam(.5)
+		dx = 0.05*(i+1)/ncell
+		diam(0:1)=(d+dx):(d-dx)
+	}
+	cell[i].dend[i] stim[i] = new IClamp(0.1)
+	stim[i].dur = .5
+	stim[i].amp = 2
+	vvec[i][0] = new Vector()
+	cell[i].dend[nden-i-1] vvec[i][0].record(&v(.9))
+}
+
+objref pc
+pc = new ParallelContext()
+
+run()
+for i=0, ncell-1 {vvec[i][0].play_remove()}
+
+if (0) {
+	for j=0, vvec[0][0].size-1 {
+		printf("%3d %6g", j, j*dt)
+		for i=0, ncell-1 { printf("\t%10g", vvec[i][0].x[j]) }
+		printf("\n")
+	}
+}
+
+forall { disconnect() }
+
+objref c
+proc mcon() {local i, sid
+	sid = s+$3
+	c.dend[$1] {
+		pc.multisplit($2,sid,2)
+		//printf("%s pc.multisplit(%g, %g, %g)\n", secname(), $2, sid, 2)
+	}
+	for i=3, numarg() {
+		c.dend[$i] {
+			pc.multisplit(0,sid,2)
+		//printf("%s pc.multisplit(%g, %g, %g)\n", secname(), 0, sid, 2)
+		}
+	}
+}
+
+if (pc.nhost == 1) {
+	for i=0, ncell-1 {
+		s = 100*i
+		c = cell[i]
+
+		mcon(0,0,7,8)
+		mcon(0,1,1,2)
+		mcon(1,1,3,4)
+		mcon(2,1,5,6)
+		mcon(8,1,9,11,12,13)
+		mcon(9,1,10)
+	}
+}
+{pc.multisplit()}
+
+for i=0, ncell-1 {
+	if (section_exists("dend", nden-i-1, cell[i])) {
+		vvec[i][1] = new Vector()
+		cell[i].dend[nden-i-1] vvec[i][1].record(&v(.9))
+	}
+}
+
+run()
+
+for i=0, ncell-1 {
+	if (section_exists("dend", nden-i-1, cell[i])) {
+printf("cell[%d].dend[%d] abs norm  = %g\n", i, nden-i-1, \
+vvec[i][0].sub(vvec[i][1]).abs.sum)
+	}
+}

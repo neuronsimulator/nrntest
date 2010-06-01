@@ -1,0 +1,180 @@
+{load_file("nrngui.hoc")}
+
+nden = 14
+ncell = 3 // must be less than nden because of stim and record location
+
+begintemplate Cell
+public dend, all, parent_index, parent_x, orientation, nden, host, sid
+create dend[2]
+objref all, parent_index, parent_x, orientation, host, sid
+proc init() {local i, d, dx, s, j  localobj sref
+	nden = $1
+	create dend[nden]
+	parent_index = $o2.c
+	parent_x = $o3.c
+	orientation = $o4.c
+	host = new Vector(nden)
+	sid = new Vector(nden)
+	sid.fill(-1)
+	host.fill(0)
+	all = new SectionList()
+	for i=0, nden-1 dend[i] {
+		all.append()
+		nseg = 3
+		insert hh
+		L = 100 + 10*i
+		d = 1 + .1*i
+		dx = 0.05*(i+1)/nseg		
+		diam(0:1)=(d+dx):(d-dx)
+		if (i > 0) {
+dend[parent_index.x[i]] connect dend[i](orientation.x[i]), parent_x.x[i]
+		}
+	}
+	s = 0
+	forsec all v = -1
+	for i=1, nden-1 dend[parent_index.x[i]] {
+		if (v(parent_x.x[i]) == -1) {
+			v(parent_x.x[i]) = s
+			s += 1
+		}
+		sid.x[i] = v(parent_x.x[i])
+	}
+	for i=1, nden-1 dend[i] {
+		sref = new SectionRef()
+		if (sref.has_trueparent()) sref.trueparent{
+			sscanf(secname(), "Cell[%*d].dend[%d]", &j)
+			if (j != parent_index.x[i]) {
+				parent_index.x[i] = j
+				parent_x.x[i] = 1
+			}
+		}else{
+			parent_index.x[i] = 0
+			parent_x.x[i] = 0
+		}
+	}
+}
+
+endtemplate Cell
+
+objref cell[ncell], stim[ncell], vvec[ncell][2]
+objref p, px, orient, ran
+p = new Vector(nden)
+px = new Vector(nden)
+orient = new Vector(nden)
+ran = new Random()
+{ran.MCellRan4(1)}
+{mcell_ran4_init(1)}
+
+objref pc
+pc = new ParallelContext()
+
+for i=0, ncell-1 {
+	px.fill(1)
+	orient.fill(0)
+	p.indgen(-1, nden-2, 1)
+	for j=1, nden-1 {
+		p.x[j] = ran.discunif(0, j-1)
+	}
+	for j=1, nden-1 {
+		r = ran.discunif(0,1)
+		//if (r == 4) { r = 1 } else if (r > 0) {r = (r-.5)/3 }
+		px.x[j] = r
+	}
+	cell[i] = new Cell(nden, p, px, orient)
+	cell[i].dend[i] stim[i] = new IClamp(0.1)
+	stim[i].dur = .5
+	stim[i].amp = 2
+	vvec[i][0] = new Vector()
+	cell[i].dend[nden-i-1] vvec[i][0].record(&v(.9))
+	ran.discunif(0, pc.nhost-1)
+	for j=0, nden-1 {
+		//cell[i].host.x[j] = j%(pc.nhost)
+		cell[i].host.x[j] = ran.repick()
+	}
+}
+
+if (0) if (pc.id == 0) { topology() }
+
+run()
+for i=0, ncell-1 {vvec[i][0].play_remove()}
+
+if (0) {
+	for j=0, vvec[0][0].size-1 {
+		printf("%3d %6g", j, j*dt)
+		for i=0, ncell-1 { printf("\t%10g", vvec[i][0].x[j]) }
+		printf("\n")
+	}
+}
+
+
+proc recon() {local i, sid, ip, xp
+
+	if (0) { printf("recon %s i, p, px, o, sid\n", $o1)
+	for i=0, $o1.nden-1 {
+		printf(" %d %d %g %g %d\n", i, $o1.parent_index.x[i], \
+			$o1.parent_x.x[i], $o1.orientation.x[i], $o1.sid.x[i])
+	}}
+	forsec $o1.all { disconnect() }
+	for i=0, $o1.nden-1 {
+		if ($o1.host.x[i] != pc.id) {
+			$o1.dend[i] delete_section()
+		}
+	}
+	if (0) {
+		for i=1, $o1.nden-1 {
+$o1.dend[$o1.parent_index.x[i]] connect $o1.dend[i]($o1.orientation.x[i]), $o1.parent_x.x[i]
+		}
+	}else{
+		forsec $o1.all v = 0
+		for i=0, $o1.nden-1 {
+			sid = $o1.sid.x[i]
+			if (sid > -1) {
+				sid += $2
+				if (section_exists("dend", i, $o1)) $o1.dend[i] {
+pc.multisplit($o1.orientation.x[i], sid, 2) 
+//printf("%d %s pc.multisplit(%g, %g, 2)\n", pc.id, secname(), $o1.orientation.x[i], sid)
+				}
+				ip = $o1.parent_index.x[i]
+				xp = $o1.parent_x.x[i]
+				if (section_exists("dend", ip, $o1)) {
+					$o1.dend[ip] {
+						if (v(xp) == 0) {
+							v(xp) = 1
+pc.multisplit(xp, sid, 2)
+//printf("%d %s pc.multisplit(%g, %g, 2)\n", pc.id, secname(), xp, sid)
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+for i=0, ncell-1 { recon(cell[i], 100*i) }
+{pc.multisplit()}
+
+for i=0, ncell-1 {
+	if (section_exists("dend", nden-i-1, cell[i])) {
+		vvec[i][1] = new Vector()
+		cell[i].dend[nden-i-1] vvec[i][1].record(&v(.9))
+	}
+}
+
+if (0) for i=0, pc.nhost-1 {
+	pc.barrier()
+	if (i == pc.id) {
+		printf("%d topology()", pc.id)
+		topology()
+		printf("\n")
+	}
+}
+{pc.barrier()}
+
+run()
+
+for i=0, ncell-1 {
+	if (section_exists("dend", nden-i-1, cell[i])) {
+printf("cell[%d].dend[%d] abs norm  = %g\n", i, nden-i-1, \
+vvec[i][0].sub(vvec[i][1]).abs.sum)
+	}
+}

@@ -1,0 +1,18 @@
+// t3.hoc model and do cvode test
+{load_file("t3.hoc")}
+objref cvode
+cvode = new CVode()
+{cvode.active(1)}
+proc t6run() {
+	finitialize(-65)
+	cvode.solve(.1)
+}
+t6run()
+
+vec = new Vector()
+// NOTE! cable[0].v(0) is correct because voltage clamp turns off at 0.1
+//forall for (x) {printf("%s %g %.17g\n", secname(), x, v(x))}
+{vec.append(-40.037617165775991, -55.032390028739471)}
+{vec.append(-48.28527749947439, -59.927187457120887, -64.019518431979705)}
+b = t3result()
+if (b != 1) { quit() }

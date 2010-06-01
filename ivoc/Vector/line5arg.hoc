@@ -1,0 +1,18 @@
+// gives error as of 5.6 "2004/03/22 Main (55)"
+objref g
+g = new Graph(0)
+g.view(1,2,3,4,0,0,300,300)
+
+objref vx,vy
+vx=new Vector(0)
+vy=new Vector(0)
+vx.append(.1,.2,.3,.4,.5,.6,.7,.8)
+vy.append(3,5,1,7,9,4,0,3)
+vy.label("some vec")
+
+execute1("vy.line( g, vx, \"s\", sz=3, clr=5, br=3 )")
+execute1("vy.plot( g, vx, \"s\", sz=3, clr=5, br=3 )")
+g.exec_menu("View = plot")
+
+
+

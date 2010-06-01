@@ -1,0 +1,38 @@
+{load_file("nrngui.hoc")}
+{load_file("ms2.ses")}
+secondorder=0
+objref pc
+pc = new ParallelContext()
+{load_file("msout.hoc")}
+
+proc split() {local i, n  localobj sid
+	n = 0 forall {
+		if (n % pc.nhost != pc.id) {
+			delete_section()
+		}
+		n += 1
+	}
+	for i=0, n-1 if (section_exists("a", i)) a[i] {
+		b = 0 if (i == 1) b = 1
+		if ( i > 0) pc.multisplit(0, i, 2)
+		if (i < 2) pc.multisplit(1, i+1, 2)
+	}
+}
+if (pc.nhost > 1) {split()}
+//area(.5)
+//pc.multisplit(0, 1000)
+record_all()
+
+if (pc.nhost > 1) {pc.multisplit()}
+//pc.multisplit(0,1001)
+
+print "start run"
+//tstop=0.025
+run()
+print "end run"
+precord_all("%g")
+
+{pc.runworker()}
+{pc.done()}
+quit()
+

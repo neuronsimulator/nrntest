@@ -1,0 +1,155 @@
+{load_file("nrngui.hoc")}
+objectvar save_window_, rvp_
+objectvar scene_vector_[4]
+objectvar ocbox_, ocbox_list_, scene_, scene_list_
+{ocbox_list_ = new List()  scene_list_ = new List()}
+{pwman_place(0,0,0)}
+
+//Begin LinearCircuit[0]
+{
+load_file("lincir.hoc", "LinearCircuit")
+}
+{
+ocbox_ = new LinearCircuit(1)
+}
+{object_push(ocbox_)}
+{version(2)}
+{mkelm(1, 120, 170, 3, -1.5708)}
+1
+{mklabel(0, "R2", 15.72, 2.694)}
+{mklabel(1, "V2", 0.758908, 18.728)}
+{mkelm(6, 120, 120, 2, 0)}
+{mkelm(2, 95.0001, 200, 2.49999, 4.04726e-12)}
+1
+{mklabel(0, "C1", 0.440845, 31.387)}
+{mklabel(1, "V1", -4.48091, 23.331)}
+{mkelm(6, 70, 120, 2, 0)}
+{mkelm(2, 145, 200, 2.5, 0)}
+1
+{mklabel(0, "C2", 4.53, 30.236)}
+{mklabel(2, "V3", 0.245, 17.577)}
+{mkelm(2, 195, 200, 2.5, 0)}
+1
+{mklabel(0, "C3", 1.714, 31.387)}
+{mklabel(2, "V4", -0.269, 17.577)}
+{mkelm(2, 245, 200, 2.5, 0)}
+1
+{mklabel(0, "C4", 2.351, 31.387)}
+{mklabel(2, "V5", 0.368, 16.426)}
+{mkelm(1, 170, 170, 3, -1.5708)}
+1
+{mklabel(0, "R3", 18.301, 1.544)}
+{mklabel(2, "V0", 22.1111, 2.773)}
+{mkelm(1, 220, 170, 3, 1.5708)}
+1
+{mklabel(0, "R4", 24.334, 1.544)}
+{mkelm(1, 270, 170, 3, -1.5708)}
+1
+{mklabel(0, "R5", 23.859, 2.694)}
+{mkelm(6, 170, 60, 2, 0)}
+{mkelm(6, 220, 120, 2, 0)}
+{mkelm(6, 270, 120, 2, 0)}
+{mkelm(1, 70, 170, 3, 1.5708)}
+1
+{mklabel(0, "R1", 17.3851, 1.544)}
+{mkelm(4, 170, 110, 3, 1.5708)}
+{mklabel(0, "B", 19.809, -8.657)}
+{sel.extra_info.restore()}
+3
+1 0
+1 1
+1e+09 0
+{parasitic_ = 0  noconsist_ = 0}
+{graphlist.append(new LincirGraph(this, 1))}
+6
+V1 (mV)
+2 3 0.8 0.9 2
+V2 (mV)
+2 3 0.8 0.9 2
+V3 (mV)
+2 3 0.8 0.9 2
+V4 (mV)
+1 1 0.8 0.9 2
+V5 (mV)
+1 1 0.8 0.9 2
+V0 (mV)
+1 1 0.8 0.9 2
+0 5 -0.5 1 // graph size
+623 393 308.16 261.12 // box size
+// end info
+{g.exec_menu("Simulate")  tool(2)}
+{sel = nil}
+{object_pop()}
+{
+{
+save_window_=ocbox_.g
+save_window_.size(0,300,0,200)
+scene_vector_[2] = save_window_
+ocbox_.g = save_window_
+save_window_.save_name("ocbox_.g")
+save_window_.label(135.72, 172.694, "R2", 1, 1, 0.5, 0.5, 1)
+save_window_.label(120.759, 218.728, "V2", 1, 1, 0.5, 0.5, 1)
+save_window_.label(95.4409, 231.387, "C1", 1, 1, 0.5, 0.5, 1)
+save_window_.label(65.5193, 223.331, "V1", 1, 1, 0.5, 0.5, 1)
+save_window_.label(149.53, 230.236, "C2", 1, 1, 0.5, 0.5, 1)
+save_window_.label(170.245, 217.577, "V3", 1, 1, 0.5, 0.5, 1)
+save_window_.label(196.714, 231.387, "C3", 1, 1, 0.5, 0.5, 1)
+save_window_.label(219.731, 217.577, "V4", 1, 1, 0.5, 0.5, 1)
+save_window_.label(247.351, 231.387, "C4", 1, 1, 0.5, 0.5, 1)
+save_window_.label(270.368, 216.426, "V5", 1, 1, 0.5, 0.5, 1)
+save_window_.label(188.301, 171.544, "R3", 1, 1, 0.5, 0.5, 1)
+save_window_.label(192.111, 142.773, "V0", 1, 1, 0.5, 0.5, 1)
+save_window_.label(244.334, 171.544, "R4", 1, 1, 0.5, 0.5, 1)
+save_window_.label(293.859, 172.694, "R5", 1, 1, 0.5, 0.5, 1)
+save_window_.label(87.3851, 171.544, "R1", 1, 1, 0.5, 0.5, 1)
+save_window_.label(189.809, 101.343, "B", 1, 1, 0.5, 0.5, 1)
+}
+ocbox_.map("LinearCircuit[0]", 552, 45, 519.36, 284.16)
+}
+objref ocbox_
+//End LinearCircuit[0]
+
+{
+xpanel("RunControl", 0)
+v_init = -65
+xvalue("Init","v_init", 1,"stdinit()", 1, 1 )
+xbutton("Init & Run","run()")
+xbutton("Stop","stoprun=1")
+runStopAt = 5
+xvalue("Continue til","runStopAt", 1,"{continuerun(runStopAt) stoprun=1}", 1, 1 )
+runStopIn = 1
+xvalue("Continue for","runStopIn", 1,"{continuerun(t + runStopIn) stoprun=1}", 1, 1 )
+xbutton("Single Step","steprun()")
+t = 5
+xvalue("t","t", 2 )
+tstop = 5
+xvalue("Tstop","tstop", 1,"tstop_changed()", 0, 1 )
+dt = 0.025
+xvalue("dt","dt", 1,"setdt()", 0, 1 )
+steps_per_ms = 40
+xvalue("Points plotted/ms","steps_per_ms", 1,"setdt()", 0, 1 )
+screen_update_invl = 0.05
+xvalue("Scrn update invl","screen_update_invl", 1,"", 0, 1 )
+realtime = 0.00999999
+xvalue("Real Time","realtime", 0,"", 0, 1 )
+xpanel(242,165)
+}
+
+//Begin VariableTimeStep
+{
+ocbox_ = NumericalMethodPanel[0]
+}
+{object_push(ocbox_)}
+{
+atol_ = 0.001  CVode[0].atol(atol_)
+restore(412, 1)
+}
+{object_pop()}
+{
+ocbox_.map("VariableTimeStep", 256, 574, 272.64, 113.28)
+}
+objref ocbox_
+//End VariableTimeStep
+
+objectvar scene_vector_[1]
+{doNotify()}

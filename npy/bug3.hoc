@@ -1,0 +1,8 @@
+objref p
+p = new PythonObject()
+nrnpython("ev = lambda arg : eval(arg)")
+objref tup
+tup = p.ev("('xyz',2,3)")
+print tup
+print tup._[2]
+

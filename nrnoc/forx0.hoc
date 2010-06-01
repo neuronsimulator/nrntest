@@ -1,0 +1,7 @@
+create a
+access a
+nseg = 5
+for (x) { print x }
+for (x, 0) {print x}
+for (x, 1) {print x}
+for (minf_hh, cos(PI/2)) {print minf_hh}

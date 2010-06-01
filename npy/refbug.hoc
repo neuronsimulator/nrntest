@@ -1,0 +1,7 @@
+objref vbox
+proc foo() { localobj s
+  vbox = new VBox()
+  s = new Vector()
+  vbox.ref(s)
+}
+

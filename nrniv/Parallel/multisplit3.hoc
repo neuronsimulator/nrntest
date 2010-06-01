@@ -1,0 +1,28 @@
+create b, a[7]
+access b
+b.nseg = 5
+i=0
+for (x) {connect a[i](0), x   i += 1}
+topology()
+
+objref pc
+pc = new ParallelContext()
+pc.multisplit(.1, 1)
+pc.multisplit(.9, 2)
+area(.5)
+
+pc.gid_clear()
+pc.multisplit(.9, 1)
+pc.multisplit(.1, 2)
+area(.5)
+
+pc.gid_clear()
+a[0] pc.multisplit(1, 1)
+area(.5)
+
+pc.gid_clear()
+a[0] pc.multisplit(1, 1)
+a[6] pc.multisplit(1, 2)
+area(.5)
+
+

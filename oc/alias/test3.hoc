@@ -1,0 +1,36 @@
+begintemplate String
+public s
+strdef s
+proc init() {
+	s = $s1
+}
+endtemplate String
+
+begintemplate A
+endtemplate A
+
+objref a, sf
+sf = new StringFunctions()
+
+a = new A()
+x = 4
+y = 5
+
+{
+sf.alias(a, "test", &x)
+sf.alias(a, "x", &x)
+sf.alias(a, "y", &y)
+sf.alias(a, "z", &x)
+}
+objref list
+
+list = sf.alias_list(a)
+for i=0, list.count - 1 {
+	print list.object(i).s
+}
+
+allobjects()
+objref list
+print "all List and String should be gone in next list"
+allobjects()
+

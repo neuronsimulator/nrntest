@@ -1,0 +1,43 @@
+{load_file("2dend.ses")}
+objref vvec[2]
+for i=0, 1 vvec[i] = new Vector()
+
+objref pc
+pc = new ParallelContext()
+
+{
+	dend[1] vvec[0].record(&v(.5))
+	run()
+	vvec[0].play_remove()
+}
+
+if (pc.id == 0) {topology()}
+
+if (pc.nhost > 1) {
+	dend[1] disconnect()
+	for i=0, 1 if (pc.id != i) {
+		dend[i] delete_section()
+	}
+	if (pc.id == 0) {
+		dend[0] pc.multisplit(1, 5, 2)
+	}else if (pc.id == 1) {
+		dend[1] pc.multisplit(0, 5, 2)
+	}
+	pc.multisplit()
+}else if (1) {
+	dend[1] disconnect()
+	dend[0] pc.multisplit(1, 5, 2)
+	dend[1] pc.multisplit(0, 5, 2)
+	pc.multisplit()
+}
+
+if (section_exists("dend", 1)) {
+	dend[1] vvec[1].record(&v(.5))
+}
+
+run()
+
+topology()
+if (section_exists("dend", 1)) {
+	print "|vvec[0]-vvec[1]| = ", vvec[0].sub(vvec[1]).abs.sum
+}

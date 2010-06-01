@@ -1,0 +1,185 @@
+{load_file("nrngui.hoc")}
+objectvar save_window_, rvp_
+objectvar scene_vector_[3]
+objectvar ocbox_, ocbox_list_, scene_, scene_list_
+{ocbox_list_ = new List()  scene_list_ = new List()}
+{pwman_place(0,0,0)}
+
+//Begin CellBuild[0]
+{
+load_file("celbild.hoc", "CellBuild")
+}
+{ocbox_ = new CellBuild(1)}
+{object_push(ocbox_)}
+{
+version(5.7)
+continuous = 0
+}
+{object_push(topol)}
+{
+first = 0
+slist.remove_all()
+sname = "dend"
+objref tobj
+}
+{
+tobj = new CellBuildSection("dend",0, 0, tobj, 0) slist.append(tobj)
+  tobj.position(0,0,60,0) tobj.lx=24.3112 tobj.ly=-5.1107 tobj.i3d=0
+tobj = new CellBuildSection("dend",1, 0, tobj, 1) slist.append(tobj)
+tobj.parent=slist.object(0)
+  tobj.position(60,0,105,30) tobj.lx=82.5 tobj.ly=15 tobj.i3d=0
+tobj = new CellBuildSection("dend",2, 0, tobj, 1) slist.append(tobj)
+tobj.parent=slist.object(0)
+  tobj.position(60,0,90,-30) tobj.lx=80.0648 tobj.ly=-9.00049 tobj.i3d=0
+tobj = new CellBuildSection("dend",3, 0, tobj, 1) slist.append(tobj)
+tobj.parent=slist.object(1)
+  tobj.position(105,30,105,60) tobj.lx=120.259 tobj.ly=76.5749 tobj.i3d=0
+tobj = new CellBuildSection("dend",4, 0, tobj, 1) slist.append(tobj)
+tobj.parent=slist.object(1)
+  tobj.position(105,30,150,15) tobj.lx=156.564 tobj.ly=7.85526 tobj.i3d=0
+tobj = new CellBuildSection("dend",5, 0, tobj, 1) slist.append(tobj)
+tobj.parent=slist.object(2)
+  tobj.position(90,-30,135,-15) tobj.lx=150.081 tobj.ly=-27.1528 tobj.i3d=0
+tobj = new CellBuildSection("dend",6, 0, tobj, 1) slist.append(tobj)
+tobj.parent=slist.object(2)
+  tobj.position(90,-30,105,-75) tobj.lx=107.293 tobj.ly=-88.0929 tobj.i3d=0
+tobj = new CellBuildSection("dend",7, 0, tobj, 0) slist.append(tobj)
+tobj.parent=slist.object(0)
+  tobj.position(0,0,-45,45) tobj.lx=-54.7812 tobj.ly=59.7191 tobj.i3d=0
+tobj = new CellBuildSection("dend",8, 0, tobj, 0) slist.append(tobj)
+tobj.parent=slist.object(0)
+  tobj.position(0,0,-60,-30) tobj.lx=-34.6191 tobj.ly=-10.8006 tobj.i3d=0
+tobj = new CellBuildSection("dend",9, 0, tobj, 1) slist.append(tobj)
+tobj.parent=slist.object(8)
+  tobj.position(-60,-30,-90,-90) tobj.lx=-78.1848 tobj.ly=-63.7018 tobj.i3d=0
+tobj = new CellBuildSection("dend",10, 0, tobj, 1) slist.append(tobj)
+tobj.parent=slist.object(9)
+  tobj.position(-90,-90,-150,-105) tobj.lx=-118.639 tobj.ly=-113.491 tobj.i3d=0
+tobj = new CellBuildSection("dend",11, 0, tobj, 1) slist.append(tobj)
+tobj.parent=slist.object(8)
+  tobj.position(-60,-30,-135,-30) tobj.lx=-160.648 tobj.ly=-40.363 tobj.i3d=0
+tobj = new CellBuildSection("dend",12, 0, tobj, 1) slist.append(tobj)
+tobj.parent=slist.object(8)
+  tobj.position(-60,-30,-120,15) tobj.lx=-168.428 tobj.ly=28.0973 tobj.i3d=0
+tobj = new CellBuildSection("dend",13, 0, tobj, 1) slist.append(tobj)
+tobj.parent=slist.object(8)
+  tobj.position(-60,-30,0,-90) tobj.lx=2.72287 tobj.ly=-97.9319 tobj.i3d=0
+all_init()
+}
+for i=0, slist.count-1 {slist.object(i).rdses()}
+{object_pop()}
+{
+}
+{object_push(subsets)}
+{first = 0}
+{ tobj = snlist.object(0)}
+{consist()}
+{object_pop()}
+{
+}
+{object_push(geom)}
+{
+first = 0
+tobj = new GeoSpec(6)
+tobj.value = 3
+bild.subsets.snlist.object(0).geo.append(tobj)
+tobj = new GeoSpec(0, bild.subsets.snlist.object(0))
+for i=0, 13 {tobj.snlist.list.object(i).ldiaminfo.x[0] = fscan()}}
+10
+110
+120
+130
+140
+150
+160
+170
+180
+190
+90
+80
+70
+60
+{
+bild.subsets.snlist.object(0).geo.append(tobj)
+tobj = new GeoSpec(1, bild.subsets.snlist.object(0))
+for i=0, 13 {tobj.snlist.list.object(i).ldiaminfo.x[1] = fscan()}}
+1
+1.1
+1.2
+1.3
+1.4
+1.5
+1.6
+1.7
+1.8
+1.9
+2
+2.1
+2.2
+2.3
+{
+bild.subsets.snlist.object(0).geo.append(tobj)
+set_default()
+}
+{object_pop()}
+{
+}
+{object_push(memb)}
+{first=0}
+{
+tobj = new FakeMechStan(0)
+tobj.value = 50
+tobj.set_default()
+tobj = new MStanWrap(tobj, 0)
+bild.subsets.snlist.object(0).ml.append(tobj)
+}
+{
+tobj = new FakeMechStan(1)
+tobj.value = 1
+tobj.set_default()
+tobj = new MStanWrap(tobj, 0)
+bild.subsets.snlist.object(0).ml.append(tobj)
+}
+{
+tobj = new MechanismStandard("hh")
+tobj.set("gnabar_hh", 0.12, 0)
+tobj.set("gkbar_hh", 0.036, 0)
+tobj.set("gl_hh", 0.0003, 0)
+tobj.set("el_hh", -54.3, 0)
+tobj = new MStanWrap(tobj, 1)
+bild.subsets.snlist.object(0).ml.append(tobj)
+}
+{object_pop()}
+{
+}
+{object_push(manage)}
+{
+first = 0
+classname = "Cell"
+etop=1 esub=1 egeom=1 emem=1
+itop=1 isub=0 igeom=0 imem=0
+bild.topol.names_off = 0
+bild.topol.circles_off = 0
+output_index = 0  output_x = 1
+thresh = 10
+}
+{object_pop()}
+{
+cexport()
+}
+{object_pop()}
+{
+save_window_=ocbox_.gtopol
+save_window_.size(-200,200,-150,150)
+scene_vector_[2] = save_window_
+ocbox_.gtopol = save_window_
+save_window_.save_name("ocbox_.gtopol")
+}
+{
+ocbox_.map("CellBuild[0]", 368, 73, 766.08, 412.8)
+}
+objref ocbox_
+//End CellBuild[0]
+
+objectvar scene_vector_[1]
+{doNotify()}

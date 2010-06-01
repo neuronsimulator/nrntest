@@ -1,0 +1,100 @@
+{load_file("nrngui.hoc")}
+setuptime = startsw()
+{load_file("netparmpi.hoc")}
+objref pnm, pc
+
+proc default_var() {localobj s
+        if (name_declared($s1) == 0) {
+                s = new String()
+                hoc_ac_ = $2
+                sprint(s.s, "%s = hoc_ac_", $s1)
+                execute(s.s)
+        }
+}
+
+ncell = 100
+ncon = 10
+nconrange = 5
+mininvl = 10
+maxinvl = 20
+
+default_var("celltype", 0)
+default_var("spkbufsize", 0)
+default_var("binqueue", 0)
+default_var("selfqueue", 0)
+default_var("multisend", 0)
+
+dt = .025
+
+ranoffset_ = 500 // adjacent cell streams will be correlated by this offset
+connect_random_low_start_ = 1
+run_random_low_start_ = 2
+
+pnm = new ParallelNetManager(ncell)
+pc = pnm.pc
+iterator pcitr() {local i1, i2
+	i1 = 0
+	for (i2=pc.id; i2 < ncell; i2 += pc.nhost) {
+		$&1 = i1
+		$&2 = i2
+		iterator_statement
+		i1 += 1
+	}
+}
+
+{load_file("perfrun.hoc")}
+
+proc spikemode() {
+	compress_bufsize = $1
+	selfqueue = $2
+	pc.spike_compress($1, $1 != 0, $3)
+	cvode.queue_mode($1 > 0, $2)
+}
+
+{load_file("net.hoc")}
+{load_file("recvinfo.hoc")}
+activate_recv_info()
+
+objref ncbintst
+if (pc.gid_exists(5)) {
+	if (celltype == 0) {
+		ncbintst = pc.gid_connect(10, pc.gid2obj(5))
+	}else{
+		ncbintst = pc.gid_connect(10, pc.gid2cell(5).synlist.object(0))
+	}
+	ncbintst.delay = 10
+}
+
+//spikemode(5,0, 0)
+{pc.spike_compress(spkbufsize, spkbufsize !=0)}
+{cvode.queue_mode(binqueue, selfqueue, multisend)}
+
+pnm.spikevec.resize(200000)
+want_all_spikes()
+//{cvode_local(1)}
+tstop = 200
+init_run_random(run_random_low_start_)
+mkhist(100)
+
+setuptime = startsw() - setuptime
+
+if (pnm.myid == 0) {print "SetupTime: ", setuptime}
+prun()
+if (pnm.myid == 0) {print "RunTime: ", runtime}
+
+{pnm.pc.runworker()}
+
+{pnm.prstat(1)}
+getstat()
+//print_spike_counts("spkcnt.dat")
+prhist()
+print_spike_stat_info()
+print_recv_info("recv.dat")
+{pnm.gatherspikes()}
+{pnm.pc.done()}
+
+//perf2file()
+spike2file()
+{printf("ncell = %d ncon = %d tstop = %g\n", ncell, ncon, tstop) }
+quit()
+

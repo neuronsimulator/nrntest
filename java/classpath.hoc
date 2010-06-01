@@ -1,0 +1,13 @@
+load_java("java.lang.System", "Sys")
+load_java("java.lang.String", "JS")
+load_java("neuron.NrnClassLoader", "NCL")
+
+objref sys
+sys = new Sys()
+print "the system classpath"
+sys.getProperty1S("java.class.path").toCharArray()
+
+objref ncl
+ncl = new NCL()
+print "the NEURON Java classpath"
+ncl.path()

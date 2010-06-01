@@ -1,0 +1,20 @@
+To run tests:
+
+javac -classpath \
+ .:$N/share/nrn/classes/neuron.jar:/usr/java/j2sdk1.4.0_01/demo/jfc/Notepad/Notepad.jar\
+ JavaEdit.java
+
+nrngui javaedit.hoc
+nrngui jvedit1.hoc
+
+
+nrngui cpa.hoc
+
+
+nrngui classpath.hoc
+
+
+
+javac -classpath  .:$N/share/nrn/classes/neuron.jar HtmlBrowser.java NrnHelp.java
+nrngui help.hoc
+

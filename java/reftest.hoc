@@ -1,0 +1,30 @@
+load_java("RefTest")
+objref rt, vec
+vec = new Vector()
+rt = new RefTest()
+
+func p() {
+	print $o1
+	return 1
+}
+
+
+allobjects(vec)
+rt.call_p(vec)
+allobjects(vec)
+rt.call_p(vec)
+allobjects(vec)
+rt.call_p(vec)
+print "ref count before garbage collection ", allobjects(vec)
+
+load_java("java.lang.System", "Sys")
+objref s
+s = new Sys()
+s.gc()
+print "ref count after garbage collection ", allobjects(vec)
+
+rt.nilcall()
+
+objref nil
+rt.call_p(nil)
+

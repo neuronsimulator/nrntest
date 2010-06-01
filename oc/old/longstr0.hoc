@@ -1,0 +1,28 @@
+objref f, sf
+strdef s1, s2
+s1 = "12345678901234567890123456789012345678901234567890"
+f = new File()
+sf = new StringFunctions()
+f.wopen("temp.tmp")
+
+for i=1, 50 {
+	sprint(s2, "%s%s", s2, s1)
+	print i, "   ", s2
+	printf("%d   %s\n", i, s2)
+	fprint("%d   %s\n", i, s2)
+	f.printf("%d   %s\n", i, s2)
+	
+}
+f.close()
+
+f.ropen("temp.tmp")
+while (!f.eof) {
+	print f.gets(s2)
+}
+f.close()
+
+ropen("temp.tmp")
+for i=1,50 {
+	getstr(s1)
+	print sf.len(s1)
+}

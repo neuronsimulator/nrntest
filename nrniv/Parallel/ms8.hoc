@@ -1,0 +1,95 @@
+// use -np 4 for split, 3 for unsplit
+{load_file("nrngui.hoc")}
+{load_file("ms8cell.hoc")}
+{load_file("netparmpi.hoc")}
+
+objref pc, pnm, nil, nc, cell
+ncell = 3
+pnm = new ParallelNetManager(3)
+pc = pnm.pc
+//{load_file("ms8out.hoc")}
+
+split_ = 0
+if (pc.nhost > ncell) { split_ = 1 }
+
+proc mkcells() {local gid, sgid  localobj nc
+	for (gid = pc.id; gid < ncell+1; gid += pc.nhost) {
+		if (gid < ncell) {
+			pnm.set_gid2node(gid, pc.id)
+			cell = new C_Cell()
+			pnm.register_cell(gid, cell)
+printf("%d gid=%d %s\n", pc.id, gid, cell)
+			if (split_) {
+				cell.dend pnm.splitcell(pc.id+1, pc.id)
+			}
+		}
+		if (gid > 0 && split_) {
+			sgid = (gid - 1) + 1000
+			pnm.set_gid2node(sgid, pc.id)
+			cell = new C_Cell()
+			pnm.cells.append(cell)
+			cell.dend nc = new NetCon(&v(.5), nil)
+			pc.cell(sgid, nc, 0)
+			cell.dend pnm.splitcell(pc.id, pc.id-1)
+printf("%d sgid=%d %s\n", pc.id, sgid, cell)
+		}
+	}
+}
+mkcells()
+
+topology()
+
+proc mkcon() {local i
+	for i=0, ncell-1 {	
+if (pc.gid_exists((i+1)%ncell + 1000*split_)) {
+printf("%d connect %d to %d\n", pc.id, i, (i+1)%ncell + 1000*split_)
+}
+		pnm.nc_append(i, (i+1)%ncell + 1000*split_, 0, 0.02, 3)
+	}
+}
+mkcon()
+
+objref stim, ncstim
+proc mkstim() {
+	if (!pc.gid_exists(0 + 1000*split_)) { return }
+	stim = new NetStim()
+	ncstim = new NetCon(stim, pc.gid2obj(0+1000*split_).synlist.object(0))
+	ncstim.delay = 0
+	ncstim.weight = 0.01
+	stim.number = 1
+	stim.start = 0
+}
+mkstim()
+
+//if (pc.nhost > 1) {split()}
+//record_all()
+
+if (pc.nhost > ncell) {pc.multisplit()}
+//pc.multisplit(0,1001)
+
+{pnm.set_maxstep(100)}
+{pnm.want_all_spikes()}
+
+tstop = 20
+stdinit()
+{pnm.psolve(tstop)}
+//precord_all("%g")
+
+{pc.runworker()}
+{pnm.gatherspikes()}
+
+proc spike2file() { localobj outf, s
+        s = new String()
+        sprint(s.s, "out%d.dat", pnm.nhost)
+        outf = new File()
+        outf.wopen(s.s)
+        for i=0, pnm.idvec.size-1 {
+                outf.printf("%g\t%d\n", pnm.spikevec.x[i], pnm.idvec.x[i])
+        }
+        outf.close
+}
+spike2file()
+
+{pc.done()}
+quit()
+

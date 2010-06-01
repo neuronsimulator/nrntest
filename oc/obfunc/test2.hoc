@@ -1,0 +1,15 @@
+// test of returning a new object and proper unreffing after return
+
+obfunc of() {
+	return new List()
+}
+
+objref o
+o = of()
+o == List[0]
+func check() { return $o1 == List[1] }
+check(of())
+// should be destroyed by now
+execute1("print List[1]", 0) == 0
+o == List[0]
+

@@ -1,0 +1,43 @@
+{
+nrnpython("import sys")
+nrnpython("sys.path.append('')")
+nrnpython("import py2nrn1")
+nrnpython("print py2nrn1.pyfunc(3,4) == 7")
+nrnpython("import hoc")
+nrnpython("h = hoc.HocObject()")
+}
+
+objref p, a, m, b
+p = new PythonObject()
+
+p.py2nrn1.pyfunc(3,4) == 7
+
+a = p.py2nrn1
+a.pyfunc(5, 5) == 10
+
+m = a.newmap()
+print m
+
+if (0) {
+b = a.mapitem("one", 1)
+{nrnpython("print h.b")}
+m.update(b)
+{nrnpython("print h.m")}
+b = a.mapitem("two", 2)
+{nrnpython("print h.m")}
+m.update(b)
+{nrnpython("print h.m")}
+b = a.mapitem("three", 3)
+m.update(b)
+{nrnpython("print h.m")}
+}
+
+
+if (1) {
+m.update(a.mapitem("one", 1))
+m.update(a.mapitem("two", 2))
+m.update(a.mapitem("three", 3))
+nrnpython("print h.m")
+}
+
+m.__getitem__("two")

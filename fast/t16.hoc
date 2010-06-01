@@ -1,0 +1,16 @@
+// LONGITUDINAL_DIFFUSION
+
+{hoc_stdout("temp")}
+b = load_file("../nmodl/LONGDIFUS/test1.hoc")
+{hoc_stdout()}
+if (!b) { quit() }
+
+tstop = 1
+run()
+objref v1, v2
+v1 = new Vector()
+v2 = new Vector()
+forall for(x,0) {v1.append(v(x))  v2.append(nai(x))}
+b = (v1.meansqerr(v2) == 0)
+
+

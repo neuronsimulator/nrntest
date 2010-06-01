@@ -1,0 +1,5 @@
+load_java("Notepad", "Notepad", "file:/usr/java/j2sdk1.4.0_01/demo/jfc/Notepad/Notepad.jar")
+load_java("java.lang.String", "JS")
+load_java("JavaEdit", "JE", "file:/home/hines/neuron/nrntest/java/")
+objref je
+je = new JE()

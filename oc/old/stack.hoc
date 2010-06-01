@@ -1,0 +1,82 @@
+/* stack of doubles */
+
+begintemplate Stack
+public push, pop, isempty
+
+	begintemplate List
+	public next, item
+		objectvar next
+		item = 0
+	endtemplate List
+
+objectvar top, temp
+
+proc push() {
+	temp = top
+	top = new List()
+	top.item = $1
+	top.next = temp
+}
+
+func pop() {local x
+	if (object_id(top) == 0) {
+		print "stack underflow"
+		stop
+	}
+	x = top.item
+	top = top.next
+	return x
+}
+
+func isempty() {
+	if (object_id(top)) {
+		return 0
+	}else{
+		return 1
+	}
+}
+
+endtemplate Stack
+
+objectvar s
+s = new Stack()
+s.push(3)
+s.push(4)
+s.pop()
+s.pop()
+s.push(3) { s.push(4) }
+{ s.push(3) s.push(4) }
+{ s.push(3) {s.push(4)} }
+s.pop()
+{ {s.push(3)} s.push(4) }
+
+objectvar s[5]
+for i=0,4 s[i]=new Stack()
+for i=0,4 for j=1,5 s[i].push(10*j + i)
+
+for i=0,4 {
+	print s[i]
+	for j=1,5 print j, s[i].pop()
+}
+
+proc test() {local i
+	for i=0,9 {
+		s[1].push(i)
+	}
+	while (s[1].isempty == 0) {
+		s[0].push(s[1].pop())
+	}
+	while (s[0].isempty == 0) {
+		print s[0].pop()
+	}
+}
+
+test()
+
+while(1) s[0].pop()
+proc test() {
+	while(1) s[0].pop()
+	while(1) print 1
+}
+
+test()

@@ -1,0 +1,22 @@
+strdef a, b
+a = "a very long line"
+for i=1,100 {
+	sprint(b, "%s %d %s", b, i, a)
+}
+wopen("temp")
+fprint("%s\n", b)
+wopen()
+
+strdef c, d
+ropen("temp")
+getstr(c)
+ropen()
+print c
+
+objref f
+f = new File()
+f.ropen("temp")
+f.gets(d)
+f.close
+print d
+

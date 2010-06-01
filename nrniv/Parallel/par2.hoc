@@ -1,0 +1,52 @@
+// what if a cpu has no cells
+
+{load_file("nrngui.hoc")} // not that I want a gui but I do want the stdrun system
+tstop = 30
+
+{load_file("netparmpi.hoc")}
+objref pnm
+ncell = 10
+pnm = new ParallelNetManager(ncell)
+
+for i=0, ncell-1 {
+	pnm.set_gid2node(i, i%(pnm.nhost-2))
+}
+
+for i=0, ncell-1 if (pnm.gid_exists(i)) {
+	printf("%d %d\n", pnm.myid, i)
+}
+
+for i=0, ncell-1 if (pnm.gid_exists(i)) {
+	pnm.register_cell(i, new IntFire1())
+}
+
+for i=0, ncell-1 {
+	pnm.nc_append(i, (i+1)%ncell, -1, 1.1, 2)
+}
+
+// stimulate
+objref stim, ncstim
+if (pnm.gid_exists(4)) {
+	stim = new NetStim(.5)
+	ncstim = new NetCon(stim, pnm.pc.gid2obj(4))
+	ncstim.weight = 1.1
+	ncstim.delay = 0
+	stim.number=1
+	stim.start=1
+}
+
+{pnm.set_maxstep(100)} // will end up being 2
+
+{pnm.want_all_spikes()}
+
+stdinit()
+runtime = startsw()
+{pnm.psolve(tstop)}
+runtime = startsw() - runtime
+
+for i=0, pnm.spikevec.size-1 {
+	printf("%d %g %d\n", pnm.myid, pnm.spikevec.x[i], pnm.idvec.x[i])
+}
+
+{pnm.pc.runworker}
+{pnm.pc.done}

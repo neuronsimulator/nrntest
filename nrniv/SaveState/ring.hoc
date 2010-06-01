@@ -1,0 +1,85 @@
+{load_file("nrngui.hoc")}
+tstop = 100
+
+{load_file("netparmpi.hoc")}
+objref pnm, pc
+ncell = 128
+pnm = new ParallelNetManager(ncell)
+pc = pnm.pc
+
+{pnm.round_robin()}
+
+for i=0, ncell-1 if (pnm.gid_exists(i)) {
+	pnm.register_cell(i, new IntFire1())
+}
+
+for i=0, ncell-1 {
+	pnm.nc_append(i, (i+1)%ncell, -1, 1.1, 2)
+}
+
+// stimulate
+objref stim, ncstim
+if (pnm.gid_exists(4)) {
+	stim = new NetStim(.5)
+	ncstim = new NetCon(stim, pnm.pc.gid2obj(4))
+	ncstim.weight = 1.1
+	ncstim.delay = 0
+	stim.number=1
+	stim.start=1
+}
+
+{pnm.set_maxstep(100)} // will end up being 2
+
+{pnm.want_all_spikes()}
+
+objref ss
+ss = new SaveState()
+proc savestate() {localobj s, f
+	s = new String()
+	sprint(s.s, "svst.%04d", pc.id)
+	f = new File(s.s)
+	ss = new SaveState()
+	ss.save()
+	ss.fwrite(f)
+}
+
+proc restorestate() {localobj s, f
+if (1) {
+	s = new String()
+	sprint(s.s, "svst.%04d", pc.id)
+	f = new File(s.s)
+	ss = new SaveState()
+	ss.fread(f)
+}
+	ss.restore()
+}
+
+proc pspike() {
+	if (pnm.myid == 0) {
+		printf("\n")
+		for i=0, pnm.spikevec.size-1 {
+			print pnm.spikevec.x[i], pnm.idvec.x[i]
+		}
+	}
+}
+
+proc prun() {
+	stdinit()
+	if ($1 == 1) {	
+		pnm.psolve(tstop/2)
+		savestate()
+	}else{
+		restorestate()
+	}
+	frecord_init()
+	pnm.psolve(tstop)
+	pspike()
+}
+
+prun(1)
+prun(2)
+
+{pnm.pc.runworker}
+{pnm.pc.done}
+
+

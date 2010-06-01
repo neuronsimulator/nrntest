@@ -1,0 +1,62 @@
+strdef tstr, s
+// Unfortunately, "./" or "file:./" do not work as classpath additions
+// and perhaps the working directory on launch should always be in the
+// classpath. But for now we can use the following idiom to generate
+// a valid full URL classpath for the current working directory.
+sprint(tstr, "file:%s", getcwd())
+load_java("POpen", "POpen", tstr)
+load_java("java.lang.String", "JS")
+
+objref js, po, nil
+
+po = new POpen("/bin/ls")
+while(1) {
+	js = po.getLine()
+	if (js == nil) {
+		break
+	}
+	print js.toCharArray()
+}
+
+// the -isatty arg flushes every line but also produces an oc> prompt
+// with no newline when the interpreter is ready to accept input
+sprint(tstr, "/home/hines/neuron/nrnobj/i686/bin/nrniv -isatty")
+po = new POpen(tstr)
+
+proc hoccmd() {
+	// send a command and accumulate the result in $s2.
+
+	// first discard everything. i.e. the outstanding "oc>" prompt
+	// since there may be some initial header stdout
+	while (po.ready2get()) {po.readChar()}
+	// send the command
+	po.put($s1)
+	// then send something to print so we know the command is done
+	po.put("print \"done\"")
+	// now we can read lines til we see the "done" line
+}
+
+proc result() { // blocking read lines into $s1 til "done"
+	$s1 = ""
+	while (1) {
+		js = po.getLine()
+		// the initial oc> is the prompt after
+		// the end of the substantive command
+		if (js.equals("oc>done")) {
+			break
+		}
+print js.toCharArray
+//		sprint($s1, "%s%s\n", $s1, js.toCharArray)
+	}
+//	print $s1
+}
+	
+hoccmd("for i=1, 200 print i, \" hello world\"")
+result(s)
+hoccmd("print \"goodbye world\"")
+result(s)
+po.destroy()// or could call hoccmd("quit()"). Otherwise the process will remain in existence
+// if we now switch to the tty stdin and use readline there may be 
+// a segmentation violation
+//quit()
+

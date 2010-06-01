@@ -1,0 +1,24 @@
+xopen("$(NEURONHOME)/lib/hoc/noload.hoc")
+create a, b
+access a
+b connect a(1), 0
+forall { nseg=5  diam=3 L=1000 insert hh }
+
+objref s
+s = new IClamp(0)
+s.dur = .1
+s.amp = 5
+topology()
+
+forall {
+	insert extracellular
+	xg = 0
+	xraxial = 10
+	xc = 0
+	e_extracellular = 0
+}
+	a.xg(0) = 1
+
+xopen("extra1.ses")
+
+

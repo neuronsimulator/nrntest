@@ -1,0 +1,45 @@
+load_file("nrngui.hoc")
+objref nil
+
+// a hh na channel - m is hh style and h is ks style
+// test incremental structure change
+
+objref  ks, vec, kst, ksg, nil
+ks = new KSChan()
+ks.name("nach")
+ks.ion("na")
+
+objref vec
+vec = new Vector()
+
+ks.add_hhstate("m")
+ks.add_ksstate(nil, "h0")
+ks.add_ksstate(ks.gate(1), "h")
+ks.state(1).frac(0)
+ks.state(2).frac(1)
+ks.state(0).gate.power(3)
+ks.state(1).gate.power(1)
+ks.iv_type(0)
+kst = ks.add_transition(ks.state(1),ks.state(2))
+
+// m alpha and beta
+ks.trans(0).type(0)
+vec = new Vector()
+vec.append(1, .1, -40)
+ks.trans(0).set_f(0, 3, vec)
+vec = new Vector()
+vec.append(4, -1/18, -65)
+ks.trans(0).set_f(1, 2, vec)
+
+// h0<->h alpha and beta
+kst.type(0)
+vec = new Vector()
+vec.append(.07, -1/20, -65)
+kst.set_f(0, 2, vec)
+vec = new Vector()
+vec.append(1, -.1, -35)
+kst.set_f(1, 4, vec)
+
+ks.pr
+
+load_file("mh.ses")

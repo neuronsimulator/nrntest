@@ -1,0 +1,36 @@
+// test of SectionList tree functions
+create a, b[3], c[3][2], d[2], pre_a[2], un[2]
+access a
+
+for i=0,2 {
+	connect b[i](0), a(1)
+	for j=0, 1 {
+		connect c[i][j](0), b[i](1)
+	}
+}
+connect d[0](0), c[0][0](1)
+connect d[1](0), d[0](0)
+
+connect pre_a[0](0), a(0)
+connect pre_a[1](0), pre_a[0](1)
+
+topology()
+
+objref sl
+
+forall {
+	sl = new SectionList()
+	sl.children
+	print "children of ", secname()
+	sl.printnames
+
+	sl = new SectionList()
+	sl.subtree
+	print "subtree of ", secname()
+	sl.printnames
+
+	sl = new SectionList()
+	sl.wholetree
+	print "wholetree of ", secname()
+	sl.printnames
+}

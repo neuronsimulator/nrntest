@@ -1,0 +1,52 @@
+
+begintemplate A1
+public b
+b=7
+print b
+endtemplate A1
+
+objectvar a
+a = new A1()
+a.b = 2
+c = a.b
+c
+objectvar g
+g=a
+g.b
+g.b=4
+a.b
+g = new A1()
+g.b
+g.b=6
+g.b
+a.b
+
+begintemplate A2
+public b
+strdef b
+endtemplate A2
+
+a = new A2()
+g = new A2()
+a.b="hello"
+strdef s
+s=a.b
+print s
+g.b = "goodbye"
+s = g.b
+print s
+print a.b, g.b
+
+begintemplate A
+public b, c
+func b() {
+	return $1*$2
+}
+proc c() {
+	print "proc c", $1
+}
+endtemplate A
+
+a = new A()
+a.b(3, 4)
+a.c(5)

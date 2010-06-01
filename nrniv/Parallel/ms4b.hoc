@@ -1,0 +1,43 @@
+{load_file("nrngui.hoc")}
+{load_file("ms4.ses")}
+
+objref pc
+pc = new ParallelContext()
+{load_file("msout.hoc")}
+
+proc split() {local i  localobj sr, sid0, sid1
+	n = 15
+	sid0 = new Vector(n)
+	sid1 = new Vector(n) sid1.fill(-1)
+	a[0].v(0) = 0
+	for i=0, n-1 a[i] { v(1) = i+1 }
+	for i=0, n-1 a[i] {
+		sr = new SectionRef()
+		sid0.x[i] = v(0)
+		if (sr.nchild) {
+			sid1.x[i] = v(1)
+		}
+	}
+
+	for i=0, n-1 if (i != pc.id) a[i] {
+		delete_section()
+	}
+	i = pc.id
+	access a[i]
+	pc.multisplit(0, sid0.x[i])
+	if (sid1.x[i] >= 0) {
+		pc.multisplit(1,sid1.x[i])
+	}
+}
+if (pc.nhost > 1) {split()}
+record_all()
+
+if (pc.nhost > 1) {pc.multisplit()}
+//pc.multisplit(0,1001)
+run()
+precord_all("%.7g")
+
+{pc.runworker()}
+{pc.done()}
+quit()
+

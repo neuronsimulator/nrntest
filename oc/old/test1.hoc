@@ -1,0 +1,17 @@
+lw("QUESTION/test1.plot")
+x=0
+proc p() {
+	setcolor(1)
+	axis(0,10,5,-1,1,1) axis()
+	graph()
+	graph("cos(x)", "setcolor(2)")
+	graph("cos(2*x)", "setcolor(3)")
+	plot(1)	for (x=0; x<=10; x=x+.1) {
+		plot(x, sin(x))
+		graph(x)
+	}
+	graphmode(-1) plt(-1)
+}
+plt(-3)
+p()
+lw()

@@ -1,0 +1,31 @@
+// before 2/10/97 the following would always print the soma due
+// to an error involving an extra section pop on each create section.
+// now it correctly prints the priden three times
+
+create soma, priden, den, pppsec
+access soma
+
+begintemplate A
+create asec, bsec, csec
+proc init() {
+	psection()
+}
+endtemplate A
+
+objref a
+proc p() {
+	priden a = new A()
+}
+
+proc pp() {
+	den p()
+}
+
+proc ppp() {
+	pppsec pp()
+}
+
+p()
+pp()
+ppp()
+

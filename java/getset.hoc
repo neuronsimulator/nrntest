@@ -1,0 +1,30 @@
+load_java("java.lang.System", "Sys")
+load_java("java.lang.String", "JS")
+load_java("GetSet")
+objref gs
+gs = new GetSet()
+
+gs.sd("x", 5)
+x
+gs.gd("x")
+
+strdef s
+gs.ss("s", "hello world").toCharArray
+s
+gs.gs("s").toCharArray
+
+objref o
+o = new List()
+o
+gs.go("o")
+gs.so("o", new Vector())
+o
+
+objref sys
+sys = new Sys()
+for i=1,100 gs.go("o")
+print "o ref before gc ", allobjects(o)
+sys.gc()
+print "o ref after gc ", allobjects(o)
+o
+

@@ -1,0 +1,152 @@
+// test of re_init for cvode.event
+{load_file("../net.hoc")}
+ncell = 3
+mkcells()
+mknet()
+
+ts=4.9 // also should test with 6.0
+objref fih
+fih = new FInitializeHandler(1, "setv()")
+proc setv() {local i, gid  localobj str
+	str = new String()
+	for itr(&i, &gid) {
+		pc.gid2cell(gid).soma.v = -30 + gid
+		sprint(str.s, "pv(%d)", gid)
+		cvode.event(gid*.1+.1, str.s, pc.gid2cell(gid).synlist.object(0), 1)
+	}
+	cvode.event(.5, "pv1()")
+	cvode.event(ts) // check the stop mechanism
+	cvode.event(0, "pv2()") // check t=0 event
+}
+
+objref vvec, tvec, idvec
+vvec = new Vector()
+tvec = vvec.c
+idvec = vvec.c
+proc pv() {localobj cell, str
+	str = new String()
+	cell = pc.gid2cell($1)
+	cell.soma.v += 2
+	vvec.append(cell.soma.v)
+	tvec.append(t)
+	idvec.append($1)
+	sprint(str.s, "pv(%d)", $1)
+	cvode.event(t + 2, str.s, cell.synlist.object(0), 1)
+}
+
+proc pv1() {local i, gid  
+	for itr(&i, &gid) {
+		//printf("%d %g %g\n", gid, t, pc.gid2cell(gid).soma.v)
+		vvec.append(pc.gid2cell(gid).soma.v)
+		tvec.append(t)
+		idvec.append(gid)
+	}
+}
+
+proc pv2() {
+	pv2_ += 1 + t
+}
+
+proc prun() {
+	pv2_ = 0
+	vvec.resize(0)
+	tvec.resize(0)
+	idvec.resize(0)
+	pc.nthread($2, 1)
+	if ($1 == 0) {
+		run()
+	}else{
+		pc.set_maxstep(10)
+		stdinit()
+		pc.psolve(tstop)
+	}
+	srtv()
+}
+
+proc srtv() {localobj srt
+	srt = idvec.c.mul(100000).add(tvec).sortindex
+	idvec.index(idvec, srt)
+	tvec.index(tvec, srt)
+	vvec.index(vvec, srt)
+}
+
+objref tt, ii, vv
+func chk() {local b
+	prun(0, 1)
+	tt = tvec.c  ii = idvec.c  vv = vvec.c	
+	b = 1
+	b = (b && cmp(0, 3))
+	b = (b && cmp(1, 1))
+	b = (b && cmp(1, 3))
+	b = (b && cmp(0, 4)) // what if one thread is empty
+	b = (b && cmp(1, 4))
+	return b
+}
+
+proc pp() {localobj s
+	s = new String()
+	if (cvode_local()) {
+		s.s = "lvardt"
+	}else if (cvode_active()) {
+		s.s = "gvardt"
+	}else{
+		s.s = "fixed"
+	}
+	printf("fail: %s psolve=%d nthread=%d %s\n", $s1, $2, $3, s.s)
+}
+
+func cmp() {local b
+	prun($1, $2)
+	b = 1
+	if (!ii.eq(idvec)) {b = 0 pp("idvec", $1, $2)}
+	if (!tt.eq(tvec))  {b = 0 pp("tvec", $1, $2)}
+	if (cvode_active() && !cvode_local()) {
+		x = (tvec.c.sub(tt).abs.max < 1e-10)
+	}else{
+		x = tvec.eq(tt)
+	}
+	if (!x)  {b = 0 pp("vvec", $1, $2)}
+	if ((cvode_active() || $1 == 1) && ts < tstop) {
+		if (t != ts){ print t, ts, t - ts b = 0 }
+	} else {
+		 if (t != tstop) { print t, tstop, t - tstop b = 0 }
+	}
+	if (pv2_ != 1) { print "t=0 event pv2_=", pv2_  b = 0 }
+	return b
+}
+
+proc p() {
+	prun($1, $2)
+	for i = 0, idvec.size-1 {
+		printf("%d %g %g\n", idvec.x[i], tvec.x[i], vvec.x[i])
+	}
+}
+
+func series() {local b
+	{cvode_active(0)}
+	b = 1
+	b = (b && chk())
+	{cvode_active(1)}
+	b = (b && chk())
+	{cvode_local(1)}
+	b = (b && chk())
+	return b
+}
+
+func all() {local b
+	b = series()
+
+// what if thread 0 finishes first
+pc.gid2cell(0).dend.nseg = 1
+pc.gid2cell(1).dend.nseg = 100
+pc.gid2cell(2).dend.nseg = 100
+	b = (b && series())
+// what if thread 0 finishes last
+pc.gid2cell(0).dend.nseg = 100
+pc.gid2cell(1).dend.nseg = 1
+pc.gid2cell(2).dend.nseg = 1
+	b = (b && series())
+	return b
+}
+
+all()

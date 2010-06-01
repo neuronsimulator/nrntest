@@ -1,0 +1,42 @@
+objref tvec, vvec[1]
+
+proc record_all() {local i, n
+	n=0 forall {n += 1}
+	objref vvec[n]
+	tvec = new Vector(1000)
+	tvec.record(&t)
+	i=0 forall {
+		vvec[i] = new Vector(1000)
+//		vvec[i].record(&v(0))
+		vvec[i].record(&v(.5))
+		i += 1
+	}
+}
+
+proc precord_all() {local i, j, r  localobj f, s
+	f = new File()
+	s = new String()
+	i=0 forall {
+		sprint(s.s, "%s", secname())
+		j = -1
+		sscanf(s.s, "%[^[][%d", s.s, &j)
+		if (j == -1) {
+			sprint(s.s, "out_%s.dat", s.s)
+		}else{
+			sprint(s.s, "out_%s_%d.dat", s.s, j)
+		}
+		f.wopen(s.s)
+		f.printf("%d\n", tvec.size)
+		if (numarg()) {
+			sprint(s.s, "%%g %s\n", $s1)
+		}else{
+			s.s = "%g %.7g\n"
+		}
+		for j=0, tvec.size-1 {
+			f.printf(s.s, tvec.x[j], vvec[i].x[j])
+		}
+		f.close()
+		i += 1
+	}
+}
+

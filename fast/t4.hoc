@@ -1,0 +1,15 @@
+// t3.hoc test then multisplit and rerun.
+{load_file("t3.hoc")}
+objref pc
+pc = new ParallelContext()
+
+for i=1, n-1 cable[i] {
+	disconnect()
+	cable[i-1] pc.multisplit(1, i)
+	pc.multisplit(0, i)
+}
+{pc.multisplit()}
+t3run()
+b = t3result()
+if (b != 1) { quit() }
+

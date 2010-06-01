@@ -1,0 +1,50 @@
+// use -np 5
+{load_file("nrngui.hoc")}
+{load_file("ms6.ses")}
+
+{
+dend[2] { disconnect() }
+connect dend[2](0), dend[1](.5)
+dend[3] { disconnect() }
+connect dend[3](0), dend[2](.5)
+dend[4] { disconnect() }
+connect dend[4](0), dend[3](.5)
+for i=0, 4 dend[i] { L = 500  diam = 2+i }
+}
+
+objref pc
+pc = new ParallelContext()
+{load_file("msout.hoc")}
+
+proc split() {local i, j, x  localobj g
+	for i=0, pc.nhost-1 if (i != pc.id) {
+		dend[i] {
+			delete_section()
+		}
+	}
+	dend[pc.id] {
+		if (pc.id >= 1 && pc.id <= 3) { x = .5} else { x = 1 }
+		if (pc.id > 0) {
+			pc.multisplit(0, pc.id-1, 2)
+printf("%d %s multisplit %g %d\n", pc.id, secname(), 0, pc.id-1)
+		}
+		if (pc.id < pc.nhost-1) {
+			pc.multisplit(x, pc.id, 2)
+printf("%d %s multisplit %g %d\n", pc.id, secname(), x, pc.id-1)
+		}
+	}
+}
+if (pc.nhost > 1) {split()}
+topology()
+record_all()
+
+if (pc.nhost > 1) {pc.multisplit()}
+//pc.multisplit(0,1001)
+//tstop = 0.025
+run()
+precord_all("%g")
+
+{pc.runworker()}
+{pc.done()}
+quit()
+

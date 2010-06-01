@@ -1,0 +1,63 @@
+begintemplate Complex
+public x, y, add, mul, norm, div, c, conj, init, pr, inv
+objref this
+proc init() {
+	if (numarg() == 0) {
+		x = 0 y = 0
+	}else if (argtype(1) == 1) {
+		x = $o1.x  y = $o1.y
+	}else{
+		x = $1  y = $2
+	}
+}
+obfunc c() {
+	return new Complex(this)
+}
+obfunc add() {
+	x += $o1.x
+	y += $o1.y
+	return this
+}
+obfunc mul() {local a
+	if (argtype(1) == 1) {
+		a = x*$o1.x - y*$o1.y
+		y = x*$o1.y + y*$o1.x
+		x = a
+	}else{
+		x *= $1
+		y *= $1
+	}
+	return this
+}
+func norm() {
+	return x*x + y*y
+}
+obfunc conj() {
+	y = -1
+	return this
+}
+obfunc div() {
+	return this.mul($o1.conj()).mul(1/$o1.norm())
+}
+proc pr() {
+	printf("(%g, %g)\n", x, y)
+}
+proc inv() {
+	return this.conj.mul(1/this.norm())
+}
+endtemplate Complex
+
+objref x,y,z,w, a, b
+x = new Complex(1,0)
+y = new Complex(0,1)
+a = new Complex(1,1)
+b = new Complex(1,-1)
+
+// z = (a + b)*(x + y)
+z = a.c.add(b).mul(x.c.add(y))
+a.pr()
+b.pr()
+x.pr()
+y.pr()
+z.pr()
+

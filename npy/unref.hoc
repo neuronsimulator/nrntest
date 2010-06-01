@@ -1,0 +1,21 @@
+nrnpython("a=[]")
+nrnpython("import neuron")
+nrnpython("h=neuron.h")
+
+objref p, nil
+p = new PythonObject()
+for i=1, 200 {
+	nrnpython("a = 'goodbye'")
+	p.a
+	p.a = "hello"
+	p.a
+}
+
+proc foo() {
+	print $s1, $s2, $s3, $s4
+	nrnpython("a = 'goodbye'")
+	print $s1, $s2, $s3, $s4
+}
+
+foo(p.a, p.a, p.a, p.a)
+

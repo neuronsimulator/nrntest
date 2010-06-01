@@ -1,0 +1,26 @@
+load_file("nrngui.hoc")
+load_file("vecplay2.ses")
+load_file("sscommon.hoc")
+
+objref xv, yv, discon
+yv = VecWrap[0].list.object(0)
+xv = VecWrap[0].list.object(1)
+discon = new Vector(0)
+discon.append(0,5,17,xv.size-2)
+yv.play(&SEClamp[0].amp1, xv, discon)
+
+run()
+
+cvode.active(0)
+print "fixed step"
+dotest(3, "vecplay.dat")
+dotest(.5, "vecplay.dat")
+dotest(4.5, "vecplay.dat")
+
+print "global variable"
+cvode_active(1)
+dotest(3, "vecplay.dat")
+
+print "local variable"
+cvode_local(1)
+dotest(3, "vecplay.dat")

@@ -1,0 +1,48 @@
+// vext(0) and vext(1) are handled correctly?
+create a, b
+a connect b(0), 1
+forall { nseg = 2  insert extracellular }
+
+proc pr() {local x
+	forall for (x) {
+		printf("%s(%g)\tv=%g\tvext=%g\n", secname(), x, v(x), vext[0](x))
+	}
+}
+
+print "constant"
+forall { v=1 vext=1 }
+pr()
+
+print "add constant"
+forall { v += 1  vext += 1 }
+pr()
+
+print "set range for b"
+b { v(0:1) = 1:10  vext(0:1) = 1:10 }
+pr()
+
+print "add constant"
+forall {v += 1 vext += 1}
+pr()
+
+print "set individually"
+i=0
+forall {
+	for (x) {
+		v(x) = x+i
+		vext(x) =  x + i
+	}
+	i += 1
+}
+pr()
+
+print "individually add x"
+i=0
+forall {
+	for (x) {
+		v(x) += x+i
+		vext(x) += x + i
+	}
+	i += 1
+}
+pr()

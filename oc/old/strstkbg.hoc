@@ -1,0 +1,28 @@
+// there was a bug found by Zach Mainen where some string assignments
+// left something on the stack.
+
+strdef a, b
+for i=1,10000 a = "1"
+print a
+a="2"
+for i=1,10000 b = a
+print a
+
+begintemplate S
+public s
+strdef s
+endtemplate S
+
+objectvar o
+o = new S()
+o.s = "3"
+for i=1,10000 a = o.s
+print a
+o.s = "4"
+for i=1,10000 o.s = o.s
+print o.s
+for i=1,10000 o.s = "5"
+print o.s
+a = "6"
+for i=1,10000 o.s = a
+print o.s

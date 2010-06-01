@@ -1,0 +1,9 @@
+nrngui istep1.ses
+nrngui istep5.ses
+nrngui iramp1.ses
+nrngui iramp5.ses
+nrngui estep1.ses
+nrngui estep5.ses
+nrngui eramp5.ses
+nrngui cable.hoc # select varstep
+

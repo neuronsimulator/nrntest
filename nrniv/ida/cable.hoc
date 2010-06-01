@@ -1,0 +1,10 @@
+{load_file("nrngui.hoc")}
+{load_file("cable.ses")}
+
+proc setp() {local x
+	cable for (x,0) {
+		setpointer pin_f2e(x), RampFunc[0].x
+		setpointer pout_f2e(x), e_extracellular(x)
+	}	
+}
+setp()

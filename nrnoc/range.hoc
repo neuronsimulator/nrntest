@@ -1,0 +1,30 @@
+create s, a, aa
+access s
+connect a(0), 0
+connect aa(1), 0
+
+forsec "a" {nseg = 5 insert pas}
+
+proc p() {
+	print $s1
+	print secname()
+	for (x) print x, v(x), g_pas(x)
+}
+
+forsec "a" {
+	v(0:1) = 0 : 10
+	g_pas(0:1) = 100 : 110
+	p("0 to 1 range")
+}
+
+a {
+	execute1("v(1:0) = 0 : 10")
+}
+
+forsec "a" {
+	v = 0
+	g_pas = 0
+	v(.11 : .51) = 111:151
+	g_pas(.11 : .51) = 111:151
+	p(".11 to .51 range")
+}

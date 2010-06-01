@@ -1,0 +1,21 @@
+strdef tstr
+proc test() {local i, x
+	tstr = "hello"
+	x = 10
+	i = sscanf($s1, "%lf %s", &x, tstr)
+	print $s1, ":   ", i, x, " ", tstr
+}
+
+test("n")
+test("na")
+test("nafta")
+test("nan")
+test("nanometer")
+test("nanna")
+test("i")
+test("in")
+test("inhospitable")
+test("inf")
+test("infinity")
+test("infarct")
+

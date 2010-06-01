@@ -1,0 +1,28 @@
+objref timer
+timer = new Timer("step()")
+proc step() {
+	istep += 1
+	realtime = startsw() - stime
+	if (istep >= nstep) {
+		timer.end
+	}
+}
+
+tsec = .01
+nstep = 100
+
+proc trun() {
+	istep = 0
+	timer.seconds(tsec)
+	stime = startsw()
+	realtime = 0
+	timer.start
+}
+
+xpanel("Timer test")
+xbutton("run", "trun()")
+xpvalue("timer interval", &tsec, 1)
+xpvalue("nstep", &nstep, 1)
+xpvalue("istep", &istep)
+xpvalue("realtime", &realtime)
+xpanel(100, 100)

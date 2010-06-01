@@ -1,0 +1,17 @@
+load_file("nrngui.hoc")
+load_file("vecplay.ses")
+load_file("sscommon.hoc")
+MakeCurve[0].vy.play(&IClamp[0].amp, MakeCurve[0].vx)
+run()
+
+print "fixed step"
+dotest(3, "vecplay.dat")
+
+print "global variable"
+cvode_active(1)
+dotest(3, "vecplay.dat")
+
+print "local variable"
+cvode_local(1)
+dotest(3, "vecplay.dat")
+

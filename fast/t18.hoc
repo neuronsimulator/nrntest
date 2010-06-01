@@ -1,0 +1,30 @@
+{load_file("ring6.ses")}
+objref pct
+pct = ParallelComputeTool[0]
+tstop=20
+func tst() {
+	run()
+	return abs(C_Cell[0].soma.v(.5) - $1) < 1e-10
+}
+
+proc prun() {local pp
+	pp = pct.pinfo
+	pct.pinfo = 0
+	pct.nthread($1)
+	if ($2 > 1) { cvode_local(1) } else { cvode_active($2) }
+	cvode.condition_order($3)
+	b = tst($4)
+//	printf("%d %d %d %d %.12g %.12g\n", $1, $2, $3, b, $4, C_Cell[0].soma.v(.5))
+	pct.pinfo = pp
+	if (b != 1) {
+		quit()
+	}
+}
+//nth, meth, order, result
+prun(1, 0, 1, -76.0275849641)
+prun(3, 0, 1, -76.0275849641)
+prun(1, 2, 1, -49.5309815164)
+prun(3, 2, 1, -49.5309815164)
+prun(1, 2, 2, -51.2262826128437)
+prun(3, 2, 2, -51.2262826128437)
+

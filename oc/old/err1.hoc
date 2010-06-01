@@ -1,0 +1,11 @@
+objectvar a
+a=3
+
+begintemplate A
+public b
+b=7
+endtemplate A
+
+a=new A()
+a.b = new A()
+

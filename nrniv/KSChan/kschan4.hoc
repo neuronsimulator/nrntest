@@ -1,0 +1,53 @@
+load_file("nrngui.hoc")
+
+// a hh k channel - testing the hh style
+
+objref  ks, vec, kst
+ks = new KSChan()
+ks.name("kch")
+ks.ion("k")
+
+objref vec
+vec = new Vector()
+//cond_model ngate nstate nhhstate ntrans nligand iligtrans
+vec.append(0, 1, 1, 1, 1, 0, 1, \
+0, 1, 4, \
+1, \
+0, 0, 0, -1 \
+)
+ks.setstructure(vec)
+ks.state(0).name("n")
+
+vec = new Vector()
+vec.append(.1, .1, -55)
+kst = ks.trans(0)
+kst.set_f( 0, 3, vec)
+
+vec = new Vector()
+vec.append(.125, -1/80, -65)
+kst.set_f(1, 2, vec)
+
+ks.pr
+
+objref x, y, z
+objref g1, g2, g3
+x = new Vector(150)
+x.indgen(-80, 1)
+y = new Vector()
+z = new Vector()
+kst.ab(x, y, z)
+g1 = new Graph()
+y.line(g1, x)
+z.line(g1, x)
+g1.exec_menu("View = plot")
+
+kst.inftau(x, y, z)
+g2 = new Graph()
+y.line(g2, x)
+g2.exec_menu("View = plot")
+g3 = new Graph()
+z.line(g3, x)
+g3.exec_menu("View = plot")
+
+
+load_file("kchan3.ses")

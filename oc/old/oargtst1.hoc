@@ -1,0 +1,25 @@
+print "test of object arguments"
+begintemplate A
+public p
+x = 0
+proc init() {
+	x = $1
+}
+proc p() {
+	print x
+}
+endtemplate A
+
+objectvar a,b,c
+
+proc n() {
+	$o1 = new A(5)
+	$o1.p()
+}
+
+a = new A(1)
+{a.p()}
+n(a)
+{a.p()}
+	
+	

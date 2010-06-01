@@ -1,0 +1,22 @@
+nrnpython("a=(1,2,3)")
+nrnpython("print a")
+ objref p, map, b, newmap
+ p = new PythonObject() // access to anything in Python
+p.a
+b = p.a
+print b
+nrnpython("import hoc")
+nrnpython("h = hoc.HocObject()")
+nrnpython("print h.b")
+
+//p.print(b)
+nrnpython("newmap = lambda key, value : {key:value}") // factory
+//newmap = p.eval("lambda key, value : {key:value}") // factory
+   //for dictionary with one item
+ map = p.newmap("one", 1) // map is a Hoc object that has access
+   //to all methods of the python map object
+ map.update(p.newmap("two", 2)) // add an item to map
+ print map.__getitem__("two") // prints 2 , note that map.["two"] is not
+   //valid hoc syntax. We could also do it this way
+b = map.__getitem__
+print b.__call__("two")

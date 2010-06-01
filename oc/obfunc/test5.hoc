@@ -1,0 +1,24 @@
+// test of combination of local and localobj
+
+begintemplate Test
+public of
+
+proc init() {
+}
+obfunc of() {local i, j  localobj tobj1, tobj2
+	i = 2
+	tobj1 = new List()
+	j = i*i
+	print j == 4
+	tobj2 = new List()
+	print tobj1 == List[0]
+	return tobj2
+}
+endtemplate Test
+
+objref o, list
+o = new Test()
+list = o.of
+execute1("print List[0]", 0) == 0
+list == List[1]
+

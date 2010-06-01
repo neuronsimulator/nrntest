@@ -1,0 +1,21 @@
+load_file("nrngui.hoc")
+load_file("cabhh1.ses")
+
+proc frun() {local tt
+	tt = startsw()
+	init()
+	while (t < tstop) {
+		fadvance()
+	}
+	print startsw() - tt
+}
+
+//usetable_hh = 0
+uninsert hh
+insert nahh
+insert khh
+insert leak
+
+print " execute frun() to do a non gui run and print sim time"
+
+frun()

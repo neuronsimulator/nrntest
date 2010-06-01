@@ -1,0 +1,29 @@
+strdef s1, s2, s3
+s1 = "hello"
+print s1
+
+proc a() {
+	$s1 = $s2
+	print s1, s2, s3
+}
+
+a(s2,s1)
+a(s2,s3)
+a(s3,s1)
+a(s2,s3)
+
+begintemplate S
+public s
+strdef s
+endtemplate S
+
+objectvar so
+so = new S()
+
+proc b() {
+	so.s = $s1
+	sprint($s1, "test-%s-  ", so.s)
+	$s2 = so.s
+	print $s1, $s2, so.s
+}
+b("goodbye", s1)

@@ -1,0 +1,12 @@
+objectvar save_window_, rvp_
+objectvar scene_vector_[2]
+objectvar ocbox_, ocbox_list_, scene_, scene_list_
+{ocbox_list_ = new List()  scene_list_ = new List()}
+/*Begin JavaEdit for NEURON */
+{load_java("JavaEdit", "JE")}
+ocbox_ = new JE()
+{PWManager[0].jwindow(ocbox_, 1, 416, 3, 262, 322)}
+objref ocbox_
+/*End JavaEdit for NEURON */
+objectvar scene_vector_[1]
+{doNotify()}

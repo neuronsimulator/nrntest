@@ -1,0 +1,12 @@
+load_file("nrngui.hoc")
+load_file("hh1.ses")
+objref nc, nil, finit
+nc = new NetCon(nil, ExpSyn[0])
+nc.delay=0
+finit = new FInitializeHandler("fhnd()")
+proc fhnd() {
+	nc.event(PI)
+}
+
+cvode.debug_event(1)
+run()

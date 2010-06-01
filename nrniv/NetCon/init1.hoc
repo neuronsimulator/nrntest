@@ -1,0 +1,60 @@
+// test above threshold initialization with second order
+load_file("nrngui.hoc")
+load_file("hhap.ses")
+objref nc, nil
+nc = new NetCon(&v(.5), nil)
+nc.record("rec()")
+proc rec() {
+	printf("soma event t=%g v=%g\n", t, v)
+}
+
+proc doit() {
+	v_init=-65
+	run()
+	v_init=30
+	run()
+}
+
+cvode.condition_order(1)
+cvode_active(0)
+doit()
+cvode_active(1)
+doit()
+cvode.condition_order(2)
+doit()
+
+//what about multiple changes during initialization
+
+
+proc ch() {local i
+	v_init=-65
+	stdinit()
+	for i=1, 5 {
+		v=-65
+		cvode.re_init()
+		v = 30
+		cvode.re_init()
+	}
+	printf("ch(%g)\n", $1)
+	v = $1
+	cvode.re_init()
+	frecord_init()
+}
+
+proc doch() {
+	ch(-65)
+	continuerun(tstop)
+	ch(30)
+	continuerun(tstop)
+}
+
+cvode.condition_order(1)
+cvode_active(0)
+doch()
+cvode_active(1)
+doch()
+cvode.condition_order(2)
+doch()
+
+
+

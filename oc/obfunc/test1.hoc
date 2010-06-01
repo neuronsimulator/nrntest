@@ -1,0 +1,14 @@
+// test of existence of obfunc and most basic purpose of returning an object
+objref tobj
+obfunc of() {
+	tobj = new List()
+	return tobj
+}
+
+objref o
+o = of()
+o == tobj
+of() == tobj
+tobj == List[1]
+o == List[0]
+

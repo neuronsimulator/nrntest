@@ -1,0 +1,39 @@
+// use -np 2
+{load_file("nrngui.hoc")}
+{load_file("bs.ses")}
+{
+dend disconnect()
+connect dend(0), soma(.5)
+}
+objref fih
+fih = new FInitializeHandler(1,"ff()")
+proc ff() {
+        if (section_exists("soma")) soma { v(.5) = -30 }
+}
+
+objref pc
+pc = new ParallelContext()
+{load_file("msout.hoc")}
+
+proc split() {
+	if (pc.id == 0) {
+		dend delete_section()
+		soma pc.multisplit(.5, 1)
+	}
+	if (pc.id == 1) {
+		soma delete_section()
+		dend pc.multisplit(0, 1)
+	}
+}
+if (pc.nhost > 1) {split()}
+topology()
+record_all()
+if (pc.nhost > 1) {pc.multisplit()}
+cvode.active(1)
+//finitialize(-65)
+run()
+precord_all("%g")
+{pc.runworker()}
+{pc.done()}
+quit()
+

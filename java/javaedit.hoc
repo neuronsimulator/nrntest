@@ -1,0 +1,14 @@
+load_java("neuron.NrnClassLoader", "NCL")
+objref ncl
+ncl = new NCL()
+ncl.add("file:/usr/java/j2sdk1.4.0_01/demo/jfc/Notepad/Notepad.jar")
+ncl.add("file:/home/hines/neuron/nrntest/java/")
+//strdef s
+//sprint(s, "file:%s", getcwd())
+//ncl.add(s)
+
+load_java("java.lang.String", "JS")
+load_java("JavaEdit", "JE")
+
+load_file("javaedit.ses")
+

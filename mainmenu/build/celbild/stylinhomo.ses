@@ -1,0 +1,157 @@
+{load_file("nrngui.hoc")}
+objectvar save_window_, rvp_
+objectvar scene_vector_[3]
+objectvar ocbox_, ocbox_list_, scene_, scene_list_
+{ocbox_list_ = new List()  scene_list_ = new List()}
+{pwman_place(0,0,0)}
+
+//Begin CellBuild[0]
+{
+load_file("celbild.hoc", "CellBuild")
+}
+{ocbox_ = new CellBuild(1)}
+{object_push(ocbox_)}
+{
+version(5.7)
+continuous = 0
+}
+{object_push(topol)}
+{
+first = 0
+slist.remove_all()
+sname = "dend"
+objref tobj
+}
+{
+tobj = new CellBuildSection("soma",0, 0, tobj, 0) slist.append(tobj)
+  tobj.position(-120,0,-105,0) tobj.lx=-149.433 tobj.ly=5.26206 tobj.i3d=0
+tobj = new CellBuildSection("dend",0, 0, tobj, 1) slist.append(tobj)
+tobj.parent=slist.object(0)
+  tobj.position(-105,0,-15,0) tobj.lx=-51.4506 tobj.ly=18.228 tobj.i3d=0
+tobj = new CellBuildSection("dend",1, 0, tobj, 1) slist.append(tobj)
+tobj.parent=slist.object(1)
+  tobj.position(-15,0,60,60) tobj.lx=9.48946 tobj.ly=64.9055 tobj.i3d=0
+tobj = new CellBuildSection("dend",2, 0, tobj, 1) slist.append(tobj)
+tobj.parent=slist.object(1)
+  tobj.position(-15,0,30,-30) tobj.lx=-11.2561 tobj.ly=-29.746 tobj.i3d=0
+tobj = new CellBuildSection("dend",3, 0, tobj, 1) slist.append(tobj)
+tobj.parent=slist.object(3)
+  tobj.position(30,-30,75,-15) tobj.lx=73.0227 tobj.ly=3.96547 tobj.i3d=0
+tobj = new CellBuildSection("dend",4, 0, tobj, 1) slist.append(tobj)
+tobj.parent=slist.object(3)
+  tobj.position(30,-30,45,-45) tobj.lx=31.5316 tobj.ly=-56.9746 tobj.i3d=0
+tobj = new CellBuildSection("dend",5, 0, tobj, 1) slist.append(tobj)
+tobj.parent=slist.object(2)
+  tobj.position(60,60,90,165) tobj.lx=43.201 tobj.ly=149.184 tobj.i3d=0
+tobj = new CellBuildSection("dend",6, 0, tobj, 1) slist.append(tobj)
+tobj.parent=slist.object(2)
+  tobj.position(60,60,120,90) tobj.lx=115.81 tobj.ly=67.4987 tobj.i3d=0
+tobj = new CellBuildSection("dend",7, 0, tobj, 1) slist.append(tobj)
+tobj.parent=slist.object(0)
+  tobj.position(-105,0,60,-195) tobj.lx=-48.2982 tobj.ly=-126.991 tobj.i3d=0
+all_init()
+}
+for i=0, slist.count-1 {slist.object(i).rdses()}
+{object_pop()}
+{
+}
+{object_push(subsets)}
+{first = 0}
+{tobj = new SNList("dendrites") snlist.append(tobj)}
+for i=0,7 tobj.add(bild.topol.slist.object(fscan()))
+1
+2
+3
+4
+5
+6
+7
+8
+add_domainparm(tobj, tobj1)
+{tobj = new SNList("distal") snlist.append(tobj)}
+for i=0,3 tobj.add(bild.topol.slist.object(fscan()))
+4
+5
+6
+7
+{tobj = new SNList("medial") snlist.append(tobj)}
+for i=0,1 tobj.add(bild.topol.slist.object(fscan()))
+2
+3
+{consist()}
+{object_pop()}
+{
+}
+{object_push(geom)}
+{
+first = 0
+tobj = new GeoSpec(7)
+tobj.value = 0.1
+bild.subsets.snlist.object(0).geo.append(tobj)
+tobj = new GeoSpec(0, bild.subsets.snlist.object(1))
+for i=0, 7 {tobj.snlist.list.object(i).ldiaminfo.x[0] = fscan()}}
+100
+90
+40
+30
+20
+90
+80
+300
+{
+bild.subsets.snlist.object(1).geo.append(tobj)
+tobj = new GeoSpec(1, bild.subsets.snlist.object(1))
+for i=0, 7 {tobj.snlist.list.object(i).ldiaminfo.x[1] = fscan()}}
+1
+1
+1
+1
+1
+1
+1
+1
+{
+bild.subsets.snlist.object(1).geo.append(tobj)
+tobj = new GeoSpec(4)
+tobj.value = 100
+bild.topol.slist.object(0).geo.append(tobj)
+set_default()
+}
+{object_pop()}
+{
+}
+{object_push(memb)}
+{first=0}
+{object_pop()}
+{
+}
+{object_push(manage)}
+{
+first = 0
+classname = "Cell"
+etop=1 esub=1 egeom=1 emem=1
+itop=1 isub=0 igeom=0 imem=0
+bild.topol.names_off = 0
+bild.topol.circles_off = 0
+output_index = 0  output_x = 1
+}
+{object_pop()}
+{
+cexport()
+}
+{object_pop()}
+{
+save_window_=ocbox_.gtopol
+save_window_.size(-200,200,-150,150)
+scene_vector_[2] = save_window_
+ocbox_.gtopol = save_window_
+save_window_.save_name("ocbox_.gtopol")
+}
+{
+ocbox_.map("CellBuild[0]", 176, 188, 728.64, 374.4)
+}
+objref ocbox_
+//End CellBuild[0]
+
+objectvar scene_vector_[1]
+{doNotify()}

@@ -1,0 +1,46 @@
+nrnpython("a = 10")
+objref p, o
+p = new PythonObject()
+
+{nrnpython("print a")}
+print p.a
+
+p.a = 25
+{nrnpython("print a")}
+print p.a
+
+p.a = "hello"
+{nrnpython("print a")}
+print p.a
+
+p.a = new Vector(4)
+{nrnpython("print a")}
+print p.a
+
+o = new Vector(4)
+{o.indgen.add(10)}
+p.a = o
+{nrnpython("print a")}
+print p.a
+
+p.a = o.x[2]
+{nrnpython("print a")}
+print p.a
+
+{nrnpython("b = []")}
+p.a = p.b
+{nrnpython("print a")}
+print p.a
+{p.b.append(new List())}
+{nrnpython("print a[0]")}
+print p.a._[0]
+
+p = p.a
+print p._[0]
+{nrnpython("import hoc")}
+{nrnpython("h = hoc.HocObject()")}
+{nrnpython("print h.p")}
+{nrnpython("print h.p[0]")}
+
+{nrnpython("h=0 ; a=0 ; b=0")}
+objref p, o

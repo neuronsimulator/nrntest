@@ -1,0 +1,4 @@
+func fhoc() { return $1 + $2 }
+
+fmd(3,4)
+

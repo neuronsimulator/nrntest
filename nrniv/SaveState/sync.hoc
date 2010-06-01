@@ -1,0 +1,55 @@
+// execute with neurondemo temp.hoc
+demo(5)
+run()
+
+objref tvec, tvec1_stand, tvec2_stand
+tvec = new Vector()
+
+objref ss, f
+ss = new SaveState()
+proc dotest() {
+	init()
+	continuerun(100)
+	cvode.print_event_queue(tvec)
+	tvec1_stand = tvec.c
+	ss = new SaveState()
+	ss.save()
+	f = new File("sync.dat")
+	ss.fwrite(f)
+	frecord_init()
+	continuerun(tstop)
+	cvode.print_event_queue(tvec)
+	tvec2_stand = tvec.c
+	irun()
+	ss = new SaveState()
+	ss.fread(f)
+	irun()
+}
+
+proc irun() {
+	stdinit()
+	ss.restore()
+	if (cvode_active()) {
+		cvode.re_init()
+	}
+	frecord_init()
+	initPlot()
+	check("start", tvec1_stand)
+	continuerun(tstop)
+	check("stop", tvec2_stand)
+}
+
+proc check() {local x
+	cvode.print_event_queue(tvec)
+	if (tvec.size != $o2.size) {
+		printf("%s queue differs in size %d %d\n", $s1, tvec.size, $o2.size)
+		print "standard"
+		$o2.printf
+		print "savestate"
+		tvec.printf
+	}else{
+		x = tvec.sub($o2).sumsq
+		printf("%s queue diffs %g\n", $s1, x)
+	}
+}
+dotest()

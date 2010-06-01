@@ -1,0 +1,21 @@
+// FOR_NETCONS
+{load_file("nrngui.hoc")}
+{load_file("../nmodl/FOR_NETCONS/stdp1.ses")}
+
+objref pc
+pc = new ParallelContext()
+b = (execute1("{pc.nthread(2,1)}",0) == 0)
+
+dt = 0.025
+{hoc_stdout("temp")}
+{printf("fixed step\n")}
+{cvode_active(0)}
+run()
+{cvode_active(1)}
+{printf("cvode\n")}
+run()
+{hoc_stdout()}
+
+strdef s
+{system("sort temp > temp1 ; cmp temp1 t15.stdout", s)}
+b = (strcmp(s, "") == 0)

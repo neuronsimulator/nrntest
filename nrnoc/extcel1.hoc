@@ -1,0 +1,116 @@
+// Given any kind of branched structure, inhomogeneous or not, involving
+// cm, g_pas, e_pas, cm, diam, L, this test of extracellular mechanism should
+// produce exactly the same result for vext[nlayer-1] as the standard
+// result for v
+
+// The test starts by inserting extracellular everywhere. Since the default
+// parameters are such that the layers are grounded, the result for v should
+// remain the same.
+
+// The test proceeds by filling a layer with the values for xc, xraxial,
+// xg, and e_extracellular equivalent to those of cm, Ra, g_pas, e_pas
+// and then replaces Ra with a large value so that the intracellular axial
+// current (and thus total membrane current) is 0. A test of the
+// last extracellular layer is thus exactly equivalent to the original cable.
+// Tests of layers other than the last requires "forall e_pas = 0"
+
+// note that IClamp works for this test (as well as any other
+// ELECTRODE_CURRENT) but not other types of POINT_PROCESSes
+
+// v2vext() destroys the values of Ra
+
+/*
+An example test.
+1) Start neurondemo and select the pyramid demo.
+2) Make the demo passive with
+forall uninsert hh // get rid of soma and axon excitability
+forall insert pas  // replace with passive (default g_pas=.001 e_pas=-70)
+
+forall diam = diam // only if you want comparisons to turn out exactly the same
+		// otherwise comparisons get better with larger nseg
+forall e_pas = 0   // only needed if you want to test a layer other than the last
+connect dendrite_5[0](0), soma(1) // test axial current across rootnode
+// optional, put in some random inhomogeneity
+objref r
+r = new Random()
+r.uniform(.5,2)
+forall for(x) if(x>0 && x < 1) {
+	cm(x) *= r.repick()
+	g_pas(x) *= r.repick()
+	e_pas(x) *= r.repick()
+}
+
+3) Obtain standard results by doing a run.
+You'll get more extensive test results if you also specify a space plot and
+set "Points plotted/ms" to 2 and select "Keep Lines" on the space plot graph.
+Don't forget to turn KeepLines off after the run.
+4)
+load_file("extcel1.hoc")
+and do another run. You should get exactly the same v results.
+5)
+v2vext() // tests ilayer
+If you set all e_pas=0 then you can set ilayer=0 first to test that
+6) In preparation for another call to v2vext() (perhaps with ilayer changed) first execute
+forall Ra=100
+extground()
+
+*/
+
+forall insert extracellular
+
+nlayer = 2 // must be the value for #define EXTRACELLULAR in src/nrnoc/options.h
+ilayer = 1 //which layer to test. If the ilayer != nlayer-1 then
+		// it must be the case that forall e_pas = 0
+
+proc v2vext() {local i, x, r, xold, dx, n
+	// initialize all layers so that there is no axial current
+	extground()
+	n = ilayer
+	// mirror ilayer so that it's cable properties are identical to
+	// the cell membrane
+	xold = 0
+//	forall {xold = 0 for (x, 0) { // don't include 0 or 1
+//	for(x, 0) is not allowed in 4.3.1
+	forall {xold = 0 for (x) if (x > 0 && x < 1){ // don't include 0 or 1
+		xc[n](x) = cm(x)
+		xg[n](x) = g_pas(x)
+		if (ilayer != nlayer-1 && e_pas(x) != 0) {
+			extground()
+continue_dialog("e_pas must be 0 if the last layer is not being tested")
+			return
+		}
+		e_extracellular(x) = e_pas(x)
+		r = ri(x) // MOhm between x and xold
+		dx = (x - xold)*L*1e-4 // cm
+		xraxial[n](x) = r/dx // MOhm/cm
+		// note the above is close but not exact when diam changes
+		// in a section. ri is between the segment centers
+		// whereas xraxial is at the segment center
+		// the calculation is exact when "forall diam = diam"
+		// but then inhomogeneity is best tested with differing cm(x),g_pas(x)
+		xold = x
+	}}
+	// make sure internal axial current = 0
+	forall {
+		Ra = 1e9
+	}
+}
+
+// if you call the following you probably want to restore Ra as well
+proc extground() {
+	forall {
+		for i=0, nlayer-1 {
+			xraxial[i] = 1e9
+			xg[i] = 1e9
+			xc[i] = 0
+		}
+		e_extracellular = 0
+	}
+}
+
+proc init() {
+	finitialize(v_init)
+	forall { vext[ilayer] = v_init }
+	fcurrent()
+}
+
