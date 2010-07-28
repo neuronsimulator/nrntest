@@ -1,0 +1,29 @@
+load_file("hh.ses")
+stdinit()
+continuerun(1)
+print v, m_hh, h_hh, n_hh
+objref s1, s2
+s1 = new Vector()
+cvode.ygather(s1)
+s1.printf()
+cvode_active(0)
+continuerun(2)
+printf("t=%g dt=%g\n", t, dt)
+print v, m_hh, h_hh, n_hh
+cvode_active(1)
+continuerun(3) // so cvode state changes from t=2
+cvode.yscatter(s1)
+dt = 0.025
+t = 1
+fcurrent() // make sure threads have proper t and dt
+while (t < 2) {
+  cvode.fixed_step()
+}
+printf("t=%g dt=%g\n", t, dt)
+s2 = new Vector()
+cvode.ygather(s2)
+s2.printf()
+cvode.states(s1)
+print "cvode.states are not at t=2"
+s1.printf()
+
