@@ -15,7 +15,6 @@ continuerun(3) // so cvode state changes from t=2
 cvode.yscatter(s1)
 dt = 0.025
 t = 1
-fcurrent() // make sure threads have proper t and dt
 while (t < 2) {
   cvode.fixed_step()
 }

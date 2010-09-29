@@ -1,0 +1,39 @@
+objref po
+po = new PythonObject()
+
+for i=1, 10000 po.a = i
+print po.a == 10000
+
+for i=1, 10000 po.a = new Vector()
+
+po.a = po.list()
+{po.a.append(5)}
+for i=1, 9000 po.a[0] = i
+print po.a[0] == 9000
+
+for i=1, 8000 po.a[0] = new Vector()
+
+objref l
+l = new List("Vector")
+print l.count()
+
+objref vv, nil, sf
+sf = new StringFunctions()
+vv = new Vector()
+for i=1, 7000 po.a = vv
+po.a = nil
+sf.references(vv)
+
+// no memory leak here
+proc p() { local i
+  for i=1, 1000000 {
+    po.a = po.list()
+  }
+}
+
+// no memory leak here
+proc ps() { local i
+  for i=1, 1000000 {
+    po.a = "hello"
+  }
+}
