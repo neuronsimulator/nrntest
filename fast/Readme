@@ -18,7 +18,7 @@ Note that it is fair for any test to "load_file" any other test.
 fi
 
 for i in t*.hoc ; do
-	a="`nrniv -nobanner -nogui $i -c '{printf(\"%d\n\", b)}'`"
+	a="`nrniv -nobanner -nogui $i -c 'if (name_declared("b")==5){execute("printf(\\\"%d\\\n\\\", b)")}else{printf(\"%d\n\", bb)}'`"
 	if test "$a" = "2" ; then
 		echo "$i invalid test"
 		continue

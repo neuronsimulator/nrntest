@@ -24,7 +24,7 @@ proc prun() {local pp
 	if ($2 > 1) { cvode_local(1) } else { cvode_active($2) }
 	cvode.condition_order($3)
 	b = tst($4)
-	printf("%d %d %d %d %.12g %.12g\n", $1, $2, $3, b, $4, C_Cell[0].soma.v(.5))
+	//printf("%d %d %d %d %.12g %.12g\n", $1, $2, $3, b, $4, C_Cell[0].soma.v(.5))
 	pct.pinfo = pp
 	if (b != 1) {
 		quit()
