@@ -1,0 +1,72 @@
+load_file("nrngui.hoc")
+
+create soma
+diam=10
+L=100/PI/diam
+insert pas
+e_pas = 0
+g_pas = 1e-4
+
+objref nc, stim, syn
+
+syn = new ExpISyn(.5)
+syn.tau = 1
+
+stim = new NetStim()
+stim.number = 1
+stim.start = 1
+
+nc = new NetCon(stim, syn)
+nc.delay = 1
+nc.weight = .001
+
+objref hua, hub, huf, hia, hib, hif
+proc meth() {local dt, t, tau_u, tau_i, ua, ia, uf, ifwd, ub, ib
+	dt = $1
+	hua = new Vector()
+	hub = new Vector()
+	huf = new Vector()
+	hia = new Vector()
+	hib = new Vector()
+	hif = new Vector()
+	tau_u = 1/1e-4*(1e-3)
+	tau_i = syn.tau
+	ua = ia = uf = ifwd = ub = ib = 0
+	for (t = 0; t <= tstop; t += dt) {
+		// analytical
+		ua = ua*exp(-dt/tau_u) + 1000*ia*tau_u/(1 - tau_u/tau_i)*(exp(-dt/tau_i) - exp(-dt/tau_u))
+		ia = ia*exp(-dt/tau_i)
+
+		// Euler forward
+		uf = uf + dt * (-uf/tau_u + 1000*ifwd)
+		ifwd = ifwd + dt * (-ifwd/tau_i)
+
+		// Euler backward
+		ib = tau_i/(tau_i + dt)*ib
+		ub = tau_u/(tau_u + dt)*(ub + 1000*dt*ib)
+
+		hua.append(ua)
+		hub.append(ub)
+		huf.append(uf)
+		hia.append(ia)
+		hib.append(ib)
+		hif.append(ifwd)
+		
+		if (t == 2) {
+			ia = nc.weight
+			ifwd = nc.weight
+			ib = nc.weight
+		}
+	}
+	hua.line(Graph[0], dt, 2, 1)
+	hia.line(Graph[1], dt, 2, 1)
+	huf.line(Graph[0], dt, 3, 1)
+	hif.line(Graph[1], dt, 3, 1)
+	hub.line(Graph[0], dt, 4, 1)
+	hib.line(Graph[1], dt, 4, 1)
+}
+
+load_file("itest.ses")
+run()
+meth(dt)
+

@@ -1,0 +1,83 @@
+load_file("nrngui.hoc")
+
+create soma
+diam=10
+L=100/PI/diam
+insert pas
+e_pas = 0
+g_pas = 1e-4
+
+objref nc, stim, syn
+
+syn = new ExpSyn(.5)
+syn.e = 50
+syn.tau = 1
+
+stim = new NetStim()
+stim.number = 1
+stim.start = 1
+
+nc = new NetCon(stim, syn)
+nc.delay = 1
+nc.weight = .001
+
+objref hua, hub, huf, hia, hib, hif
+proc meth() {local dt, t, tau_u, tau_i, ua, ia, uf, ifwd, ub, ib, gf, gb
+	dt = $1
+	hua = new Vector()
+	hub = new Vector()
+	huf = new Vector()
+	hia = new Vector()
+	hib = new Vector()
+	hif = new Vector()
+	tau_u = 1/1e-4*(1e-3)
+	tau_i = syn.tau
+	ua = ia = uf = ifwd = ub = ib = gf = gb = 0
+	for (t = 0; t <= tstop; t += dt) {
+		// analytical
+//		ua = ua*exp(-dt/tau_u) + 1000*ia*tau_u/(1 - tau_u/tau_i)*(exp(-dt/tau_i) - exp(-dt/tau_u))
+//		ia = ia*exp(-dt/tau_i)
+
+		// Euler forward
+		uf = uf + dt * (-uf/tau_u + 1000*ifwd)
+		gf = gf + dt * (-gf/tau_i)
+		ifwd = -gf*(uf-50)
+
+		// Euler backward
+// tau_i*gbnew - tau_i*gbold = -dt*gbnew
+// (tau_i + dt)*gbnew = tau_i*gbold
+// gbnew = tau_i/(tau_i + dt)*gbold
+
+// du/dt = -u/u_tau + ib
+// ib = 1000*gb*(50 - u)
+// (unew - uold)/dt = -unew/u_tau + ib
+// unew - uold = -dt*unew/u_tau + dt*1000*gb*50 - dt*1000*gb*unew
+// unew*(1 + dt*(1/u_tau+1000*gb)) = uold + dt*1000*gb*50
+
+		gb = tau_i/(tau_i + dt)*gb
+		ub = (ub + dt*gb*50*1000)/(1 + dt*(1/tau_u + 1000*gb))
+
+//		hua.append(ua)
+		hub.append(ub)
+		huf.append(uf)
+//		hia.append(ia)
+		hib.append(gb)
+		hif.append(gf)
+		
+		if (t == 2) {
+			//ga = nc.weight
+			gf = nc.weight
+			gb = nc.weight
+		}
+	}
+//	hua.line(Graph[0], dt, 2, 1)
+//	hia.line(Graph[1], dt, 2, 1)
+	huf.line(Graph[0], dt, 3, 1)
+	hif.line(Graph[1], dt, 3, 1)
+	hub.line(Graph[0], dt, 4, 1)
+	hib.line(Graph[1], dt, 4, 1)
+}
+
+load_file("gtest.ses")
+run()
+meth(dt)
