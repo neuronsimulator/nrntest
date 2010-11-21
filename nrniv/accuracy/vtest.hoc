@@ -1,0 +1,62 @@
+load_file("nrngui.hoc")
+
+create soma
+diam=10
+L=100/PI/diam
+insert pas
+e_pas = 0
+g_pas = 1e-4
+
+objref nc, stim, syn
+
+syn = new ExpVSyn(.5)
+
+stim = new NetStim()
+stim.number = 2
+stim.interval = 8
+stim.start = 1
+
+nc = new NetCon(stim, syn)
+nc.delay = 1
+nc.weight = .5
+
+objref hua, hub, huf
+proc meth() {local dt, t, tau_u, ua, uf, ub
+	dt = $1
+	hua = new Vector()
+	hub = new Vector()
+	huf = new Vector()
+	tau_u = 1/1e-4*(1e-3)
+	ua = uf = ub = 0
+	for (t = 0; t <= tstop; t += dt) {
+		// analytical
+		ua = ua*exp(-dt/tau_u)
+
+		// Euler forward
+		uf = uf + dt * (-uf/tau_u)
+
+		// Euler backward
+		ub = tau_u/(tau_u + dt)*(ub)
+
+		if (t == 2 || t == 10) {
+			ua += nc.weight
+			uf += nc.weight
+			ub += nc.weight
+		}
+
+		hua.append(ua)
+		hub.append(ub)
+		huf.append(uf)
+	}
+	hua.line(Graph[0], dt, 2, 1)
+	huf.line(Graph[0], dt, 3, 1)
+	hub.line(Graph[0], dt, 4, 1)
+}
+
+load_file("vtest.ses")
+steps_per_ms = 2
+dt = .5
+secondorder=2
+run()
+meth(dt)
+

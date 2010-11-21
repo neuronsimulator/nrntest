@@ -14,7 +14,8 @@ syn.e = 50
 syn.tau = 1
 
 stim = new NetStim()
-stim.number = 1
+stim.number = 2
+stim.interval = 8
 stim.start = 1
 
 nc = new NetCon(stim, syn)
@@ -32,11 +33,9 @@ proc meth() {local dt, t, tau_u, tau_i, ua, ia, uf, ifwd, ub, ib, gf, gb
 	hif = new Vector()
 	tau_u = 1/1e-4*(1e-3)
 	tau_i = syn.tau
-	ua = ia = uf = ifwd = ub = ib = gf = gb = 0
+	uf = ifwd = ub = ib = gf = gb = 0
 	for (t = 0; t <= tstop; t += dt) {
 		// analytical
-//		ua = ua*exp(-dt/tau_u) + 1000*ia*tau_u/(1 - tau_u/tau_i)*(exp(-dt/tau_i) - exp(-dt/tau_u))
-//		ia = ia*exp(-dt/tau_i)
 
 		// Euler forward
 		uf = uf + dt * (-uf/tau_u + 1000*ifwd)
@@ -56,22 +55,17 @@ proc meth() {local dt, t, tau_u, tau_i, ua, ia, uf, ifwd, ub, ib, gf, gb
 
 		gb = tau_i/(tau_i + dt)*gb
 		ub = (ub + dt*gb*50*1000)/(1 + dt*(1/tau_u + 1000*gb))
+		
+		if (t == 2 || t == 10) {
+			gf += nc.weight
+			gb += nc.weight
+		}
 
-//		hua.append(ua)
 		hub.append(ub)
 		huf.append(uf)
-//		hia.append(ia)
 		hib.append(gb)
 		hif.append(gf)
-		
-		if (t == 2) {
-			//ga = nc.weight
-			gf = nc.weight
-			gb = nc.weight
-		}
 	}
-//	hua.line(Graph[0], dt, 2, 1)
-//	hia.line(Graph[1], dt, 2, 1)
 	huf.line(Graph[0], dt, 3, 1)
 	hif.line(Graph[1], dt, 3, 1)
 	hub.line(Graph[0], dt, 4, 1)
