@@ -1,0 +1,26 @@
+objref pc
+pc = new ParallelContext()
+x = 10 + pc.id
+{
+printf("%d reduce %g sum %g\n", pc.id, x, pc.allreduce(x, 1))
+printf("%d reduce %g max %g\n", pc.id, x, pc.allreduce(x, 2))
+printf("%d reduce %g min %g\n", pc.id, x, pc.allreduce(x, 3))
+}
+
+objref v1, v2
+{
+v1 = new Vector(10)
+v1.indgen().add(100*pc.id)
+
+v2 = v1.c
+pc.allreduce(v2, 1)
+if (pc.id == 0) { print "sum" v2.printf }
+
+v2 = v1.c
+pc.allreduce(v2, 2)
+if (pc.id == 0) { print "max" v2.printf }
+
+v2 = v1.c
+pc.allreduce(v2, 3)
+if (pc.id == 0) { print "min" v2.printf }
+}
