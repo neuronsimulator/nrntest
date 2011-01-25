@@ -1,86 +1,25 @@
+{load_file("nrngui.hoc")}
 objectvar save_window_, rvp_
-objectvar scene_vector_[3]
+objectvar scene_vector_[5]
 objectvar ocbox_, ocbox_list_, scene_, scene_list_
 {ocbox_list_ = new List()  scene_list_ = new List()}
-{pwman_place(20,96)}
+{pwman_place(0,0,0)}
 {
-xpanel("NEURON Main Panel", 0)
-xcheckbox("Quiet",&stdrun_quiet,"")
-realtime = 1
-xvalue("Real Time","realtime", 0,"", 0, 1 )
-celsius = 6.3
-xvalue("celsius","celsius", 1,"", 0, 1 )
-global_ra = 35.4
-xvalue("global_Ra","global_ra", 1,"set_ra()", 1, 1 )
-xbutton("RunControl","nrncontrolmenu()")
-xmenu("New Graph")
-xbutton("Voltage axis","newPlotV()")
-xbutton("Current axis","newPlotI()")
-xbutton("State axis","newPlotS()")
-xbutton("Shape plot","newshapeplot()")
-xbutton("Vector movie","newvectorplot()")
-xbutton("Phase Plane","newphaseplane()")
-xbutton("Grapher","load_proc(\"makegrapher\") makegrapher()")
-xmenu()
-xmenu("Point Processes")
-xmenu("Managers")
-xbutton("Point Manager","load_template(\"PointProcessManager\") makeppm()")
-xbutton("Point Group","load_template(\"PointProcessGroupManager\") makeppgm()")
-xbutton("Electrode","load_proc(\"makeelectrode\") makeelectrode()")
-xmenu()
-xmenu("Viewers")
-xmenu("PointProcesses")
-xbutton("IClamp","makePointBrowser(\"IClamp\")")
-xbutton("AlphaSynapse","makePointBrowser(\"AlphaSynapse\")")
-xbutton("KSyn","makePointBrowser(\"KSyn\")")
-xbutton("SEClamp","makePointBrowser(\"SEClamp\")")
-xbutton("VClamp","makePointBrowser(\"VClamp\")")
-xbutton("APCount","makePointBrowser(\"APCount\")")
-xmenu()
-xmenu()
-xmenu()
-xmenu("Distributed Mechanisms")
-xmenu("Managers")
-xbutton("Inserter","load_template(\"Inserter\") makeinserter()")
-xbutton("Homogeneous Spec","load_proc(\"makeshowmechanism\") makeshowmechanism()")
-xmenu()
-xmenu("Viewers")
-xbutton("Shape Name","load_template(\"MenuExplore\") makeMenuExplore()")
-xbutton("Name Values","nrnallsectionmenu()")
-xmenu("Mechanisms (Globals)")
-xbutton("na_ion","nrnglobalmechmenu(\"na_ion\")")
-xbutton("k_ion","nrnglobalmechmenu(\"k_ion\")")
-xbutton("hh","nrnglobalmechmenu(\"hh\")")
-xmenu()
-xmenu()
-xmenu()
-xmenu("Miscellaneous")
-xmenu("Clipboard")
-xbutton("Save to File","load_proc(\"clipboard_save\") clipboard_save()")
-xbutton("Retrieve from File","load_proc(\"clipboard_retrieve\") clipboard_retrieve()")
-xbutton("Gather Values","load_template(\"GatherVec\") makeGatherVec()")
-xbutton("Vector Play","load_template(\"VectorPlay\") makeVectorPlay()")
-xbutton("Vector Wrapper","load_template(\"VecWrap\") makeVecWrap()")
-xmenu()
-xmenu("Family")
-xbutton("Family","load_template(\"Family\") makeFamily()")
-xbutton("Command","load_template(\"ExecCommand\") newcommand()")
-xmenu()
-xbutton("Parameterized Function","load_template(\"FunctionFitter\") makefitter()")
-xbutton("Run Fitter","load_template(\"RunFitter\") makerunfitter()")
-xmenu("Impedance")
-xbutton("Frequency","load_template(\"ImpedanceRatio\") makeImpRatio()")
-xbutton("Path","load_template(\"Impx\") makeImpx()")
-xbutton("log(A) vs x","load_template(\"LogAvsX\") makelogax()")
-xbutton("Shape","load_template(\"ImpShape\") makeImpShape()")
-xmenu()
-xmenu()
-xpanel(450,20)
+save_window_ = new Graph(0)
+save_window_.size(-1000,1000,-80,40)
+scene_vector_[2] = save_window_
+{save_window_.view(-1000, -80, 2000, 120, 791, 55, 300.48, 200.32)}
+flush_list.append(save_window_)
+save_window_.save_name("flush_list.")
+objectvar rvp_
+rvp_ = new RangeVarPlot("v")
+a rvp_.begin(0)
+b rvp_.end(1)
+rvp_.origin(0)
+save_window_.addobject(rvp_, 1, 1, 0.8, 0.9)
 }
 {
 xpanel("RunControl", 0)
-xcheckbox("Use variable dt",&using_cvode_,"cvode_active()")
-xcheckbox("Local variable dt",&use_lvardt_,"cvode_local()")
 v_init = -65
 xvalue("Init","v_init", 1,"stdinit()", 1, 1 )
 xbutton("Init & Run","run()")
@@ -98,22 +37,37 @@ dt = 0.025
 xvalue("dt","dt", 1,"setdt()", 0, 1 )
 steps_per_ms = 40
 xvalue("Points plotted/ms","steps_per_ms", 1,"setdt()", 0, 1 )
-xpanel(449,315)
+screen_update_invl = 0.05
+xvalue("Scrn update invl","screen_update_invl", 1,"", 0, 1 )
+realtime = 2.2
+xvalue("Real Time","realtime", 0,"", 0, 1 )
+xpanel(110,130)
 }
 {
 save_window_ = new Graph(0)
-save_window_.size(-1000,1000,-80,40)
-scene_vector_[2] = save_window_
-{save_window_.view(-1000, -80, 2000, 120, 791, 55, 300.48, 200.32)}
-save_window_.size(-1000,1000,-80,40)
+save_window_.size(-1000,1000,-1.6,2)
+scene_vector_[4] = save_window_
+{save_window_.view(-1000, -1.6, 2000, 3.6, 799, 329, 300.48, 200.32)}
 flush_list.append(save_window_)
 save_window_.save_name("flush_list.")
 objectvar rvp_
-rvp_ = new RangeVarPlot("v")
+rvp_ = new RangeVarPlot("vext[0]")
 a rvp_.begin(0)
 b rvp_.end(1)
 rvp_.origin(0)
 save_window_.addobject(rvp_, 1, 1, 0.8, 0.9)
 }
+
+//Begin Movie Run
+{
+movie_frame_dur_ = 0.01
+
+movierunpanel(0)
+ocbox_ = movierunbox
+ocbox_.map("Movie Run", 419, 134, 280.32, 85.44)
+}
+objref ocbox_
+//End Movie Run
+
 objectvar scene_vector_[1]
 {doNotify()}

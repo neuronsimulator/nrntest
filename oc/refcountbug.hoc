@@ -1,0 +1,34 @@
+// from 491:96caac0e4d44 and before, the refcount at the end of
+// instance initialization of an argument was set to 0
+
+objref a
+
+begintemplate A
+external a
+objref this
+proc init() {
+	a = this
+}
+endtemplate A
+
+objref b, nil, list
+list = new List("A")
+
+proc p() {
+	print $o1
+}
+
+print "ok"
+b = new A()
+p(b)
+b = nil
+print a, list.count()
+a = nil
+print a, list.count()
+
+print "491 and before had error"
+p(new A())
+print a, list.count()
+a = nil
+print a, list.count()
+

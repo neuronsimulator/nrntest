@@ -1,0 +1,13 @@
+// when python is called from hoc,  the use of HocTopLevelInterpreter needs
+// to be at the top level and not in the context of the instance of A.
+
+begintemplate A
+public callpy
+proc callpy() {
+	nrnpython("import hobjcontext")
+}
+endtemplate A
+
+objref a
+a = new A()
+a.callpy()

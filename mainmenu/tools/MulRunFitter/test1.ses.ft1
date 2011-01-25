@@ -1,0 +1,8 @@
+ParmFitness: Unnamed multiple run protocol
+	FitnessPrimitive: Unnamed Fitness Primitive
+		5*(x-2)^2 + 10*(y-4)^2
+
+	Parameters:
+		"x", 0, -1e+06, 1e+06, 1, 0
+		"y", 0, -1e+06, 1e+06, 1, 0
+End ParmFitness

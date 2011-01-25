@@ -1,0 +1,24 @@
+objref vec, paxis
+vec = new Vector(2) // vec.x[0] is x, vec.x[1] is y
+func efun() {local x, y
+  x = $&2[0]  y = $&2[1]
+  return (x+y - 5)^2 + 5*(x-y - 15)^2
+}
+{attr_praxis(1e-5, .5, 0)}
+{attr_praxis(1)}
+proc do() {local e, i
+	vec.fill(.1)
+	//attr_praxis(1)
+	e = fit_praxis(vec.size(), "efun", vec)
+	printf("e=%g x=%g y=%g\n", e, vec.x[0], vec.x[1])
+
+//	stop_praxis(4)
+	e = fit_praxis(vec.size(), "efun", vec)
+	
+	paxis = new Vector()
+	for i=0, 1 {
+	  pval = pval_praxis(i, paxis)
+	  printf("%d  %10g      %10g %10g\n", i, pval, paxis.x[0], paxis.x[1])
+	}
+}
+for i=1, 5 do()

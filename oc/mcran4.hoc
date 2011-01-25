@@ -1,0 +1,52 @@
+idx1 = 5
+for i=1, 3  print mcell_ran4(&idx1)
+print "idx1 = ", idx1
+
+mcell_ran4_init(3)
+idx1 = 5
+for i=1, 3  print mcell_ran4(&idx1)
+print "idx1 = ", idx1
+
+objref r
+
+r = new Random()
+r.MCellRan4()
+for i=1, 3 print r.repick()
+print "seq ", r.seq()
+
+r = new Random()
+r.MCellRan4(10)
+for i=1, 3 print r.repick()
+print "seq ", r.seq()
+
+r = new Random()
+r.MCellRan4(10, 20)
+for i=1, 3 print r.repick()
+print "seq ", r.seq()
+
+objref s, tvec, nc, nil
+s = new NetStim()
+s.interval=1
+s.start=0
+s.number = 3
+s.noise=1
+nc = new NetCon(s, nil)
+tvec = new Vector()
+nc.record(tvec)
+
+proc run() {
+  print "run"
+  finitialize()
+  while (t < 100) {
+	fadvance()
+  }
+  tvec.printf()
+}
+
+run()
+use_mcell_ran4(1)
+run()
+s.seed(100)
+run()
+s.seed(100)
+run()
