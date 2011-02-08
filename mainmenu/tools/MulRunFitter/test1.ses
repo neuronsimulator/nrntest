@@ -21,7 +21,7 @@ fdat = new File("test1.ses.fd1")
 read_data()
 build()
 }
-opt.set_optimizer(new MulfitPraxWrap(p.pf))
+opt.set_optimizer("MulfitPraxWrap")
 {object_push(opt.optimizer)}
 {
 nstep = 0
