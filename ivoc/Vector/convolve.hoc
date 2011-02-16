@@ -1,0 +1,32 @@
+objref dest, src, filter, gs, gf, gd
+src = new Vector(130)
+for i=20, 40 src.x[i] = (i-20)/20
+src.x[60] = 1
+for i=100, 110 src.x[i] = 1
+
+filter = new Vector(5)
+filter.x[1] = 1
+
+
+gs = new Graph()
+gf = new Graph()
+gd = new Graph()
+
+proc g() {
+	dest = new Vector()
+	dest.convlv(src, filter)
+
+	gs.erase()
+	src.line(gs)
+	gs.exec_menu("View = plot")
+
+	gf.erase()
+	filter.line(gf)
+	gf.exec_menu("View = plot")
+
+	gd.erase()
+	dest.line(gd)
+	gd.exec_menu("View = plot")
+}
+
+g()

@@ -4,17 +4,19 @@ v1 = new Vector(N)
 v1.indgen()
 v2 = v1.c.fft(1)
 v3 = v2.c.fft(-1)
-print "v1==v3 ", v1.eq(v3.div(N/2))
+print "v1==v3 ", v1.eq(v3)
 
 v1.fill(1)
+v1.printf
 v2 = v1.c.fft(1)
 v2.printf
-v2.c.fft(-1).printf
+print "==", v2.c.fft(-1).eq(v1)
 
 for (i=1; i < N; i += 2) v1.x[i] = -1
 v1.printf()
 v2 = v1.c.fft(1)
 v2.printf
+print "==", v2.c.fft(-1).eq(v1)
 
 for (i=0; i < N; i += 4) {
   v1.x[i] = 1
@@ -25,6 +27,7 @@ for (i=0; i < N; i += 4) {
 v1.printf()
 v2 = v1.c.fft(1)
 v2.printf
+print "==", v2.c.fft(-1).eq(v1)
 
 for (i=0; i < N; i += 4) {
   v1.x[i] = 0
@@ -35,4 +38,5 @@ for (i=0; i < N; i += 4) {
 v1.printf()
 v2 = v1.c.fft(1)
 v2.printf
+print "==", v2.c.fft(-1).eq(v1)
 
