@@ -1,0 +1,67 @@
+
+proc prun() {
+        runtime=startsw()
+        waittime = pc.wait_time
+	pc.set_maxstep(10)
+        stdinit()
+	run()
+        waittime = pc.wait_time - waittime
+        runtime = startsw() - runtime
+//        printf("%d wtime %g\n", pc.id, waittime)
+}
+
+proc poststat() {
+	pc.post("poststat", pc.id, waittime)
+}
+
+proc getstat() {local i, id
+	idmax = 0
+	waitmax = waittime
+	idmin = 0
+	waitmin = waittime
+	if (pnm.nwork > 1) {
+		pc.context("poststat()\n")
+		for i=0, pnm.nwork-2 {
+			pc.take("poststat", &id, &waittime)
+			if (waittime > waitmax) {
+				idmax = id
+				waitmax = waittime
+			}
+			if (waittime < waitmin) {
+				idmin = id
+				waitmin = waittime
+			}
+		}
+	}
+}
+
+// record spikes
+objref ncrec
+proc recspike() {local i, id
+	ncrec = new List()
+	for cellitr(&i, &id) {
+		pnm.cells.object(i).soma ncrec.append(new NetCon(&v(.5), nil,0,1,0))
+		ncrec.object(i).record(pnm.spikevec, pnm.idvec, id)
+	}
+}
+
+proc perf2file() { localobj perf
+	perf = new File()
+	perf.aopen("perf.dat")
+	perf.printf("%d %g %g %g    %d %g    %d %g\n", \
+		pc.nhost, tstop, setuptime, runtime,\
+		idmax, waitmax, \
+		idmin, waitmin)
+	perf.close
+}
+
+proc spike2file() { localobj outf
+	outf = new File()
+	outf.wopen("out.dat")
+	for i=0, pnm.idvec.size-1 {
+		outf.printf("%g\t%d\n", pnm.spikevec.x[i], pnm.idvec.x[i])
+	}
+	outf.close
+}
+
+

@@ -1,0 +1,94 @@
+// Modified from NetGUI created hoc file (cell.ses)
+
+//Network cell templates
+//   C_Cell
+
+
+begintemplate C_Cell
+public is_art
+public init, topol, basic_shape, subsets, geom, biophys, geom_nseg, biophys_inhomo
+public synlist, x, y, z, position, connect2target
+
+public soma, dend
+public all, dendrites
+
+objref synlist
+
+proc init() {
+  topol()
+  subsets()
+  geom()
+  biophys()
+  geom_nseg()
+  synlist = new List()
+  synapses()
+  x = y = z = 0 // only change via position
+}
+
+create soma, dend[2]
+
+proc topol() { local i
+  for i = 0, 1 connect dend[i](0), soma(1)
+  basic_shape()
+}
+proc basic_shape() {
+  soma {pt3dclear() pt3dadd(0, 0, 0, 1) pt3dadd(15, 0, 0, 1)}
+  dend {pt3dclear() pt3dadd(15, 0, 0, 1) pt3dadd(60, 45, 0, 1)}
+  dend[1] {pt3dclear() pt3dadd(15, 0, 0, 1) pt3dadd(60, -44, 0, 1)}
+}
+
+objref all, dendrites
+proc subsets() { local i
+  objref all, dendrites
+  all = new SectionList()
+    soma all.append()
+    for i=0, 1 dend[i] all.append()
+
+  dendrites = new SectionList()
+    for i=0, 1 dend[i] dendrites.append()
+
+}
+proc geom() {
+  forsec all {  }
+  forsec dendrites {  L = 400  diam = 1  }
+  soma {  /*area = 1000 */ L = diam = 17.8412  }
+}
+external lambda_f
+proc geom_nseg() {
+  soma area(.5) // make sure diam reflects 3d points
+  forsec all { nseg = int((L/(0.1*lambda_f(100))+.9)/2)*2 + 1  }
+}
+proc biophys() {
+  forsec all {
+    Ra = 50
+    cm = 1
+  }
+  forsec dendrites {
+    insert pas
+      g_pas = 0.0001
+      e_pas = -65
+  }
+  soma {
+    insert hh
+      gnabar_hh = 0.12
+      gkbar_hh = 0.036
+      gl_hh = 0.0003
+      el_hh = -54.3
+  }
+}
+proc biophys_inhomo(){}
+proc position() { local i
+  soma for i = 0, n3d()-1 {
+    pt3dchange(i, $1-x+x3d(i), $2-y+y3d(i), $3-z+z3d(i), diam3d(i))
+  }
+  x = $1  y = $2  z = $3
+}
+proc connect2target() { //$o1 target point process, $o2 returned NetCon
+  soma $o2 = new NetCon(&v(1), $o1)
+}
+objref syn_
+proc synapses() {
+}
+func is_art() { return 0 }
+
+endtemplate C_Cell

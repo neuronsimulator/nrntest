@@ -1,0 +1,49 @@
+load_file("cell.hoc")
+objref gaps, nil
+gaps = new List()
+rgap = 10 // Mohm default
+
+proc create_net() {
+	create_cells()
+	create_gaps()
+	pc.setup_transfer()
+}
+
+iterator cellitr() {local i, gid
+	i = 0
+	for (gid = pc.id; gid < ncell; gid += pc.nhost) {
+		$&1 = i
+		$&2 = gid
+		iterator_statement
+		i += 1
+	}
+}
+
+proc create_cells() {local i, gid  localobj cell, nc
+	for cellitr(&i, &gid) {
+		pnm.set_gid2node(gid, pc.id)
+		cell = new C_Cell(gid)
+		pnm.cells.append(cell)
+		cell.connect2target(nil, nc)
+		pnm.pc.cell(gid, nc, 1)
+		cell.position(0, gid*100, 0)
+	}
+}
+
+// connect cells in ring with gap junction between cell[i].dend[1].v(.5)
+// and cell[i+1].dend[0].v(.5). As a source the gap has the id 2*i + dendindex
+
+proc create_gaps() {local i, gid, sgid, tgid, j  localobj gap
+	for cellitr(&i, &gid) {
+		for j=0, 1  pnm.cells.object(i).dend[j] {
+			gap = new HalfGap(.5)
+			gaps.append(gap)
+			gap.r = rgap
+			sgid = 2*((gid + 2*(j - .5))%ncell) + (1 - j)
+			tgid = 2*gid + j
+			pc.target_var(gap, &gap.vgap, sgid)
+			pc.source_var(&v(.5), tgid)
+//printf("%d %d %d %d -> %d %s at %s\n", pc.id, i, gid, sgid, tgid, gap, secname())
+		}
+	}
+}

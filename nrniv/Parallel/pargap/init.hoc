@@ -1,0 +1,43 @@
+load_file("nrngui.hoc")
+setuptime = startsw()
+load_file("netparmpi.hoc")
+objref pc, pnm
+pnm = new ParallelNetManager(0)
+pc = pnm.pc
+
+pc.nthread(nt)
+
+load_file("net.hoc")
+ncell = 10
+rgap = 10
+create_net()
+
+objref stim
+if (pc.id == 0) {
+	pnm.cells.object(0).soma stim = new IClamp(.5)
+	stim.dur = .1
+	stim.amp = 5
+}
+
+load_file("perfrun.hoc")
+
+//cvode_active(1)
+tstop = 100
+
+recspike()
+
+setuptime = startsw() - setuptime
+if (pc.id == 0) { print "setuptime ", setuptime }
+
+prun()
+if (pc.id == 0) { print "runtime ", runtime }
+
+{pc.runworker()}
+{
+pnm.gatherspikes()
+getstat()
+}
+{pc.done()}
+perf2file()
+spike2file()
+
