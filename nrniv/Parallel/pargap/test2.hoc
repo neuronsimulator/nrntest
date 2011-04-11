@@ -3,6 +3,7 @@
 // gid 0 and 1 have nmid cells between them.
 // 0 and 1 are connected by gap junctions to all nmid cells
 
+start = startsw()
 {load_file("nrngui.hoc")}
 objref pc
 pc = new ParallelContext()
@@ -18,7 +19,7 @@ proc init() {
 }
 endtemplate Cell
 
-rgap = 10 // Mohm default
+rgap = 10000 // Mohm default
 
 nmid = 4
 ncell = nmid + 2
@@ -50,14 +51,14 @@ proc mkgaps() { local gid, i  localobj gap
   for celliter(&gid) {
     if (gid > 1) { // gap between gid and 0, 1
       for i=0, 1 {
-	gap = new HalfGap(.5)
+	cells[gid].soma gap = new HalfGap(.5)
         pc.target_var(gap, &gap.vgap, i)
         gap.r = rgap
         gaps.append(gap)
       }
     }else{ // gap between gid and all nmid cells
       for i=2, ncell-1 {
-        gap = new HalfGap(.5)
+        cells[gid].soma gap = new HalfGap(.5)
         pc.target_var(gap, &gap.vgap, i)
         gap.r = rgap
         gaps.append(gap)
@@ -71,10 +72,10 @@ mkcells()
 mkgaps()
 
 objref stim
-if (pc.gid_exists(0)) {
+if (1) if (pc.gid_exists(0)) {
   pc.gid2cell(0).soma stim = new IClamp(.5)
   stim.dur = .1
-  stim.amp = 1
+  stim.amp = .3
 }
 
 objref spikevec, gidvec
@@ -88,15 +89,14 @@ proc recspike() { local gid
 recspike()
 
 {pc.nthread(nt)}
-tstop = 20
-recspike()
+tstop = 10
 
+{load_file("test2.ses")}
 proc prun() {
   pc.set_maxstep(10)
   stdinit()
-print "t=", t
-  pc.psolve(tstop)
-print "t=", t
+// pc.psolve(tstop)
+continuerun(tstop)
 }
 
 prun()
@@ -108,7 +108,7 @@ proc prspike() {local i, rank  localobj f
     f.close()
   }
   pc.barrier()
-  for rank = 0, pc.nhost-1 if (rank = pc.id()) {
+  for rank = 0, pc.nhost-1 if (rank == pc.id()) {
     f.aopen()
     for i=0, gidvec.size-1 {
       f.printf("%g %d\n", spikevec.x[i], gidvec.x[i])
@@ -119,7 +119,7 @@ proc prspike() {local i, rank  localobj f
 }
 prspike()
 
-print "goodbye"
 {pc.runworker()}
 {pc.done()}
+print "total time ", startsw() - start
 {quit()}
