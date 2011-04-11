@@ -1,13 +1,13 @@
-load_file("nrngui.hoc")
+{load_file("nrngui.hoc")}
 setuptime = startsw()
-load_file("netparmpi.hoc")
+{load_file("netparmpi.hoc")}
 objref pc, pnm
 pnm = new ParallelNetManager(0)
 pc = pnm.pc
 
-pc.nthread(nt)
+{pc.nthread(nt)}
 
-load_file("net.hoc")
+{load_file("net.hoc")}
 ncell = 10
 rgap = 10
 create_net()
@@ -19,7 +19,7 @@ if (pc.id == 0) {
 	stim.amp = 5
 }
 
-load_file("perfrun.hoc")
+{load_file("perfrun.hoc")}
 
 //cvode_active(1)
 tstop = 100

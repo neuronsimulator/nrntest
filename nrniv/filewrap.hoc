@@ -1,0 +1,72 @@
+// tests of NrnFILEWrap introduced into nrnbgp to avoid huge numbers
+// of replicated reads of hoc files on the BG/P
+
+{load_file("nrngui.hoc")}
+objref pc
+pc = new ParallelContext()
+strdef s
+p = (pc.id == (pc.nhost-1))
+{
+for i=1, 41 {
+	x = fscan()
+	if (p) print i, x
+}
+getstr(s)
+if (p) print s
+}
+
+notice that when no file is open, fscan scans the remainder of the hoc file
+following only scans the numbers from 10 to 170
+10
+n
+20
+n 30 na 40 nan 50 nano 60 nanotube 70 ni 80 nai 90 Nan NaN
+
+i 100 in 110 inf 120 infi 130 ib 140 inc 150 infinity 160 170 Inf INF
+
+following scans the numbers
+1 2 3 4 5 6 7 8 9 10
+- + does not scan
+
+1.1 -1.2 1.3e-4 1.4e+4 -1.5e5 -1.6e-1
+
+1+2+3 scans just the "1"
+4xxx5 scans just the "4"
+
+1,2,3 scans just the "1"
+3, 4, 5 scans the three numbers
+
+objref f
+f = new File()
+{f.ropen("filewrap.hoc")}
+for i=1, 2 {
+	f.gets(s)
+	if (p) {printf("%s", s)}
+}
+{f.close()}
+
+{
+ropen("filewrap.hoc")
+for i=1, 2 {
+	getstr(s)
+	if (p) printf("%s", s)
+}
+ropen()
+}
+for i=1, 2 {
+	read(y)
+	x = fscan()
+	getstr(s)
+	if (p) printf("%g %g %s", y, x, s)
+}
+9
+10
+first line
+19
+20
+last line
+
+if (pc.nhost == 1) {
+	system("echo 'foo'", s)
+	printf("%s", s)
+}

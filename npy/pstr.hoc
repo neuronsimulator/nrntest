@@ -1,0 +1,17 @@
+begintemplate S
+public s, get, set
+strdef s
+proc init() { s = $s1 }
+proc get() { $s1 = s }
+proc set() { s = $s1 }
+endtemplate S
+
+objref s, p
+p = new PythonObject()
+nrnpython("s = 'hello'")
+print "start"
+s = new S(p.s)
+s.get(p.s)
+print p.s
+
+

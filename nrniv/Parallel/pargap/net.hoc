@@ -1,4 +1,4 @@
-load_file("cell.hoc")
+{load_file("cell.hoc")}
 objref gaps, nil
 gaps = new List()
 rgap = 10 // Mohm default
@@ -43,7 +43,7 @@ proc create_gaps() {local i, gid, sgid, tgid, j  localobj gap
 			tgid = 2*gid + j
 			pc.target_var(gap, &gap.vgap, sgid)
 			pc.source_var(&v(.5), tgid)
-//printf("%d %d %d %d -> %d %s at %s\n", pc.id, i, gid, sgid, tgid, gap, secname())
+//printf("%d %d gid %d   %d %s   %d %s \n", pc.id, i, gid, tgid, secname(), sgid, gap)
 		}
 	}
 }

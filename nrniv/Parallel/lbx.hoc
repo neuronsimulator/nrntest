@@ -1,0 +1,38 @@
+// spines in middle of dendrite should not prevent splitting
+nspine = 20
+nden = 3
+create soma, d[nden]
+create neck[nden][nspine], head[nden][nspine]
+
+connect d[0](0), soma(1)
+for i=1,nden-1 {
+	connect d[i](0), d[i-1](1)
+}
+for i=0, nden-1 {
+	for j=0, nspine-1 {
+		connect neck[i][j](0), d[i](.5)
+		connect head[i][j](0), neck[i][j](1)
+	}
+}
+
+soma { L=10 diam=10}
+for i=0, nden-1 {
+	d[i] {L=100 diam=3}
+	for j=0, nspine-1 {
+		neck[i][j] { L=4  diam = 1
+		}
+		head[i][j] { L=2  diam = 2 }
+	}
+}
+
+forall insert pas
+
+load_file("loadbal.hoc")
+objref lb, result
+lb = new LoadBalance()
+cxtotal = lb.cpu_complexity()
+result = new Vector()
+npiece = lb.multisplit(0, cxtotal/10, result)
+print "npiece ", npiece
+print "result"
+result.printf
