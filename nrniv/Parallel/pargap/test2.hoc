@@ -88,15 +88,19 @@ proc recspike() { local gid
 }
 recspike()
 
+{cvode_active(cv)}
 {pc.nthread(nt)}
+if (pc.id == 0) {
+  printf("nthread=%d  cvode=%d\n", pc.nthread(), cvode.active())
+}
 tstop = 10
 
 {load_file("test2.ses")}
 proc prun() {
-  pc.set_maxstep(10)
+  pc.set_maxstep(1)
   stdinit()
-// pc.psolve(tstop)
-continuerun(tstop)
+pc.psolve(tstop)
+//continuerun(tstop)
 }
 
 prun()
