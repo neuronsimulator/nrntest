@@ -97,7 +97,7 @@ tstop = 10
 
 {load_file("test2.ses")}
 proc prun() {
-  pc.set_maxstep(1)
+  pc.set_maxstep(100)
   stdinit()
 pc.psolve(tstop)
 //continuerun(tstop)

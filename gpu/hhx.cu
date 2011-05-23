@@ -321,7 +321,7 @@ static void nrn_alloc(Prop *_prop)
  extern void hoc_register_tolerance(int type, HocStateTolerance* tol, Symbol*** stol);
  extern void _cvode_abstol( Symbol** s, double* tol, int i);
 
-void  _hhx_reg_() {
+void  _hhx_reg() {
 	int _vectorized = 1;
         _initlists();
  	ion_reg("na", -10000.);

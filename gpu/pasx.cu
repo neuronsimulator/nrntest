@@ -193,7 +193,7 @@ static void nrn_alloc(Prop* _prop)
 
 extern void register_mech(char**, void(*)(Prop*), Pvmi, Pvmi, Pvmi, Pvmi, int, int);
 static void _initlists();
-void _pasx_reg_() {
+void _pasx_reg() {
 	int _vectorized = 1;
   _initlists();
  	register_mech(_mechanism, nrn_alloc, nrn_cur, nrn_jacob, nrn_state, nrn_init, hoc_nrnpointerindex, 1);
