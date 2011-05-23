@@ -1,0 +1,17 @@
+create a[32]
+objref stim[32]
+for i=0, 31 a[i] {
+	stim[i] = new IClamp(.5)
+	L = 10
+	diam = 10
+	stim[i].dur = .1
+	stim[i].amp = .3
+}
+
+forall insert hhx
+objref pc
+pc = new ParallelContext()
+pc.nthread(4,1)
+finitialize(-65)
+fadvance()
+
