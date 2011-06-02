@@ -1,0 +1,17 @@
+// neurondemo condorder2.hoc
+// bug in IDA when interpolating to end of its interval
+// zoom in on the threshold event
+demo(1)
+objref nc, nil, vv
+nc = new NetCon(&v(.5), nil)
+vv = new Vector()
+nc.record(vv)
+cvode_active(1)
+init()
+cvode.condition_order(2)
+insert extracellular
+run()
+{
+vv.printf
+Graph[0].size(.5,.6, 0, 25)
+}
