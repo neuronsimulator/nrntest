@@ -1,0 +1,185 @@
+// $Id: initbatchtest.hoc,v 1.1 2011/04/30 03:15:26 ted Exp ted $
+// based on initexplore.hoc
+// generates a series of test signals
+// analyzes each with spctrm and saves results to an ouput file
+
+strdef filename
+// filename = "control.dat" // generated with spctrm from Numerical Recipes in C
+filename = "temp.dat" // generated with my revised spctrm
+
+// note:  frequency is in Hz, time in seconds
+
+AMP = 1 // V peak to peak
+MINFREQ = 1 // Hz
+MAXFREQ = 1000 // Nyquist limit
+MINDUR = 0.001 // second, 1 if t is in ms
+MAXDUR = 1 // second, 1000 if t is in ms
+
+/////
+
+load_file("nrngui.hoc")
+
+amp = AMP
+freq = MINFREQ*10
+dt = 1/MAXFREQ/2 // because t is in seconds, *1000 for t in ms
+dur = MAXDUR/5
+
+///// generate data
+
+/* vresult = gensin(tvec, a, f)
+returns a vector of samples from a sine wave of amplitude a 
+and frequency f in Hz at the times specified by tvec in seconds
+i.e. returned vector's elements are a*sin(2*PI*f*tvec.x(i))
+*/
+obfunc gensin() { localobj tmpvec
+// use cos rather than sin so that a signal at max frequency produces a nonzero psd
+  tmpvec = $o1.c.mul(2*PI*$3).apply("cos").mul($2) // tvec is in seconds
+  return tmpvec
+}
+
+/* vresult = gentime(dur, dt)
+returns a vector whose elements run from 0 to dur, inclusive, in steps of dt
+*/
+obfunc gentime() { localobj tmpvec
+  tmpvec = new Vector(1+int(0.5 + $1/$2))
+  tmpvec.indgen.mul($2)
+  return tmpvec
+}
+
+/////
+
+objref vdata, tdata
+vdata = new Vector()
+tdata = new Vector()
+
+/* makedata(amp, freq, dur, dt)
+generates t and v data
+$1 amplitude in V
+$2 frequency in Hz
+$3 duration in seconds
+$4 dt in seconds
+*/
+proc makedata() {
+  tdata = gentime($3, $4)
+  vdata = gensin(tdata, $1, $2)
+}
+
+///// analyze results
+
+/* vresult = genpsd(vdata)
+$o1 is sampled time series data
+returns Vector that contains psd of these data
+*/
+obfunc genpsd() { localobj tobj
+  tobj = new Vector()
+  return tobj.spctrm($o1)
+}
+
+/* vresult = genfvec(dt, psd)
+$1 is dt
+$o2 is psd vector
+returns Vector that contains bin center frequencies
+*/
+obfunc genfvec() { local n, fmax  localobj tobj
+  fmax = 1/$1/2 // the Nyquist limit
+  // there are n = psd.size() bins, numbered 0..n-1
+  // center frequency of bin i is i*fmax/n
+  n = $o2.size()
+  tobj = new Vector(n)
+  tobj.indgen().mul(fmax/n)
+  return tobj
+}
+
+///// plot stuff
+
+/* plotem(xvec, yvec, g, xaxmax, yaxmin, yaxmax, gxloc, gyloc)
+plots $o2 vs. $o1 in graph $o3
+where
+x axis range is [0, $4]
+y axis range is [$5, $6]
+graph's left upper corner is at ($7, $8)
+*/
+proc plotem() {
+  $o3 = new Graph(0)
+  $o3.size(0,$4,$5,$6)
+  $o3.view(0, $5, $4, $6-$5, $7, $8, 300.48, 200.32)
+  $o2.plot($o3, $o1, 2, 1) // color 2 (red), brush 1
+}
+
+///// control code
+
+objref psd, fvec
+psd = new Vector() // power in each frequency bin
+fvec = new Vector() // center of each frequency bin
+
+objref gdat, gpsd
+gdat = new Graph(0)
+gpsd = new Graph(0)
+
+objref fil // to save results for later use
+fil = new File()
+
+proc doall() {
+  makedata(amp, freq, dur, dt)
+//  plotem(tdata, vdata, gdat, dur, -abs(amp), abs(amp), 0, 242)
+  psd = genpsd(vdata)
+  fvec = genfvec(dt, psd)
+/*
+//  plotem(fvec, psd, gpsd, fvec.max, 0, amp, 0, 506)
+// for pure sine wave with peak amplitude amp
+// rms amplitude is amp/sqrt(2) and power is amp*amp/2
+  plotem(fvec, psd, gpsd, fvec.max, 0, amp*amp/2, 0, 506)
+*/
+/*
+print "amp ", $1, "  freq ", $2, "  dur ", $3, "  dt ", $4
+for i=0,fvec.size()-1 print fvec.x[i], psd.x[i]
+print " "
+*/
+  fil.printf("amp %f, freq %f, dur %f, dt %f\n", amp, freq, dur, dt)
+  for i=0,fvec.size()-1 fil.printf("%f %f\n",fvec.x[i], psd.x[i])
+}
+
+/* generate and analyze data using the following param values:
+freq   amp    dt     dur
+ 1.25  1     0.005   10
+ 1.25  1     0.001    2
+ 29    1     0.001    2
+ 29    2.7   0.001    2
+811    1     0.001    2
+811    1     0.0002   0.4
+*/
+
+proc batch() {
+  fil = new File(filename)
+  fil.wopen()
+
+  freq = 1.25
+  amp = 1
+  dt = 0.005
+  dur = 10
+  doall(amp, freq, dur, dt) // generate & analyze data, write to file with params)
+  fil.printf("------\n")
+  dt = 0.001
+  dur = 2
+  doall(amp, freq, dur, dt)
+  fil.printf("------\n")
+  freq = 29
+  doall(amp, freq, dur, dt)
+  fil.printf("------\n")
+  amp = 2.7
+  doall(amp, freq, dur, dt)
+  fil.printf("------\n")
+  freq = 811
+  amp = 1
+  doall(amp, freq, dur, dt)
+  fil.printf("------\n")
+  dur = 0.4
+  dt = 0.0002
+
+  doall(amp, freq, dur, dt)
+  fil.close()
+}
+
+batch()
+{system("bash -c \"if cmp control.dat temp.dat ; then echo 'succeed' ; else echo 'fail' ; fi\"")}
+
