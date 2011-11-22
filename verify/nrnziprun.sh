@@ -62,12 +62,13 @@ if [ -z "$first" ] ; then
 	echo "Missing the mosinit.hoc file"
 	exit 1
 fi
+startdir=`dirname $first`
 
 if test "$moddirs" = "" ; then
 	moddirs="`sed -n '1s;^//moddir;;p' < $first | tr -d '\r'`"
 fi
 
-(cd $2
+(cd $startdir
 if test "$moddirs" != "" ; then
 	modfiles='yes'
 else
@@ -76,8 +77,8 @@ fi
 
 firstarg=mosinit.hoc
 if test "$5" = "yes" ; then
-	firstarg=../quit.hoc
-	echo "quit()" > ../quit.hoc
+	firstarg=$dir/quit.hoc
+	echo "quit()" > $dir/quit.hoc
 fi
 if test "$cygwin" = "yes"  ; then
 	if test "$modfiles" != "" ; then
