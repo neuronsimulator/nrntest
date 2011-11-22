@@ -347,7 +347,7 @@ runi()
 verify_graph_()
 
 FFI 124291
-stim.amp = 0.05
+stim.amp = 0.1
 runa()
 verify_graph_()
 
@@ -1007,23 +1007,8 @@ run()
 verify_graph_()
 
 timing 3167
-tstop=100
-sum=0
-k=0
-for i=0,0 {
-	t=0
-	rsyn.rfreq=0
-	rsyni.gavr=gavri
-	run()
-	if (t<tstop) {
-		k=k+1
-		print " subject n. ",i+1," produced ",t/1000, " sec"
-		sum=sum+t/1000
-		} else {
-		print " subject n. ",i+1,": simulation time too short "
-	}
-}
-print " average interval produced: ",sum/k, " sec"
+use_mcell_ran4(1)
+run()
 verify_graph_()
 
 Traub2003 20756
