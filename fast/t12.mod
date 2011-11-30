@@ -19,7 +19,7 @@ NET_RECEIVE(w) {
 		WATCH (v > th2) 3
 		WATCH (v < 20) 4
 	}else if (flag != 0) {
-		printf("%g %.15g v=%.15g flag=%g\n", id, t, v, flag)
+		printf("%g %.7g v=%.7g flag=%g\n", id, t, v, flag)
 	}
 	if (flag == 4) {
 		vnext = v - 10
