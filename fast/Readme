@@ -9,7 +9,7 @@ e.g
 	nrniv -nobanner t1.hoc -c '{printf("%d\n", b)}'
 
 When this Readme is executed by the shell, it runs all the t*.hoc and
-stops at the first test that prints anything or has b != 1.  Tests that
+indicates the tests that fail or print anything or has b != 1.  Tests that
 need more than one file should still have the same prefix but use
 different extensions, e.g.  t1.mod or t1.2.mod etc.  The t*.hoc file
 should have a comment at the beginning explaining what is being tested. 
@@ -25,7 +25,7 @@ for i in t*.hoc ; do
 	fi
 	if test "$a" != "1" ; then
 		echo "$i failed"
-		exit 1
+		continue
 	fi
 done
 echo "all tests succeeded"
