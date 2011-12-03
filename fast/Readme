@@ -16,17 +16,21 @@ should have a comment at the beginning explaining what is being tested.
 Note that it is fair for any test to "load_file" any other test.
 
 fi
-
-for i in t*.hoc ; do
+tests=`ls -v t*.hoc`
+err=0
+for i in $tests ; do
 	a="`nrniv -nobanner -nogui $i -c 'if (name_declared("b")==5){execute("printf(\\\"%d\\\n\\\", b)")}else{printf(\"%d\n\", bb)}'`"
 	if test "$a" = "2" ; then
 		echo "$i invalid test"
+		err=1
 		continue
 	fi
 	if test "$a" != "1" ; then
 		echo "$i failed"
+		err=1
 		continue
 	fi
+	echo "$i succeeded"
 done
-echo "all tests succeeded"
+exit $err
 
