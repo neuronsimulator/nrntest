@@ -25,6 +25,8 @@ b = execute1("{pc.nthread(3,1)}",0)
 {hoc_stdout("temp")}
 {printf("fixed step\n")}
 run()
+
+{cvode.use_long_double(1)}
 {cvode_active(1)}
 {printf("cvode\n")}
 run()
