@@ -36,19 +36,33 @@ objref pc
 pc = new ParallelContext()
 for i=0, n-1 {
 	pc.source_var(&cell[i].soma.v(.5), i)
-	pc.target_var(&cell[(i+1)%2].gap.vgap, i)
+	pc.target_var(cell[(i+1)%2].gap, &cell[(i+1)%2].gap.vgap, i)
 }
-//if (execute1("{pc.nthread(2,1)}",0) == 0) {printf("%d\n", 2) quit()}
 {pc.setup_transfer()}
 
 {hoc_stdout("temp")}
-{printf("fixed step\n")}
+
+{printf("fixed step nthread=%d\n", pc.nthread)}
+run()
+for i=0, n-1 cell[i].pr()
+{cvode.use_long_double(1)}
+{cvode_active(1)}
+{printf("cvode nthread=%d\n", pc.nthread)}
+run()
+for i=0, n-1 cell[i].pr()
+
+if (execute1("{pc.nthread(2,1)}",0) == 0) {printf("%d\n", 2) quit()}
+{pc.setup_transfer()}
+
+{printf("fixed step nthread=%d\n", pc.nthread)}
+{cvode_active(0)}
 run()
 for i=0, n-1 cell[i].pr()
 {cvode_active(1)}
-{printf("cvode\n")}
+{printf("cvode nthread=%d\n", pc.nthread)}
 run()
 for i=0, n-1 cell[i].pr()
+
 {hoc_stdout()}
 
 strdef s
