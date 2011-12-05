@@ -35,6 +35,7 @@ run()
 run()
 {hoc_stdout()}
 
-strdef s
-{system("sortspike temp temp1 ; cmp temp1 t12.stdout", s)}
-b = (strcmp(s, "") == 0)
+{load_file("compare.hoc")}
+b = b && system("sortspike temp temp1") == 0
+b = b && compare_files("temp1", "t12.stdout", 1e-11)
+
