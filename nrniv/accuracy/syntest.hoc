@@ -1,0 +1,68 @@
+load_file("nrngui.hoc")
+
+create soma
+diam=10
+L=100/PI/diam
+insert pas
+e_pas = 0
+g_pas = 1e-4
+
+objref nc, stim, syn
+
+syn = new ExpGSyn(.5)
+syn.e = 50
+syn.tau = 1
+
+stim = new NetStim()
+stim.number = 2
+stim.interval = 8
+stim.start = 1
+
+nc = new NetCon(stim, syn)
+nc.delay = 1
+nc.weight = .001
+
+
+objref tvec, vvec, g
+tvec = new Vector()
+vvec = new Vector()
+tvec.record(&t)
+vvec.record(&v(.5))
+
+load_file("syntest.ses")
+g = new Graph()
+g.size(11,13, 31,32)
+color = 0
+proc prun() {
+	steps_per_ms = 1/$1
+	dt = $1
+	setdt()
+	run()
+	vvec.line(g, tvec, color, 1)
+printf("dt=%g secondorder=%d usefac_ExpGSyn=%g vmax=%g\n", \
+ dt, secondorder, usefac_ExpGSyn, vvec.max)
+}
+
+proc p() {dtsav
+	dtsav = .025
+	prun(dtsav/4)
+	prun(dtsav/2)
+	prun(dtsav)
+}
+
+proc p2() { local i
+	for i=0, 1 Graph[i].color(2)
+	secondorder=0
+	for i=0, 1 Graph[i].family(1)
+	color += 1
+	p()
+	stdinit()
+	for i=0, 1 Graph[i].family(0)
+	for i=0,1 Graph[i].exec_menu("Keep Lines")
+	secondorder=2
+	color += 1
+	p(2)
+}
+p2()
+usefac_ExpGSyn=0
+p2()
