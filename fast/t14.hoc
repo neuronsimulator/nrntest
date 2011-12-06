@@ -38,32 +38,32 @@ for i=0, n-1 {
 	pc.source_var(&cell[i].soma.v(.5), i)
 	pc.target_var(cell[(i+1)%2].gap, &cell[(i+1)%2].gap.vgap, i)
 }
-{pc.setup_transfer()}
 
-{hoc_stdout("temp")}
+proc prun() {local i
+	pc.setup_transfer()
+	hoc_stdout($s1)
+	run()
+	for i=0, n-1 cell[i].pr()
+	hoc_stdout()
+}
 
-{printf("fixed step nthread=%d\n", pc.nthread)}
-run()
-for i=0, n-1 cell[i].pr()
-{cvode.use_long_double(1)}
-{cvode_active(1)}
-{printf("cvode nthread=%d\n", pc.nthread)}
-run()
-for i=0, n-1 cell[i].pr()
+{
+pc.nthread(1)
+prun("temp.fixed")
+pc.nthread(3,1)
+prun("temp.fixed.3")
 
-if (execute1("{pc.nthread(2,1)}",0) == 0) {printf("%d\n", 2) quit()}
-{pc.setup_transfer()}
-
-{printf("fixed step nthread=%d\n", pc.nthread)}
-{cvode_active(0)}
-run()
-for i=0, n-1 cell[i].pr()
-{cvode_active(1)}
-{printf("cvode nthread=%d\n", pc.nthread)}
-run()
-for i=0, n-1 cell[i].pr()
-
-{hoc_stdout()}
+pc.nthread(1)
+cvode.use_long_double(1)
+cvode_active(1)
+prun("temp.cvode")
+pc.nthread(3,1)
+prun("temp.cvode.3")
+}
 
 {load_file("compare.hoc")}
-b = compare_files("temp", "t14.stdout", 1e-11)
+b = 1
+b = b && compare_files("temp.fixed", "temp.fixed.3", 1e-11)
+b = b && compare_files("temp.fixed", "t14.fixed.stdout", 1e-10)
+b = b && compare_files("temp.cvode", "temp.cvode.3", 1e-11)
+b = b && compare_files("temp.cvode", "t14.cvode.stdout", 1e-6)

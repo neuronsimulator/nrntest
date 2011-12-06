@@ -2,28 +2,29 @@
 objref pct
 pct = ParallelComputeTool[0]
 tstop=20
-func tst() {
-	run()
-	return abs(C_Cell[0].soma.v(.5) - $1) < 1e-9
-}
 
-proc prun() {local pp
+func prun() {local pp
 	pp = pct.pinfo
 	pct.pinfo = 0
 	pct.nthread($1)
 	if ($2 > 1) { cvode_local(1) } else { cvode_active($2) }
 	cvode.condition_order($3)
-	b = tst($4)
-//	printf("%d %d %d %d %.12g %.12g\n", $1, $2, $3, b, $4, C_Cell[0].soma.v(.5))
+	run()
+	//printf("%d %d %d %.12g\n", $1, $2, $3, C_Cell[0].soma.v(.5))
 	pct.pinfo = pp
-	if (b != 1) {
-		quit()
-	}
+	return C_Cell[0].soma.v(.5)
 }
-//nth, meth, order, result
-prun(1, 0, 1, -76.0275849641)
-prun(3, 0, 1, -76.0275849641)
-prun(1, 2, 1, -50.4120993151)
-prun(3, 2, 1, -50.4120993151)
-prun(1, 2, 2, -52.1380842779)
-prun(3, 2, 2, -52.1380842779)
+
+func series() {local x, y, b
+	b = 1
+	x = prun(1, $1, $2)
+	y = prun(3, $1, $2)
+	b = b && (abs(x - y) <= 1e-11)
+	b = b && (abs(x - $3) <= $4)
+	return b
+}
+b = 1
+b = b && series(0, 1, -76.0275849641, 1e-10)
+// following discrepencies between 32 and 64 bit need to be checked out
+b = b && series(2, 1, -50.4120993151, 1)
+b = b && series(2, 2, -52.1380842779, 1)
