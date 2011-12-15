@@ -1,0 +1,2 @@
+NEURON {SUFFIX nothing}
+

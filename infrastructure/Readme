@@ -1,0 +1,44 @@
+#! /bin/bash
+
+return_test()
+{
+  if [ $1 -ne 0 ]
+  then
+    echo ""
+    echo "$TEST_STEP .... failed"
+    echo ""
+    exit ${1} 
+  else
+    echo ""
+    echo "$TEST_STEP .... succeeded"
+    echo ""
+  fi
+}
+
+nrnivmodl -incflags "-IIncluseTest1 -IIncludeTest2" -loadflags "LibraryTest1 LibraryTest2" &> temp
+
+## testing
+## Tests if special executable has been created
+TEST_STEP="Finding special executable"
+find . -name special
+return_test $?
+
+## Tests whether IncluseTest1 include flag has been passed
+TEST_STEP="Testing presence include -IIncluseTest1 passed by -incflags"
+grep "IncluseTest1" temp
+return_test  $?
+
+## Tests whether IncludeTest2 include flag has been passed
+TEST_STEP="Testing presence include -IIncludeTest2 passed by -incflag"
+grep "IncludeTest2" temp
+return_test $?
+
+## Tests whether LibraryTest1 load flag has been passed
+TEST_STEP="Testing presence LibraryTest1 passed by -loadflags"
+grep "LibraryTest1" temp
+return_test $?
+
+## Tests whether LibraryTest2 load flag has been passed
+TEST_STEP="Testing presence LibraryTest2 passed by -loadflags"
+grep "LibraryTest2" temp
+return_test $?
