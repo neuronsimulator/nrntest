@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#list in the below for loop, the scripts to run tests in subdirectories.
+#list in the "for loop", the scripts to run tests in subdirectories.
 
 err=0
 
@@ -25,7 +25,7 @@ do
     fi
 done
 
-if [ err ] ; then
+if [ $err -eq 0 ] ; then
     echo "All tests successful"
 else
     echo "One or more tests failed"
