@@ -1,7 +1,0 @@
-#/bin/bash
-# bash Readme
-# to execute the tests in this folder
-# returns 0 if all tests succeed, 1 if any test fails.
-
-tests=`ls -v *.dat`
-../../testutil/cmpdatfile $tests

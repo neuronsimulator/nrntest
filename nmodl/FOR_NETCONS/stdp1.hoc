@@ -1,0 +1,3 @@
+{load_file("stdp1.ses")}
+run()
+

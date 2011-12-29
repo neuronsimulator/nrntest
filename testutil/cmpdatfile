@@ -1,12 +1,25 @@
 #!/bin/bash
-#test harness for case when $1.hoc output is to be compared to $1.dat
+#test harness for case when $1.hoc output is to be compared to $1.cmp
 err=0
+
+# if mod file exisgts, run nrnivmodl
+modfiles="`ls *.mod 2>/dev/null`"
+if test "$modfiles" != "" ; then
+  nrnivmodl >& /dev/null
+  r=$?
+  if [ $r != 0 ] ; then
+    echo "nrnivmodl failed"
+    exit 1
+  fi
+fi
+
+# run the tests
 for i in $* ; do
-  # If the $i file contains the .hoc or .dat extension, remove it
+  # If the $i file contains the .hoc or .cmp extension, remove it
   f=`echo $i | sed 's/\.hoc$//
-s/\.dat$//'`
+s/\.cmp$//'`
   nrniv -nogui -nobanner $f.hoc >& temp
-  cmp $f.dat temp
+  cmp $f.cmp temp
   r=$?
   if [ $r = 0 ] ; then
       echo "$f.hoc succeeded"

@@ -1,10 +1,29 @@
 #!/bin/bash
 
-#list in the "for loop", the scripts to run tests in subdirectories.
+#list in "scripts", the scripts to run tests in subdirectories.
+#list in "compare", the folders to execute comparison tests
+#  for all the *.cmp files in those folders
+#
+
+scripts="
+fast/Readme
+infrastructure/Readme
+"
+
+compare="
+ivoc/Random
+nrniv/NetCon
+nrniv/SaveState
+nmodl nmodl/FOR_NETCONS nmodl/functiontable nmodl/LONGDIFUS
+nmodl/order nmodl/WATCH
+"
+
+
+cmpprog=`pwd`/testutil/cmpdatfile
 
 err=0
 
-run()
+runscript()
 {
   d=`dirname $1`
   s=`basename $1`
@@ -14,19 +33,30 @@ Running test $1"
   return $?
 }
 
-for i in \
- fast/Readme \
- ivoc/Random/Readme \
- nrniv/NetCon/Readme \
- nrniv/SaveState/Readme \
- infrastructure/Readme
-do
-    run $i
+runcompare()
+{
+  d=$1
+  echo "
+Running cmpdatfile in $1"
+  (cd $d && $cmpprog *.cmp)
+  return $?
+}
+
+for i in $scripts ; do
+    runscript $i
     if [ $? -ne 0 ] ; then
         err=1
     fi
 done
 
+for i in $compare ; do
+    runcompare $i
+    if [ $? -ne 0 ] ; then
+        err=1
+    fi
+done
+
+echo ""
 if [ $err -eq 0 ] ; then
     echo "All tests successful"
 else

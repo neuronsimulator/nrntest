@@ -71,3 +71,18 @@ proc recon() {
 b recon(0,0,1)
 
 
+proc p() {
+	print t, a.v(.1), a.nai(.1), b.v(.1), b.nai(.1), c.v(.1), c.nai(.1)
+}
+
+proc prun() {
+	stdinit()
+	p()
+	Graph[0].exec_menu("Keep Lines")
+	continuerun(1)
+	p()
+	continuerun(20)
+	p()
+	Graph[0].exec_menu("Keep Lines")
+}
+prun()
