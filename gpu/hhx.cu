@@ -109,7 +109,7 @@ typedef void(*Pvmi)(_NrnThread* _nt, _Memb_list* _ml, int);
 #define v _mlhv
 #endif
 #if !defined(h)
-#define h _mlhh
+#define h _mlhhx
 #endif
 #endif
 
@@ -128,13 +128,13 @@ extern "C" {
 extern int nrn_get_mechtype(const char*);
 extern void _nrn_cacheloop_reg(int type, int cls);
 extern void hoc_register_prop_size(int type, int _psize, int _dsize);
-extern void hoc_register_cuda_capable(int _type, int _capable);
 extern void hoc_register_var(DoubScal* scdoub, DoubVec* vdoub, IntFunc* function);
 extern void ivoc_help(char* p);
 extern void hoc_register_limits(int type, HocParmLimits* limits);
 extern void hoc_register_units( int type, HocParmUnits* units);
 extern nrncuda_memb_prop_t nrncuda_memb_prop[30];
 extern void nrn_promote(Prop* p, int conc, int rev);
+extern void hoc_register_cuda_capable(int type, int iscap);
 
 static int _hoc_setdata() {
  Prop *_prop, *hoc_getdata_range(int);
@@ -248,6 +248,12 @@ static Pfri _ode_spec(_NrnThread* _nt, _Memb_list* _ml, int _type);
 
 __device__ double atomicAdd(double* address, double val)
 {
+    *address += val;
+
+}
+/*
+__device__ double atomicAdd(double* address, double val)
+{
     double old = *address, assumed;
     do {
         assumed = old;
@@ -259,7 +265,7 @@ __device__ double atomicAdd(double* address, double val)
     } while (assumed != old);
     return old;
 }
-
+*/
 static Symbol* _na_sym;
 static Symbol* _k_sym;
  
@@ -309,13 +315,13 @@ static void nrn_alloc(Prop *_prop)
  static HocStateTolerance _hoc_state_tol[] = {
  0,0
 };
- static void _thread_mem_init(Datum*);
- static void _thread_cleanup(Datum*);
- static void _update_ion_pointer(Datum*);
+ static void _thread_mem_init(int, Datum*);
+ static void _thread_cleanup(int, Datum*);
+ static void _update_ion_pointer(int, Datum*);
  extern void ion_reg(char *name, double valence);
  extern Symbol* hoc_lookup(char* s);
  extern void register_mech(char**, void(*)(Prop*), Pvmi, Pvmi, Pvmi, Pvmi, int, int);
- extern void _nrn_thread_reg(int i, int cons, void(*f)(Datum*));
+ extern void _nrn_thread_reg(int i, int cons, void(*f)(int, Datum*));
  extern void _nrn_thread_table_reg(int i, void(*f)(double* _p, Datum* _ppvar, Datum* _thread, _NrnThread* _nt, int _type));
  extern void hoc_register_cvode(int i, Pfri cnt, Pfri map, Pfri spec, Pfri matsol);
  extern void hoc_register_tolerance(int type, HocStateTolerance* tol, Symbol*** stol);
@@ -330,22 +336,22 @@ void  _hhx_reg() {
  	_k_sym = hoc_lookup("k_ion");
  	register_mech(_mechanism, nrn_alloc,nrn_cur, nrn_jacob, nrn_state, nrn_init, hoc_nrnpointerindex, 2);
   _extcall_thread = (Datum*)ecalloc(1, sizeof(Datum));
-  _thread_mem_init(_extcall_thread);
   _thread1data_inuse = 0;
  _mechtype = nrn_get_mechtype(_mechanism[1]);
+  _thread_mem_init(_mechtype, _extcall_thread);
  _nrn_cacheloop_reg(_mechtype, _cls);
      _nrn_thread_reg(_mechtype, 1, _thread_mem_init);
      _nrn_thread_reg(_mechtype, 0, _thread_cleanup);
      _nrn_thread_reg(_mechtype, 2, _update_ion_pointer);
      _nrn_thread_table_reg(_mechtype, _check_table_thread);
   hoc_register_prop_size(_mechtype, 25, 7);
-  hoc_register_cuda_capable(_mechtype, 1);
  	hoc_register_cvode(_mechtype,(Pfri) _ode_count,(Pfri) _ode_map,(Pfri) _ode_spec,(Pfri) _ode_matsol);
  	hoc_register_tolerance(_mechtype, _hoc_state_tol, &_atollist);
  	hoc_register_var(hoc_scdoub, hoc_vdoub, hoc_intfunc);
- 	ivoc_help("help ?1 hhx ./hhx.mod\n");
+ 	ivoc_help("help ?1 hhx /home/cmc/neuron/gpuobj/src/nrnoc/../../../nrngpu/src/nrnoc/hhx.mod\n");
  hoc_register_limits(_mechtype, _hoc_parm_limits);
  hoc_register_units(_mechtype, _hoc_parm_units);
+ hoc_register_cuda_capable(_mechtype, 1);
  }
 
  static double *_t_minf;
@@ -636,7 +642,7 @@ static Pfri _ode_matsol(_NrnThread* _nt, _Memb_list* _ml, int _type) {
 return 0;
 }
  
-static void _thread_mem_init(Datum* _thread) {
+static void _thread_mem_init(int _type, Datum* _thread) {
   if (_thread1data_inuse) {
      _thread[_gth]._pval = (double*)ecalloc(6*_cls, sizeof(double));
  }else{
@@ -644,7 +650,7 @@ static void _thread_mem_init(Datum* _thread) {
  }
  }
  
-static void _thread_cleanup(Datum* _thread) {
+static void _thread_cleanup(int _type, Datum* _thread) {
   if (_thread[_gth]._pval == _thread1data) {
    _thread1data_inuse = 0;
   }else{
@@ -653,7 +659,7 @@ static void _thread_cleanup(Datum* _thread) {
  }
 
  extern void nrn_update_ion_pointer(Symbol*, Datum*, int, int, int);
- static void _update_ion_pointer(Datum* _ppvar) {
+ static void _update_ion_pointer(int _type, Datum* _ppvar) {
 
    nrn_update_ion_pointer(_na_sym, _ppvar, 0, 0, _cls);
    nrn_update_ion_pointer(_na_sym, _ppvar, 1, 3, _cls);
@@ -734,7 +740,7 @@ static void nrn_init(_NrnThread* _nt, _Memb_list* _ml, int _type){
         dim3 dimGrid(nrncuda_memb_prop[_mechtype].num_blocks, 1, 1);
 
 	_nt->nrncuda_defines.celsius = celsius;
-        gpu_hhx_init_kernel<<<dimGrid, dimBlock>>>(_nt->nrncuda_defines, nrncuda_memb_prop[_mechtype], _nt->_t, _nt->_dt);
+        gpu_hhx_init_kernel<<<dimGrid, dimBlock,0,(cudaStream_t)_nt->_stream>>>(_nt->nrncuda_defines, nrncuda_memb_prop[_mechtype], _nt->_t, _nt->_dt);
         err = cudaGetLastError();
  
         // printf("Done with pas init\n");
@@ -852,15 +858,15 @@ static void nrn_cur(_NrnThread* _nt, _Memb_list* _ml, int _type){
         dim3 dimBlock(GPU_ADVANCE_BLOCKSIZE, 1, 1);
         dim3 dimGrid(nrncuda_memb_prop[_mechtype].num_blocks, 1, 1);
 
-        err = cudaMemcpy( _nt->nrncuda_defines.VEC._rhs,  _nt->_actual_rhs,
-                          _nt->nrncuda_defines.VEC._size_rhs, cudaMemcpyHostToDevice);
-        if (err != cudaSuccess) return;
-        gpu_hhx_cur_kernel<<<dimGrid, dimBlock>>>(_nt->nrncuda_defines, nrncuda_memb_prop[_mechtype]);
+        //err = cudaMemcpy( _nt->nrncuda_defines.VEC._rhs,  _nt->_actual_rhs,
+        //                 _nt->nrncuda_defines.VEC._size_rhs, cudaMemcpyHostToDevice);
+        //if (err != cudaSuccess) return;
+        gpu_hhx_cur_kernel<<<dimGrid, dimBlock,0,(cudaStream_t)_nt->_stream>>>(_nt->nrncuda_defines, nrncuda_memb_prop[_mechtype]);
         err = cudaGetLastError();
         if (err != cudaSuccess) return;
-        err = cudaMemcpy( _nt->_actual_rhs, _nt->nrncuda_defines.VEC._rhs,
-                          _nt->nrncuda_defines.VEC._size_rhs, cudaMemcpyDeviceToHost);
-        if (err != cudaSuccess) return;
+        //err = cudaMemcpy( _nt->_actual_rhs, _nt->nrncuda_defines.VEC._rhs,
+        //                  _nt->nrncuda_defines.VEC._size_rhs, cudaMemcpyDeviceToHost);
+        //if (err != cudaSuccess) return;
 
         // printf("Done with pas cur\n");
 
@@ -913,15 +919,15 @@ static void nrn_jacob(_NrnThread* _nt, _Memb_list* _ml, int _type){
         dim3 dimBlock(GPU_ADVANCE_BLOCKSIZE, 1, 1);
         dim3 dimGrid(nrncuda_memb_prop[_mechtype].num_blocks, 1, 1);
 
-        err = cudaMemcpy( _nt->nrncuda_defines.VEC._d,  _nt->_actual_d,
-                          _nt->nrncuda_defines.VEC._size_d, cudaMemcpyHostToDevice);
-        if (err != cudaSuccess) return;
-        gpu_hhx_jacob_kernel<<<dimGrid, dimBlock>>>(_nt->nrncuda_defines, nrncuda_memb_prop[_mechtype]);
+        //err = cudaMemcpy( _nt->nrncuda_defines.VEC._d,  _nt->_actual_d,
+         //                 _nt->nrncuda_defines.VEC._size_d, cudaMemcpyHostToDevice);
+        //if (err != cudaSuccess) return;
+        gpu_hhx_jacob_kernel<<<dimGrid, dimBlock,0,(cudaStream_t)_nt->_stream>>>(_nt->nrncuda_defines, nrncuda_memb_prop[_mechtype]);
         err = cudaGetLastError();
         if (err != cudaSuccess) return;
-        err = cudaMemcpy( _nt->_actual_d, _nt->nrncuda_defines.VEC._d,
-                          _nt->nrncuda_defines.VEC._size_d, cudaMemcpyDeviceToHost);
-        if (err != cudaSuccess) return;
+        //err = cudaMemcpy( _nt->_actual_d, _nt->nrncuda_defines.VEC._d,
+        //                  _nt->nrncuda_defines.VEC._size_d, cudaMemcpyDeviceToHost);
+        //if (err != cudaSuccess) return;
 
         // printf("Done with pas jacob\n");
 
@@ -997,10 +1003,10 @@ static void nrn_state(_NrnThread* _nt, _Memb_list* _ml, int _type){
         dim3 dimBlock(GPU_ADVANCE_BLOCKSIZE, 1, 1);
         dim3 dimGrid(nrncuda_memb_prop[_mechtype].num_blocks, 1, 1);
 
-        gpu_hhx_state_kernel<<<dimGrid, dimBlock>>>(_nt->nrncuda_defines, nrncuda_memb_prop[_mechtype], _nt->_t,_nt->_dt);
+        gpu_hhx_state_kernel<<<dimGrid, dimBlock,0,(cudaStream_t)_nt->_stream>>>(_nt->nrncuda_defines, nrncuda_memb_prop[_mechtype], _nt->_t,_nt->_dt);
         err = cudaGetLastError();
 
-        // printf("Done with pas states\n");
+        // printf("Done with hhx  states\n");
 
 }
 

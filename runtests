@@ -17,6 +17,8 @@ Running test $1"
 for i in \
  fast/Readme \
  ivoc/Random/Readme \
+ nrniv/NetCon/Readme \
+ nrniv/SaveState/Readme \
  infrastructure/Readme
 do
     run $i

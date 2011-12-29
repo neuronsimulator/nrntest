@@ -14,7 +14,7 @@ proc dotest() {
 	tvec1_stand = tvec.c
 	ss = new SaveState()
 	ss.save()
-	f = new File("sync.dat")
+	f = new File("sync.ss")
 	ss.fwrite(f)
 	frecord_init()
 	continuerun(tstop)

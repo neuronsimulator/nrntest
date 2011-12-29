@@ -1,0 +1,6 @@
+	1 
+	1 
+	1 
+	1 
+send NetCon[0] src= target=ExpSyn[0] 3.14159265358979
+deliver NetCon[0] src= target=ExpSyn[0] 3.14159265358979

@@ -28,7 +28,7 @@ proc dotest() {local i
 	cvode.print_event_queue()
 	ss = new SaveState()
 	ss.save()
-	f = new File("hocevent.dat")
+	f = new File("hocevent.ss")
 	ss.fwrite(f)
 	print "SaveState.fwrite"
 	frecord_init()

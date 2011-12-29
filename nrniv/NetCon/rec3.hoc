@@ -1,3 +1,4 @@
+{load_file("nrngui.hoc")}
 create acell_home_
 access acell_home_
 objref stim[2], nc[2], nil, tvec, idvec

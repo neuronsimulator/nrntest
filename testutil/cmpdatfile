@@ -2,8 +2,9 @@
 #test harness for case when $1.hoc output is to be compared to $1.dat
 err=0
 for i in $* ; do
-  # If the $i file contains the .hoc extension, remove it
-  f=`echo $i | sed 's/.hoc$//'`
+  # If the $i file contains the .hoc or .dat extension, remove it
+  f=`echo $i | sed 's/\.hoc$//
+s/\.dat$//'`
   nrniv -nogui -nobanner $f.hoc >& temp
   cmp $f.dat temp
   r=$?
