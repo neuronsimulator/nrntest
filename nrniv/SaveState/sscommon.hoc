@@ -17,6 +17,7 @@ proc dotest() {local i
 	f = new File($s2)
 	ss.fwrite(f)
 	print "SaveState.fwrite"
+	cvode.re_init()
 	frecord_init()
 	continuerun(tstop)
 	cvode.print_event_queue()

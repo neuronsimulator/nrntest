@@ -31,6 +31,7 @@ proc dotest() {local i
 	f = new File("hocevent.ss")
 	ss.fwrite(f)
 	print "SaveState.fwrite"
+	cvode.re_init()
 	frecord_init()
 	continuerun(tstop)
 	cvode.print_event_queue()

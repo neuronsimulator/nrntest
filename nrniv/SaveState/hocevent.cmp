@@ -23,35 +23,35 @@ global variable
 	1 
  HocEvent ev() 1
 SaveState.fwrite
-ev t=1 v=33.6875
+ev t=1 v=33.6894
 irun from t=0.5 v=5.58097
  HocEvent ev() 1
 ev t=1 v=33.6894
-sq diff = 0.0172588
+sq diff = 0
 irun from t=0.5 v=5.58097
  HocEvent ev() 1
 ev t=1 v=33.6894
-sq diff = 0.0172588
+sq diff = 0
 SaveState::fread
 irun from t=0.5 v=5.58097
  HocEvent ev() 1
 ev t=1 v=33.6894
-sq diff = 0.0172588
+sq diff = 0
 local variable
 	1 
  HocEvent ev() 1
 SaveState.fwrite
-ev t=1 v=33.6875
+ev t=1 v=33.6894
 irun from t=0.5 v=5.58097
  HocEvent ev() 1
 ev t=1 v=33.6894
-sq diff = 0.0172588
+sq diff = 0
 irun from t=0.5 v=5.58097
  HocEvent ev() 1
 ev t=1 v=33.6894
-sq diff = 0.0172588
+sq diff = 0
 SaveState::fread
 irun from t=0.5 v=5.58097
  HocEvent ev() 1
 ev t=1 v=33.6894
-sq diff = 0.0172588
+sq diff = 0

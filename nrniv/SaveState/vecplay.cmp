@@ -23,16 +23,16 @@ SaveState.fwrite
  HocEvent  10
 irun from t=3 v=56.4223
  PlayRecordEvent 4 VecPlayStep Vector[4].x[2]
-sq diff = 0.00615118
+sq diff = 0
  HocEvent  10
 irun from t=3 v=56.4223
  PlayRecordEvent 4 VecPlayStep Vector[4].x[2]
-sq diff = 0.00615118
+sq diff = 0
  HocEvent  10
 SaveState::fread
 irun from t=3 v=56.4223
  PlayRecordEvent 4 VecPlayStep Vector[4].x[2]
-sq diff = 0.00615118
+sq diff = 0
  HocEvent  10
 local variable
 	1 
@@ -40,11 +40,11 @@ local variable
 SaveState.fwrite
 irun from t=3 v=56.4223
  PlayRecordEvent 4 VecPlayStep Vector[4].x[2]
-sq diff = 0.00615118
+sq diff = 0
 irun from t=3 v=56.4223
  PlayRecordEvent 4 VecPlayStep Vector[4].x[2]
-sq diff = 0.00615118
+sq diff = 0
 SaveState::fread
 irun from t=3 v=56.4223
  PlayRecordEvent 4 VecPlayStep Vector[4].x[2]
-sq diff = 0.00615118
+sq diff = 0
