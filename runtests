@@ -11,9 +11,8 @@ infrastructure/Readme
 "
 
 compare="
-ivoc/Random
-nrniv/NetCon
-nrniv/SaveState
+ivoc/Random ivoc/Pointer ivoc/Vector ivoc/Matrix
+nrniv nrniv/NetCon nrniv/SaveState
 nmodl nmodl/FOR_NETCONS nmodl/functiontable nmodl/LONGDIFUS
 nmodl/order nmodl/WATCH
 "

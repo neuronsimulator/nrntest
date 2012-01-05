@@ -27,6 +27,15 @@ proc g() {
 	gd.erase()
 	dest.line(gd)
 	gd.exec_menu("View = plot")
+	dest.apply("small").printf
+}
+
+func small() { // make use of float_epsilon
+	if ($1 == 0 ) {
+		return 0
+	}else{
+		return $1
+	}
 }
 
 g()
