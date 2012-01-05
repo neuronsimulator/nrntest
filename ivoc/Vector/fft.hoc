@@ -1,19 +1,19 @@
 objref v1,v2,v3
 N = 16
 v1 = new Vector(N)
-v1.indgen()
+{v1.indgen()}
 v2 = v1.c.fft(1)
 v3 = v2.c.fft(-1)
 print "v1==v3 ", v3.eq(v1.mul(N/2))
 
-v1.fill(1)
+{v1.fill(1)}
 v1.printf
-v2 = v1.c.fft(1)
+{v2 = v1.c.fft(1)}
 v2.printf
-v2.c.fft(-1).printf
+{v2.c.fft(-1).printf}
 print "==", v2.c.fft(-1).eq(v1.mul(N/2))
 
-v1.fill(1)
+{v1.fill(1)}
 for (i=1; i < N; i += 2) v1.x[i] = -1
 v1.printf()
 v2 = v1.c.fft(1)
@@ -27,7 +27,7 @@ for (i=0; i < N; i += 4) {
   v1.x[i+3] = 0
 }
 v1.printf()
-v2 = v1.c.fft(1)
+{v2 = v1.c.fft(1)}
 v2.printf
 print "==", v2.c.fft(-1).eq(v1.mul(N/2))
 
@@ -42,22 +42,24 @@ v2 = v1.c.fft(1)
 v2.printf
 print "==", v2.c.fft(-1).eq(v1.mul(N/2))
 
+func small() { if ($1 == 0) return 0 else return $1 }
+
 // what if size not a power of 2
 objref r
-v1.resize(13)
+{v1.resize(13)}
 r = new Random()
 r.MCellRan4(1)
 r.uniform(-1,1)
-v1.setrand(r)
+{v1.setrand(r)}
 v1.printf()
 v2 = v1.c.fft(1)
 v2.printf()
 v3 = v2.c.fft(-1).div(N/2)
-v3.printf()
+v3.apply("small").printf()
 
 //what if size == 1
-v1.resize(1)
-v1.fill(1)
+{v1.resize(1)}
+{v1.fill(1)}
 v1.printf
 v2 = v1.c.fft(1)
 v2.printf
