@@ -1,0 +1,40 @@
+load_file("kchan.hoc")
+load_file("ksleak.hoc")
+
+create soma
+access soma
+{diam=10 L=100/PI/diam}
+{insert leak}
+objref kchan, stim
+kchan = new khh0(.5)
+
+gmaxk = .036
+proc nsing() {
+	kchan.gmax = gmaxk
+	kchan.Nsingle = $1
+	if ($1 > 0) {
+		kchan.gmax /= kchan.Nsingle
+	}
+	stdinit()
+}
+nsing(000)
+
+/*
+xpanel("AP with a set of single channels")
+xradiobutton("Continuous", "nsing(0)", 1)
+xradiobutton("1 channel", "nsing(1)")
+xradiobutton("10 channels", "nsing(10)")
+xradiobutton("100 channels", "nsing(100)")
+xradiobutton("1000 channels", "nsing(1000), 1")
+xradiobutton("10000 channels", "nsing(10000)")
+xpanel(100, 100)
+*/
+
+load_file(1, "singhh.ses")
+
+proc destroy() {
+	objref kchan, stim
+	while (PWManager[0].count > 6) {
+		PWManager[0].close(PWManager[0].count-1)
+	}
+}

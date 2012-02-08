@@ -1,0 +1,33 @@
+{numSections = 64000}
+create a[numSections]
+access a[0]
+objref s
+
+objref pc
+pc = new ParallelContext()
+pc.nthread(4,1)
+
+forall insert pas 
+forall insert hh 
+forall ion_style("na_ion",1,2,1,1,1)
+forall ion_style("k_ion",1,2,1,1,1)
+
+a[0] {
+    s = new IClamp(0.5)
+    s.dur = 2
+    s.amp = 30 
+    s.del = 0.1
+}
+
+
+proc gg () {
+	startsw()
+	for i=0,1000 { 
+	   fadvance() 
+	}
+	print stopsw()
+}
+
+finitialize(-65)
+gg()
+quit()

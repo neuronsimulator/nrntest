@@ -1,0 +1,15 @@
+create a[32]
+objref st[32]
+for i=0,31 a[i] {
+st[i] =  new IClamp(0.5)
+L = 10
+diam = 10
+st[i].dur = .1
+st[i].amp = .3
+}
+forall insert hh
+objref pc
+pc = new ParallelContext()
+pc.nthread(4)
+finitialize(-65)
+fadvance()

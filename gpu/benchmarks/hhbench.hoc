@@ -1,0 +1,34 @@
+create a[16]
+access a[0]
+
+objectvar pc
+pc = new ParallelContext()
+//pc.nthread(4)
+
+//forall insert pas 
+forall insert hh 
+forall ion_style("na_ion",1,2,1,1,0)
+
+{startsw()}
+{finitialize(-65)}
+{print "Initialize: ", stopsw()}
+{startsw()}
+{fadvance() }
+{print "1st fadvance: ", stopsw()}
+{startsw()}
+{fadvance() }
+{print "2nd fadvance:", stopsw()}
+
+proc gg () {
+	startsw()
+	for i=0,1000 { 
+	  fadvance() 
+	  // print a[0].v
+	  if (i==20) a[0].v = -40
+	}
+	print stopsw()
+}
+
+
+print "V initialized to -100."
+print " use gg() to do a thousand steps\n"

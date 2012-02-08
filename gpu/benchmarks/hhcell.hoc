@@ -1,0 +1,44 @@
+{load_file("hhchan.ses")}
+
+objref pc
+pc = new ParallelContext()
+pc.nthread(6,1)
+
+begintemplate Cell
+public soma, stim
+objref stim
+create soma
+proc init() {
+	soma {
+		diam = 10  L = 100/PI/diam
+		insert nahh
+		insert khh
+		insert leak
+	}
+}
+endtemplate Cell
+
+ncell =  640000 
+objref cell[ncell], stim[ncell]
+for i=0, ncell-1 {
+	cell[i] = new Cell()
+	cell[i].soma { stim[i] = new IClamp(.5) }
+	//cell[i].soma.gmax_nahh(0.5) = i+.5 
+	//cell[i].soma.gmax_nahh(0) = i  
+	//cell[i].soma.gmax_nahh(1) = i + .1 
+	stim[i].del = 0.1
+	stim[i].dur = .2
+	stim[i].amp = .3
+}
+
+{load_file("run.ses")}
+
+
+proc gg () {
+	startsw()
+	for i=0,1000 { 
+	   fadvance() 
+	}
+	print "1000 iterations: ", stopsw()
+}
+

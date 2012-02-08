@@ -1,0 +1,12 @@
+proc gg () {
+	startsw()
+	for i=0,1000 { fadvance() }
+	print stopsw()
+}
+
+create a[64000]
+forall insert pas 
+finitialize(-100)
+
+print "V initialized to -100."
+print " use gg() to do a thousand steps\n"

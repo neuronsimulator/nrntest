@@ -1,0 +1,10 @@
+create a[32]
+access a[1]
+objref s
+s = new IClamp()
+s.loc(0)
+s.amp = 15
+s.dur = 2
+s.del = 0.1
+finitialize(-65)
+

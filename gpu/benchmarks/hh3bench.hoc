@@ -1,0 +1,42 @@
+objref pc
+pc = new ParallelContext()
+pc.nthread(4,1)
+
+begintemplate Cell
+public soma, stim
+objref stim
+create soma
+proc init() {
+        soma {
+                diam = 10  L = 100/PI/diam
+		forall insert pas 
+		forall insert hh 
+		forall ion_style("na_ion",1,2,1,1,1)
+		forall ion_style("k_ion",1,2,1,1,1)
+        }
+}
+
+endtemplate Cell
+
+ncell =  64000
+objref cell[ncell], stim[ncell]
+for i=0, ncell-1 {
+        cell[i] = new Cell()
+        cell[i].soma { stim[i] = new IClamp(.5) }
+        stim[i].del = 0.1
+        stim[i].dur = .2
+        stim[i].amp = .3
+}
+
+
+proc gg () {
+	startsw()
+	for i=0,1000 { 
+	   fadvance() 
+	}
+	print stopsw()
+}
+
+finitialize(-65)
+gg()
+quit()

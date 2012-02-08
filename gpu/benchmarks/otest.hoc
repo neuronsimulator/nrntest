@@ -1,0 +1,26 @@
+create a[64000]
+objref s[64000]
+forall insert hh
+for i=0,63999 a[i] {
+s[i] = new IClamp(0.5)
+s[i].amp = 15
+s[i].dur = 1
+s[i].del = 0
+}
+access a[0]
+objref pc
+pc = new ParallelContext()
+pc.nthread(6,1)
+finitialize(-100)
+
+proc gg () {
+        startsw()
+        for i=0,1000 { 
+           fadvance() 
+        }
+        print stopsw()
+}
+
+gg()
+quit()
+

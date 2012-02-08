@@ -1,0 +1,8 @@
+create a[32]
+access a[0]
+
+forall insert hh 
+forall ion_style("na_ion",1,2,1,1,0)
+
+finitialize(-65)
+

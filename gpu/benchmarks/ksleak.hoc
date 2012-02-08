@@ -1,0 +1,23 @@
+load_file("nrngui.hoc")
+
+{ ks.single(1) }
+{objref ks, ksvec, ksgate, ksstates, kstransitions, tobj}
+objref ks, ksvec, ksgate, ksstates, kstransitions, tobj
+{
+  ksvec = new Vector()
+  ksstates = new List()
+  kstransitions = new List()
+  ks = new KSChan(0)
+}
+// leak Density Mechanism
+// NonSpecific ohmic ion current
+//     i_leak (mA/cm2) = g_leak * (v - e_leak)
+{
+  ks.name("leak")
+  ks.iv_type(0)
+  ks.gmax(0.0003)
+  ks.erev(-54.3)
+}
+// g = gmax
+{objref ks, ksvec, ksgate, ksstates, kstransitions, tobj}
+
