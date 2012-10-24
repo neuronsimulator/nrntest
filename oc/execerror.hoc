@@ -1,0 +1,16 @@
+proc p() {local  i
+	for i=1, 10 {
+		print i
+		if (i == 5 && $1 == 1) {
+			execerror("hello")
+		}
+		if (i == 6 && $1 == 0) {
+			execerror()
+		}
+	}
+}
+
+p(2)
+execute1("p(1)")
+execute1("p(0)")
+

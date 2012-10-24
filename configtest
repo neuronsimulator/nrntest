@@ -1,0 +1,99 @@
+#!/bin/sh
+# configuration tests
+# Use the latest tar.gz from nrnmpi and iv.
+# Do all build and install in subdirectories of $HOME/tmp/nrnconftest
+
+TOP=$HOME/tmp/nrnconftest
+TARDIR=$HOME/neuron
+IVTAR=$TARDIR/iv/iv-18.tar.gz
+NTAR=$TARDIR/nrnmpi/nrn-7.3.tar.gz
+IV=$TOP/iv
+N=$TOP/nrn
+CPU=x86_64
+
+if false ; then #start from scratch
+
+rm -r -f $TOP
+mkdir $TOP
+cd $TOP
+
+# build and install InterViews in place
+(cd $TARDIR/iv ; makedist)
+tar xzf $IVTAR
+mv iv* iv
+( cd iv ; ./configure --prefix=`pwd` ; make ; make install )
+
+fi
+
+cd $TOP
+(cd $TARDIR/nrnmpi ; make -j 4 ; make dist)
+rm -r -f nrn
+tar xzf $NTAR
+mv nrn-7.3 nrn
+
+tconfig () {
+	cd $TOP
+	local prefix
+	prefix=$1
+	shift
+	bin=$TOP/$prefix/$CPU/bin
+	tstpython=$1
+	shift
+	tstmpi=$1
+	shift
+	npar=$1
+	shift
+	rm -r -f $prefix
+	rm -r -f py_${prefix}
+	mkdir $prefix
+	cd $prefix
+	../nrn/configure --prefix=`pwd` $*
+	make -j $npar
+	make install
+	echo "begin neurondemo $prefix $*"
+	$bin/neurondemo
+	echo "end neurondemo $prefix $*"
+	read a
+	if test "$tstmpi" = "yes" ; then
+		echo "begin mpiexec $prefix nrniv $*"
+		mpiexec -n 4 $bin/nrniv -mpi $N/src/parallel/test0.hoc
+		echo "end mpiexec $prefix nrniv $*"
+		read a
+	fi
+	if test "$tstpython" = "yes" ; then
+		echo "begin neurondemo -python $prefix $*"
+		$bin/neurondemo -python
+		echo "end neurondemo -python $prefix $*"
+		read a
+		cd src/nrnpython
+		python setup.py install --home=$TOP/py_${prefix}
+		PYTHONPATH=$TOP/py_${prefix}/lib/python
+		export PYTHONPATH
+		cd $TOP/$prefix/share/nrn/demo/release
+		echo "begin python $prefix $*"
+		python -c 'from neuron import h'
+		echo "end python $prefix $*"
+		read a
+		if test "$tstmpi" = "yes" ; then
+			echo "begin mpiexec python $prefix $*"
+			( NEURON_INIT_MPI=1
+			export NEURON_INIT_MPI
+			mpiexec -n 4 python $N/src/parallel/test0.py
+			)
+			echo "end mpiexec python $prefix $*"
+			read a
+		fi
+	fi
+}
+
+export LD_LIBRARY_PATH=$HOME/mpich2/lib
+mpd&
+
+#tconfig prefix tstpython tstmpi npar config_args
+tconfig nrnmpi   yes yes 6 --with-paranrn         --with-nrnpython
+tconfig nrndynam yes yes 1 --with-paranrn=dynamic --with-nrnpython=dynamic
+tconfig nrnpy    yes no  6                        --with-nrnpython
+tconfig nrnpydy  yes no  1                        --with-nrnpython=dynamic
+tconfig nrnmpidy no yes 1 --with-paranrn=dynamic
+tconfig nrnobj   no  no  6 --without-iv
+

@@ -100,7 +100,6 @@ extern void hoc_register_var(DoubScal* scdoub, DoubVec* vdoub, IntFunc* function
 extern void ivoc_help(char* p);
 extern void hoc_register_limits(int type, HocParmLimits* limits);
 extern void hoc_register_units( int type, HocParmUnits* units);
-extern nrncuda_memb_prop_t nrncuda_memb_prop[30];
 extern Memb_func* memb_func;
 
 
@@ -186,7 +185,6 @@ static void nrn_alloc(Prop* _prop)
  	_prop->param = _p;
  	_prop->param_size = 5;
 
-	//nrncuda_memb_prop[_mechtype].param_size = 5;
 	//printf("Done with nrn_alloc in pasx.cu\n");
 
 }
@@ -269,16 +267,16 @@ static void nrn_init(_NrnThread* _nt, _Memb_list* _ml, int _type){
          compartments and the number of mechanisms. But for starters, we will just use
          number of nodes. */
 
-	nrncuda_memb_prop[_mechtype].num_pods = _ml->_nodecount;
+	_ml->nrncuda_info->num_pods = _ml->_nodecount;
         num_blocks = _ml->_nodecount * GPU_PODSIZE / GPU_ADVANCE_BLOCKSIZE;
         num = num_blocks * GPU_ADVANCE_BLOCKSIZE;
         if (_ml->_nodecount * GPU_PODSIZE > num) num_blocks += 1;
-	nrncuda_memb_prop[_mechtype].num_blocks = num_blocks;
+	_ml->nrncuda_info->num_blocks = num_blocks;
 
         dim3 dimBlock(GPU_ADVANCE_BLOCKSIZE, 1, 1);
-        dim3 dimGrid(nrncuda_memb_prop[_mechtype].num_blocks, 1, 1);
+        dim3 dimGrid(_ml->nrncuda_info->num_blocks, 1, 1);
 
-        gpu_init_kernel<<<dimGrid, dimBlock>>>(_nt->nrncuda_defines, nrncuda_memb_prop[_mechtype]);
+        gpu_init_kernel<<<dimGrid, dimBlock>>>(_nt->nrncuda_defines, *_ml->nrncuda_info);
         err = cudaGetLastError();
  
 	// printf("Done with pasx init\n");
@@ -352,12 +350,12 @@ static void nrn_cur(_NrnThread* _nt, _Memb_list* _ml, int _type){
         int num;
 
         dim3 dimBlock(GPU_ADVANCE_BLOCKSIZE, 1, 1);
-        dim3 dimGrid(nrncuda_memb_prop[_mechtype].num_blocks, 1, 1);
+        dim3 dimGrid(_ml->nrncuda_info->num_blocks, 1, 1);
 
         err = cudaMemcpy( _nt->nrncuda_defines.VEC._rhs,  _nt->_actual_rhs,
                           _nt->nrncuda_defines.VEC._size_rhs, cudaMemcpyHostToDevice);
         if (err != cudaSuccess) return;
-        gpu_pasx_cur_kernel<<<dimGrid, dimBlock>>>(_nt->nrncuda_defines, nrncuda_memb_prop[_mechtype]);
+        gpu_pasx_cur_kernel<<<dimGrid, dimBlock>>>(_nt->nrncuda_defines, *_ml->nrncuda_info);
         err = cudaGetLastError();
         if (err != cudaSuccess) return;
         err = cudaMemcpy( _nt->_actual_rhs, _nt->nrncuda_defines.VEC._rhs,
@@ -420,12 +418,12 @@ static void nrn_jacob(_NrnThread* _nt, _Memb_list* _ml, int _type){
         int num;
 
         dim3 dimBlock(GPU_ADVANCE_BLOCKSIZE, 1, 1);
-        dim3 dimGrid(nrncuda_memb_prop[_mechtype].num_blocks, 1, 1);
+        dim3 dimGrid(_ml->nrncuda_info->num_blocks, 1, 1);
 
         err = cudaMemcpy( _nt->nrncuda_defines.VEC._d,  _nt->_actual_d,
                           _nt->nrncuda_defines.VEC._size_d, cudaMemcpyHostToDevice);
         if (err != cudaSuccess) return;
-        gpu_pasx_jacob_kernel<<<dimGrid, dimBlock>>>(_nt->nrncuda_defines, nrncuda_memb_prop[_mechtype]);
+        gpu_pasx_jacob_kernel<<<dimGrid, dimBlock>>>(_nt->nrncuda_defines, *_ml->nrncuda_info);
         err = cudaGetLastError();
         if (err != cudaSuccess) return;
         err = cudaMemcpy( _nt->_actual_d, _nt->nrncuda_defines.VEC._d,
@@ -482,9 +480,9 @@ static void nrn_state(_NrnThread* _nt, _Memb_list* _ml, int _type){
         int num;
 
         dim3 dimBlock(GPU_ADVANCE_BLOCKSIZE, 1, 1);
-        dim3 dimGrid(nrncuda_memb_prop[_mechtype].num_blocks, 1, 1);
+        dim3 dimGrid(_ml->nrncuda_info->num_blocks, 1, 1);
 
-        gpu_pasx_state_kernel<<<dimGrid, dimBlock>>>(_nt->nrncuda_defines, nrncuda_memb_prop[_mechtype]);
+        gpu_pasx_state_kernel<<<dimGrid, dimBlock>>>(_nt->nrncuda_defines, *_ml->nrncuda_info);
         err = cudaGetLastError();
 
         // printf("Done with pasx states\n");

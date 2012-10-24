@@ -22,9 +22,13 @@ a[i] {
 }
 }
 
+objref cvode
+cvode = new CVode()
+cvode.cache_efficient(1)
+
 proc gg () {
 	startsw()
-	for i=0,1000 { 
+	for i=0,20 { 
 	   fadvance() 
 	}
 	print stopsw()

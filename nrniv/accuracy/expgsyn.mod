@@ -47,17 +47,21 @@ ENDVERBATIM
 INITIAL {
 	g=0
 	fac = setfac(1/tau)
+printf("fac=%g\n", fac)
 }
 
 BREAKPOINT {
 	SOLVE state METHOD cnexp
 	i = g*(v - e)
+printf("BREAKPOINT t=%g g=%g v=%g i=%g\n", t, g, v, i)
 }
 
 DERIVATIVE state {
 	g' = -g/tau
+printf("DERIVATIVE t=%g g=%g\n", t, g)
 }
 
 NET_RECEIVE(weight (uS)) {
+printf("NET_RECEIVE g = %g + weight=%g\n", g, weight)
 	g = g + weight*fac
 }

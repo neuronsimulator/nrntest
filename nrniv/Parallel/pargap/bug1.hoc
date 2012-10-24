@@ -1,0 +1,17 @@
+// should run with: mpiexec -n 2 nrniv -mpi bug1.hoc
+// and receive error message due to same source on two processes
+// The bug is that there is no error message. This is because when
+// a target sid also has the source sid, the process does not request
+// that source sid from any other processes.
+{load_file("nrngui.hoc")}
+{load_file("cell.hoc")}
+objref c, pc
+pc = new ParallelContext()
+x = 0
+c = new C_Cell()
+c.soma pc.source_var(&v(.5), 1)
+if (pc.id == 0) {
+  pc.target_var(&x, 1)
+}
+{pc.setup_transfer()}
+run()

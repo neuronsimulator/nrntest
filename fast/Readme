@@ -22,7 +22,7 @@ nrnivmodl
 tests=`ls -v t*.hoc`
 err=0
 for i in $tests ; do
-	a="`nrniv -nobanner -nogui $i -c 'if (name_declared("b")==5){execute("printf(\\\"%d\\\n\\\", b)")}else{printf(\"%d\n\", bb)}'`"
+	a="`nrniv -nobanner -nogui $i -c 'if (name_declared("b")==5){execute("printf(\\\"%d\\\n\\\", b)")}else{printf(\"%d\n\", bb)}' 2>&1 `"
 	if test "$a" = "2" ; then
 		echo "$i invalid test"
 		err=1

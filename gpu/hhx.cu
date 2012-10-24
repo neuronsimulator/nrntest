@@ -132,7 +132,6 @@ extern void hoc_register_var(DoubScal* scdoub, DoubVec* vdoub, IntFunc* function
 extern void ivoc_help(char* p);
 extern void hoc_register_limits(int type, HocParmLimits* limits);
 extern void hoc_register_units( int type, HocParmUnits* units);
-extern nrncuda_memb_prop_t nrncuda_memb_prop[30];
 extern void nrn_promote(Prop* p, int conc, int rev);
 extern void hoc_register_cuda_capable(int type, int iscap);
 
@@ -286,8 +285,6 @@ static void nrn_alloc(Prop *_prop)
  	el = -54.3;
  	_prop->param = _p;
  	_prop->param_size = 25;
-
-        nrncuda_memb_prop[_mechtype].param_size = 25;
 
  	_prop->dparam = _ppvar;
  	/*connect ionic variables to this model*/
@@ -730,17 +727,17 @@ static void nrn_init(_NrnThread* _nt, _Memb_list* _ml, int _type){
          compartments and the number of mechanisms. But for starters, we will just use
          number of nodes. */
 
-	nrncuda_memb_prop[_mechtype].num_pods = _ml->_nodecount;
+	_ml->nrncuda_info->num_pods = _ml->_nodecount;
         num_blocks = _ml->_nodecount * GPU_PODSIZE / GPU_ADVANCE_BLOCKSIZE;
         num = num_blocks * GPU_ADVANCE_BLOCKSIZE;
         if (_ml->_nodecount * GPU_PODSIZE > num) num_blocks += 1;
-	nrncuda_memb_prop[_mechtype].num_blocks = num_blocks;
+	_ml->nrncuda_info->num_blocks = num_blocks;
 
         dim3 dimBlock(GPU_ADVANCE_BLOCKSIZE, 1, 1);
-        dim3 dimGrid(nrncuda_memb_prop[_mechtype].num_blocks, 1, 1);
+        dim3 dimGrid(_ml->nrncuda_info->num_blocks, 1, 1);
 
 	_nt->nrncuda_defines.celsius = celsius;
-        gpu_hhx_init_kernel<<<dimGrid, dimBlock,0,(cudaStream_t)_nt->_stream>>>(_nt->nrncuda_defines, nrncuda_memb_prop[_mechtype], _nt->_t, _nt->_dt);
+        gpu_hhx_init_kernel<<<dimGrid, dimBlock,0,(cudaStream_t)_nt->_stream>>>(_nt->nrncuda_defines, *_ml->nrncuda_info, _nt->_t, _nt->_dt);
         err = cudaGetLastError();
  
         // printf("Done with pas init\n");
@@ -856,12 +853,12 @@ static void nrn_cur(_NrnThread* _nt, _Memb_list* _ml, int _type){
         cudaError err;
 
         dim3 dimBlock(GPU_ADVANCE_BLOCKSIZE, 1, 1);
-        dim3 dimGrid(nrncuda_memb_prop[_mechtype].num_blocks, 1, 1);
+        dim3 dimGrid(_ml->nrncuda_info->num_blocks, 1, 1);
 
         //err = cudaMemcpy( _nt->nrncuda_defines.VEC._rhs,  _nt->_actual_rhs,
         //                 _nt->nrncuda_defines.VEC._size_rhs, cudaMemcpyHostToDevice);
         //if (err != cudaSuccess) return;
-        gpu_hhx_cur_kernel<<<dimGrid, dimBlock,0,(cudaStream_t)_nt->_stream>>>(_nt->nrncuda_defines, nrncuda_memb_prop[_mechtype]);
+        gpu_hhx_cur_kernel<<<dimGrid, dimBlock,0,(cudaStream_t)_nt->_stream>>>(_nt->nrncuda_defines, *_ml->nrncuda_info);
         err = cudaGetLastError();
         if (err != cudaSuccess) return;
         //err = cudaMemcpy( _nt->_actual_rhs, _nt->nrncuda_defines.VEC._rhs,
@@ -917,12 +914,12 @@ static void nrn_jacob(_NrnThread* _nt, _Memb_list* _ml, int _type){
         cudaError err;
 
         dim3 dimBlock(GPU_ADVANCE_BLOCKSIZE, 1, 1);
-        dim3 dimGrid(nrncuda_memb_prop[_mechtype].num_blocks, 1, 1);
+        dim3 dimGrid(_ml->nrncuda_info->num_blocks, 1, 1);
 
         //err = cudaMemcpy( _nt->nrncuda_defines.VEC._d,  _nt->_actual_d,
          //                 _nt->nrncuda_defines.VEC._size_d, cudaMemcpyHostToDevice);
         //if (err != cudaSuccess) return;
-        gpu_hhx_jacob_kernel<<<dimGrid, dimBlock,0,(cudaStream_t)_nt->_stream>>>(_nt->nrncuda_defines, nrncuda_memb_prop[_mechtype]);
+        gpu_hhx_jacob_kernel<<<dimGrid, dimBlock,0,(cudaStream_t)_nt->_stream>>>(_nt->nrncuda_defines, *_ml->nrncuda_info);
         err = cudaGetLastError();
         if (err != cudaSuccess) return;
         //err = cudaMemcpy( _nt->_actual_d, _nt->nrncuda_defines.VEC._d,
@@ -1001,9 +998,9 @@ static void nrn_state(_NrnThread* _nt, _Memb_list* _ml, int _type){
         cudaError err;
 
         dim3 dimBlock(GPU_ADVANCE_BLOCKSIZE, 1, 1);
-        dim3 dimGrid(nrncuda_memb_prop[_mechtype].num_blocks, 1, 1);
+        dim3 dimGrid(_ml->nrncuda_info->num_blocks, 1, 1);
 
-        gpu_hhx_state_kernel<<<dimGrid, dimBlock,0,(cudaStream_t)_nt->_stream>>>(_nt->nrncuda_defines, nrncuda_memb_prop[_mechtype], _nt->_t,_nt->_dt);
+        gpu_hhx_state_kernel<<<dimGrid, dimBlock,0,(cudaStream_t)_nt->_stream>>>(_nt->nrncuda_defines, *_ml->nrncuda_info, _nt->_t,_nt->_dt);
         err = cudaGetLastError();
 
         // printf("Done with hhx  states\n");

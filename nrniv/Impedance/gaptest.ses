@@ -1,0 +1,304 @@
+{load_file("nrngui.hoc")}
+objectvar save_window_, rvp_
+objectvar scene_vector_[9]
+objectvar ocbox_, ocbox_list_, scene_, scene_list_
+{ocbox_list_ = new List()  scene_list_ = new List()}
+{pwman_place(0,0,0)}
+
+//Begin CellBuild[0]
+{
+load_file("celbild.hoc", "CellBuild")
+}
+{ocbox_ = new CellBuild(1)}
+{object_push(ocbox_)}
+{
+version(5.7)
+continuous = 1
+}
+{object_push(topol)}
+{
+first = 0
+slist.remove_all()
+sname = "soma1"
+objref tobj
+}
+{
+tobj = new CellBuildSection("soma1",0, 0, tobj, 0) slist.append(tobj)
+  tobj.position(0,0,15,0) tobj.lx=8.75204 tobj.ly=-15.4835 tobj.i3d=0
+all_init()
+}
+for i=0, slist.count-1 {slist.object(i).rdses()}
+{object_pop()}
+{
+}
+{object_push(subsets)}
+{first = 0}
+{ tobj = snlist.object(0)}
+{consist()}
+{object_pop()}
+{
+}
+{object_push(geom)}
+{
+first = 0
+tobj = new GeoSpec(4)
+tobj.value = 100
+bild.topol.slist.object(0).geo.append(tobj)
+set_default()
+}
+{object_pop()}
+{
+}
+{object_push(memb)}
+{first=0}
+{
+tobj = new FakeMechStan(1)
+tobj.value = 1
+tobj.set_default()
+tobj = new MStanWrap(tobj, 0)
+bild.topol.slist.object(0).ml.append(tobj)
+}
+{
+tobj = new MechanismStandard("pas")
+tobj.set("g_pas", 0.001, 0)
+tobj.set("e_pas", -70, 0)
+tobj = new MStanWrap(tobj, 1)
+bild.topol.slist.object(0).ml.append(tobj)
+}
+{object_pop()}
+{
+}
+{object_push(manage)}
+{
+first = 0
+classname = "Cell"
+etop=1 esub=1 egeom=1 emem=1
+itop=1 isub=0 igeom=0 imem=0
+bild.topol.names_off = 0
+bild.topol.circles_off = 0
+output_index = 0  output_x = 1
+thresh = 10
+}
+{object_pop()}
+{
+cexport()
+}
+{object_pop()}
+{
+save_window_=ocbox_.gtopol
+save_window_.size(-200,200,-150,150)
+scene_vector_[2] = save_window_
+ocbox_.gtopol = save_window_
+save_window_.save_name("ocbox_.gtopol")
+}
+{
+ocbox_.map("CellBuild[0]", 474, 30, 766.08, 374.4)
+}
+objref ocbox_
+//End CellBuild[0]
+
+
+//Begin CellBuild[1]
+{
+load_file("celbild.hoc", "CellBuild")
+}
+{ocbox_ = new CellBuild(1)}
+{object_push(ocbox_)}
+{
+version(5.7)
+continuous = 1
+}
+{object_push(topol)}
+{
+first = 0
+slist.remove_all()
+sname = "soma2"
+objref tobj
+}
+{
+tobj = new CellBuildSection("soma2",0, 0, tobj, 0) slist.append(tobj)
+  tobj.position(0,45,15,45) tobj.lx=12.6418 tobj.ly=30.8131 tobj.i3d=0
+all_init()
+}
+for i=0, slist.count-1 {slist.object(i).rdses()}
+{object_pop()}
+{
+}
+{object_push(subsets)}
+{first = 0}
+{ tobj = snlist.object(0)}
+{consist()}
+{object_pop()}
+{
+}
+{object_push(geom)}
+{
+first = 0
+tobj = new GeoSpec(4)
+tobj.value = 100
+bild.topol.slist.object(0).geo.append(tobj)
+set_default()
+}
+{object_pop()}
+{
+}
+{object_push(memb)}
+{first=0}
+{
+tobj = new FakeMechStan(1)
+tobj.value = 1
+tobj.set_default()
+tobj = new MStanWrap(tobj, 0)
+bild.topol.slist.object(0).ml.append(tobj)
+}
+{
+tobj = new MechanismStandard("pas")
+tobj.set("g_pas", 0.001, 0)
+tobj.set("e_pas", -70, 0)
+tobj = new MStanWrap(tobj, 1)
+bild.topol.slist.object(0).ml.append(tobj)
+}
+{object_pop()}
+{
+}
+{object_push(manage)}
+{
+first = 0
+classname = "Cell"
+etop=1 esub=1 egeom=1 emem=1
+itop=1 isub=0 igeom=0 imem=0
+bild.topol.names_off = 0
+bild.topol.circles_off = 0
+output_index = 0  output_x = 1
+thresh = 10
+}
+{object_pop()}
+{
+cexport()
+}
+{object_pop()}
+{
+save_window_=ocbox_.gtopol
+save_window_.size(-200,200,-150,150)
+scene_vector_[3] = save_window_
+ocbox_.gtopol = save_window_
+save_window_.save_name("ocbox_.gtopol")
+}
+{
+ocbox_.map("CellBuild[1]", 467, 456, 766.08, 374.4)
+}
+objref ocbox_
+//End CellBuild[1]
+
+
+//Begin PointProcessManager
+{
+load_file("pointman.hoc")
+}
+{
+soma1 ocbox_ = new PointProcessManager(0)
+}
+{object_push(ocbox_)}
+{
+mt.select("IClamp") i = mt.selected()
+ms[i] = new MechanismStandard("IClamp")
+ms[i].set("del", 1, 0)
+ms[i].set("dur", 1, 0)
+ms[i].set("amp", 0.1, 0)
+mt.select("IClamp") i = mt.selected() maction(i)
+hoc_ac_ = 0.5
+sec.sec move() d1.flip_to(0)
+}
+{object_pop() doNotify()}
+{
+ocbox_ = ocbox_.v1
+ocbox_.map("PointProcessManager", 175, 555, 208.32, 326.4)
+}
+objref ocbox_
+//End PointProcessManager
+
+
+//Begin LinearCircuit[0]
+{
+load_file("lincir.hoc", "LinearCircuit")
+}
+{
+ocbox_ = new LinearCircuit(1)
+}
+{object_push(ocbox_)}
+{version(2)}
+{mkelm(8, 140, 60, 2, 0)}
+{mklabel(0, "soma1(0.5)", -0.941, -15.4638)}
+{mklabel(1, "V1", -11.49, 17.2828)}
+{sel.extra_info.set("soma1", 0.5) sel.extra_info.name(sel)}
+{mkelm(8, 230, 60, 2, 0)}
+{mklabel(0, "soma2(0.5)", -1.751, -19.2999)}
+{mklabel(1, "V2", 18.388, 12.4876)}
+{sel.extra_info.set("soma2", 0.5) sel.extra_info.name(sel)}
+{mkelm(1, 185, 80, 4.5, 0)}
+10000
+{mklabel(0, "Rg", -5.662, 19.2008)}
+{mkelm(2, 180, 120, 2, 0)}
+0.001
+{mklabel(0, "Cg", -3.539, 23.316)}
+{mkelm(0, 150, 100, 2.23607, 1.10715)}
+{mkelm(0, 215, 100, 2.5, -0.927295)}
+{parasitic_ = 0  noconsist_ = 0}
+{graphlist.append(new LincirGraph(this, 1))}
+2
+V1 (mV)
+2 1 0.8 0.9 2
+V2 (mV)
+1 1 0.8 0.9 2
+0 5 -73 -24 // graph size
+1345 438 308.16 261.12 // box size
+// end info
+{g.exec_menu("Simulate")  tool(2)}
+{sel = nil}
+{object_pop()}
+{
+{
+save_window_=ocbox_.g
+save_window_.size(0,300,0,200)
+scene_vector_[5] = save_window_
+ocbox_.g = save_window_
+save_window_.save_name("ocbox_.g")
+save_window_.label(139.059, 44.5362, "soma1(0.5)", 1, 1, 0.5, 0.5, 1)
+save_window_.label(128.51, 97.2828, "V1", 1, 1, 0.5, 0.5, 1)
+save_window_.label(228.249, 40.7001, "soma2(0.5)", 1, 1, 0.5, 0.5, 1)
+save_window_.label(248.388, 92.4876, "V2", 1, 1, 0.5, 0.5, 1)
+save_window_.label(179.338, 99.2008, "Rg", 1, 1, 0.5, 0.5, 1)
+save_window_.label(176.461, 143.316, "Cg", 1, 1, 0.5, 0.5, 1)
+}
+ocbox_.map("LinearCircuit[0]", 1311, 79, 514.56, 284.16)
+}
+objref ocbox_
+//End LinearCircuit[0]
+
+{
+xpanel("RunControl", 0)
+v_init = -70
+xvalue("Init","v_init", 1,"stdinit()", 1, 1 )
+xbutton("Init & Run","run()")
+xbutton("Stop","stoprun=1")
+runStopAt = 5
+xvalue("Continue til","runStopAt", 1,"{continuerun(runStopAt) stoprun=1}", 1, 1 )
+runStopIn = 1
+xvalue("Continue for","runStopIn", 1,"{continuerun(t + runStopIn) stoprun=1}", 1, 1 )
+xbutton("Single Step","steprun()")
+t = 5
+xvalue("t","t", 2 )
+tstop = 5
+xvalue("Tstop","tstop", 1,"tstop_changed()", 0, 1 )
+dt = 0.025
+xvalue("dt","dt", 1,"setdt()", 0, 1 )
+steps_per_ms = 40
+xvalue("Points plotted/ms","steps_per_ms", 1,"setdt()", 0, 1 )
+screen_update_invl = 0.05
+xvalue("Scrn update invl","screen_update_invl", 1,"", 0, 1 )
+realtime = 0
+xvalue("Real Time","realtime", 0,"", 0, 1 )
+xpanel(124,135)
+}
+objectvar scene_vector_[1]
+{doNotify()}

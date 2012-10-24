@@ -1,0 +1,15 @@
+load_file("nrngui.hoc")
+load_file("gsyn.ses")
+
+objref g
+g = Graph[4]
+proc mark() {
+	g.beginline()
+	g.line($1, 0)
+	g.line($1, $2)
+	g.flush()
+}
+mark(2,.2)
+mark(19,.2)
+mark(17,.15)
+

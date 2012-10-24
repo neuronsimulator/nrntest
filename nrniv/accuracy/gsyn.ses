@@ -1,0 +1,282 @@
+{load_file("nrngui.hoc")}
+objectvar save_window_, rvp_
+objectvar scene_vector_[8]
+objectvar ocbox_, ocbox_list_, scene_, scene_list_
+{ocbox_list_ = new List()  scene_list_ = new List()}
+{pwman_place(102,453,1)}
+
+//Begin ArtCellGUI[0]
+{
+load_file("netbild.hoc")
+}
+ocbox_ = new ArtCellGUI(1)
+{object_push(ocbox_)}
+{
+tobj = new MechanismStandard("NetStim")
+tobj.set("interval", 15, 0)
+tobj.set("number", 2, 0)
+tobj.set("start", 2, 0)
+tobj.set("noise", 0, 0)
+}
+{append(tobj, "S1")}
+{
+tobj = new MechanismStandard("NetStim")
+tobj.set("interval", 10, 0)
+tobj.set("number", 2, 0)
+tobj.set("start", 30, 0)
+tobj.set("noise", 0, 0)
+}
+{append(tobj, "S2")}
+{object_pop()}
+{
+ocbox_.map("ArtCellGUI[0]", 17, 314, 449.28, 291.84)
+}
+objref ocbox_
+//End ArtCellGUI[0]
+
+
+//Begin NetReadyCellGUI[0]
+{
+load_file("netbild.hoc")
+}
+{ocbox_ = new NetReadyCellGUI(1)}
+{ocbox_.tobj = new CellBuild(1)}
+{object_push(ocbox_.tobj)}
+{
+version(5.7)
+continuous = 0
+}
+{object_push(topol)}
+{
+first = 0
+slist.remove_all()
+sname = "dend"
+objref tobj
+}
+{
+tobj = new CellBuildSection("soma",0, 0, tobj, 0) slist.append(tobj)
+  tobj.position(0,0,15,0) tobj.lx=7.5 tobj.ly=0 tobj.i3d=0
+all_init()
+}
+for i=0, slist.count-1 {slist.object(i).rdses()}
+{object_pop()}
+{
+}
+{object_push(subsets)}
+{first = 0}
+{ tobj = snlist.object(0)}
+{consist()}
+{object_pop()}
+{
+}
+{object_push(geom)}
+{
+first = 0
+tobj = new GeoSpec(4)
+tobj.value = 100
+bild.topol.slist.object(0).geo.append(tobj)
+set_default()
+}
+{object_pop()}
+{
+}
+{object_push(memb)}
+{first=0}
+{
+tobj = new FakeMechStan(1)
+tobj.value = 1
+tobj.set_default()
+tobj = new MStanWrap(tobj, 0)
+bild.subsets.snlist.object(0).ml.append(tobj)
+}
+{
+tobj = new MechanismStandard("pas")
+tobj.set("g_pas", 0.001, 0)
+tobj.set("e_pas", -65, 0)
+tobj = new MStanWrap(tobj, 1)
+bild.subsets.snlist.object(0).ml.append(tobj)
+}
+{object_pop()}
+{
+}
+{object_push(manage)}
+{
+first = 0
+classname = "Cell"
+etop=1 esub=1 egeom=1 emem=1
+itop=1 isub=0 igeom=0 imem=0
+bild.topol.names_off = 0
+bild.topol.circles_off = 0
+output_index = 0  output_x = 1
+thresh = 10
+}
+{object_pop()}
+{
+cexport()
+}
+{object_pop()}
+{
+save_window_=ocbox_.tobj.gtopol
+save_window_.size(-200,200,-150,150)
+scene_vector_[3] = save_window_
+ocbox_.tobj.gtopol = save_window_
+save_window_.save_name("ocbox_.tobj.gtopol")
+}
+{object_push(ocbox_)}
+stgui = new SynTypeGUI(1)
+{object_push(stgui)}
+{
+tobj = new MechanismStandard("Destexhe")
+tobj.set("Erev", 0, 0)
+tobj.set("gmax", 0.001, 0)
+}
+{append(tobj, "E")}
+{object_pop()}
+nrc = new NetReadyCell(tobj, stgui.stypelist)
+nrc.name = "C"
+tobj = nrc.cb.topol.slist.object(0)
+{nrc.synlist.append(new SynTypeInstance(nrc.stype.object[0],tobj,0.5,0.5,-1))}
+{g.size(-166.875,166.875,-125.208,125.208)}
+{object_pop()}
+{
+ocbox_.map("NetReadyCellGUI[0]", 568, 168, 404.16, 361.92)
+}
+objref ocbox_
+//End NetReadyCellGUI[0]
+
+
+//Begin NetGUI[0]
+{
+load_file("netbild.hoc")
+}
+{ocbox_ = new NetGUI(1)}
+{object_push(ocbox_)}
+{mapold2new = new Vector()  missing = new List()}
+original_type("C")
+original_type("S1")
+original_type("S2")
+newnode(0, -1, 22)
+newnode(1, -60, 24)
+newnode(1, -55, -14)
+newedge(1, 0, 0, 0.2, 0)
+newedge(2, 0, 0, 0.15, 0)
+{create_ = 1  create1()}
+{g.size(-166.667,166.667,-124.847,124.847)}
+{set_alias(0)}
+{object_pop()}
+{
+ocbox_.map("NetGUI[0]", 441, 565, 528, 327.36)
+}
+objref ocbox_
+//End NetGUI[0]
+
+
+//Begin SpikePlot[0] for NetData[0] staf/elburg
+{
+load_file("netbild.hoc")
+}
+{ocbox_ = new SpikePlot(NetData[0],1)}
+{object_push(ocbox_)}
+mode = 1
+spikeplotstyle= 0
+marksize= 4
+markcolor= 1
+useline= 1
+fwindow = 100
+binwidth = 0.1
+build()
+subset_start=0
+subset_end = 3
+{g.size(0,50,0,4)}
+{object_pop()}
+{
+ocbox_.map("SpikePlot[0] for NetData[0] staf/elburg", 665, 237, 304.32, 333.12)
+}
+objref ocbox_
+//End SpikePlot[0] for NetData[0] staf/elburg
+
+{
+save_window_ = new Graph(0)
+save_window_.size(0,50,0,1)
+scene_vector_[6] = save_window_
+{save_window_.view(0, 0, 50, 1, 355, 85, 971.52, 199.36)}
+graphList[2].append(save_window_)
+save_window_.save_name("graphList[2].")
+save_window_.addvar("Destexhe[0].Roff", 1, 1, 0.8, 0.9, 2)
+save_window_.addvar("Destexhe[0].Ron", 1, 1, 0.8, 0.9, 2)
+save_window_.addexpr("Destexhe[0].g/Destexhe[0].gmax", 1, 1, 0.8, 0.9, 2)
+}
+{
+xpanel("RunControl", 0)
+v_init = -65
+xvalue("Init","v_init", 1,"stdinit()", 1, 1 )
+xbutton("Init & Run","run()")
+xbutton("Stop","stoprun=1")
+runStopAt = 5
+xvalue("Continue til","runStopAt", 1,"{continuerun(runStopAt) stoprun=1}", 1, 1 )
+runStopIn = 1
+xvalue("Continue for","runStopIn", 1,"{continuerun(t + runStopIn) stoprun=1}", 1, 1 )
+xbutton("Single Step","steprun()")
+t = 50
+xvalue("t","t", 2 )
+tstop = 50
+xvalue("Tstop","tstop", 1,"tstop_changed()", 0, 1 )
+dt = 0.1
+xvalue("dt","dt", 1,"setdt()", 0, 1 )
+steps_per_ms = 10
+xvalue("Points plotted/ms","steps_per_ms", 1,"setdt()", 0, 1 )
+xcheckbox("Quiet",&stdrun_quiet,"")
+realtime = 0.00999999
+xvalue("Real Time","realtime", 0,"", 0, 1 )
+xpanel(119,626)
+}
+
+//Begin VariableTimeStep
+{
+ocbox_ = NumericalMethodPanel[0]
+}
+{object_push(ocbox_)}
+{
+atol_ = 1e-05  CVode[0].atol(atol_)
+restore(301, 1)
+ atoltool_ = new AtolTool()
+    ats("v", 10)
+    ats("Destexhe.Ron", 0.1)
+    ats("Destexhe.Roff", 0.1)
+    ats("Vector", -1)
+ atoltool_.scales()
+}
+{object_pop()}
+{
+ocbox_.map("VariableTimeStep", 614, 943, 272.64, 113.28)
+}
+objref ocbox_
+//End VariableTimeStep
+
+{
+xpanel("Destexhe (Globals)", 0)
+Alpha_Destexhe = 2
+xvalue("Alpha_Destexhe","Alpha_Destexhe", 1,"", 0, 0 )
+Beta_Destexhe = 0.1
+xvalue("Beta_Destexhe","Beta_Destexhe", 1,"", 0, 0 )
+Cdur_Destexhe = 5
+xvalue("Cdur_Destexhe","Cdur_Destexhe", 1,"", 0, 0 )
+Rdelta_Destexhe = 0.952355
+xvalue("Rdelta_Destexhe","Rdelta_Destexhe", 1,"", 0, 0 )
+Rinf_Destexhe = 0.952381
+xvalue("Rinf_Destexhe","Rinf_Destexhe", 1,"", 0, 0 )
+Rtau_Destexhe = 0.47619
+xvalue("Rtau_Destexhe","Rtau_Destexhe", 1,"", 0, 0 )
+xpanel(940,504)
+}
+{
+save_window_ = new Graph(0)
+save_window_.size(17.639,24.229,-51.7284,-44.5426)
+scene_vector_[7] = save_window_
+{save_window_.view(17.639, -51.7284, 6.59, 7.18584, 1007, 150, 859.2, 831.04)}
+graphList[0].append(save_window_)
+save_window_.save_name("graphList[0].")
+save_window_.addexpr("v(.5)", 1, 1, 0.8, 0.9, 2)
+}
+objectvar scene_vector_[1]
+{doNotify()}

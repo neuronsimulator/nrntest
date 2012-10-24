@@ -1,0 +1,5 @@
+objref p
+p = new PythonObject()
+nrnpython("execfile('bb.py')")
+p.execfile("bb.py")
+
