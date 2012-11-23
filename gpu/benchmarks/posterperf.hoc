@@ -1,0 +1,63 @@
+create a[1]
+objref s[1]
+objref pc
+objref cvode
+
+pc = new ParallelContext()
+cvode = new CVode()
+{cvode.cache_efficient(1)}
+
+
+proc r() {local numSections, nt
+create a[1]
+objref s[1]
+finitialize()
+
+numSections=$1/10
+nt=$2
+create a[numSections]
+forall nseg=10
+access a[0]
+objref s[numSections]
+
+{pc.nthread(nt,1)}
+
+forall insert pas 
+forall insert hh 
+forall insert hhx
+forall ion_style("na_ion",1,2,1,1,1)
+forall ion_style("k_ion",1,2,1,1,1)
+
+ 
+for i=0,numSections-1 {
+a[i] {
+    s[i] = new IClamp(0.5)
+    s[i].dur = 2
+    s[i].amp = 30 
+    s[i].del = 0.1
+}
+}
+}
+
+proc gg () {
+	r($1, $2)
+	finitialize(-65)
+	startsw()
+	for i=0,200 { 
+	   fadvance() 
+	}
+	fprint("%d %d %g\n", $2, $1, stopsw())
+}
+
+if (0) {
+//wopen("temp.dat")
+for (nt = 1; nt < 5; nt *=2) {
+//	for (ns=2500; ns < 640001; ns*=2) {
+	for (ns=10000; ns < 40001; ns*=2) {
+		gg(ns, nt)
+	}
+}
+//wopen()
+}else{
+gg(ns, nt)
+}

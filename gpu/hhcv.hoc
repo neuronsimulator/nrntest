@@ -1,0 +1,15 @@
+N=19
+load_file("nrngui.hoc")
+create soma[N]
+forall {diam=10 L=10 insert hh }
+objref stim[N]
+for i=0, N-1 soma[i] {
+	stim[i] = new IClamp(.5)
+	stim[i].dur = .1
+	stim[i].amp = .3*(1 + .01*i)
+}
+finitialize(-65)
+//cvode_active(1)
+load_file("hhcv.ses")
+run()
+
