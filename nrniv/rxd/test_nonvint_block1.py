@@ -25,7 +25,8 @@ class kchan():
     nbs.unregister(self.call)
 
   def setup(self):
-    self.nodeindex = 1 #nbs.nodeindex(self.seg)
+    self.nodeindex = self.seg.node_index()
+    #print "setup ", self.nodeindex
 
   def initialize(self):
     self.n, x = self.ninftau(self.seg.v)
@@ -117,8 +118,6 @@ vhhcvode = vhh.c()
 
 h.cvode_active(0)
 s.gkbar_hh = 0
-s.nseg=3
-s.nseg=1
 k = kchan(s(.5))
 
 h.run()
