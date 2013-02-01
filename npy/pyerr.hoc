@@ -1,0 +1,17 @@
+nrnpython("def e(): raise Exception('python error')")
+print "see 4 errors with nrnpython"
+for i = 1, 4 print nrnpython("print e()")
+objref po
+po = new PythonObject()
+print "see 1, instead of 4, errors as callable"
+execute1("for i=1, 4 print po.e()")
+
+proc p() {local i
+  for i= 1, 4 po.e()
+}
+nrnpython("from neuron import h")
+print "see 1 error for nrnpython(\"h.p()\")"
+print nrnpython("h.p()")
+print "see 1 error for po.h.p()"
+execute1("po.h.p()")
+

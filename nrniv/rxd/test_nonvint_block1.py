@@ -17,7 +17,9 @@ class kchan():
     self.seg = seg #dangerous as contents can disappear when nseg changes
     self.call = [self.setup, self.initialize,
       self.current, self.conductance, self.fixed_step_solve,
-      self.ode_count, self.ode_reinit, self.ode_fun, self.ode_solve ]
+      self.ode_count, self.ode_reinit, self.ode_fun, self.ode_solve,
+      None
+    ]
     self.gkbar = .036
     nbs.register(self.call)
 
@@ -130,17 +132,3 @@ s.gkbar_hh = .036
 k.gkbar = 0.0
 h.run()
 print "trajectory sizes for cvode ", vhhcvode.size(), vhh.size()
-
-
-#h.run()
-'''
-h.load_file('stdgui.hoc')
-print "cvode active"
-h.cvode_active(1)
-print "cvode step finitialize"
-h.finitialize(0)
-print "cvode fadvance"
-h.fadvance()
-'''
-
-h.load_file("temp.ses")
