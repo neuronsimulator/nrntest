@@ -72,7 +72,7 @@ class kchan():
     ninf, ninv = self.ninftau(v)
     ydot[self.offset] = (ninf - self.n)*ninv
 
-  def ode_solve(self, dt, b, y): #solve mx=b replace b with x (y available if m depends on it
+  def ode_solve(self, dt, t, b, y): #solve mx=b replace b with x (y available if m depends on it
     v =self.seg.v
     x,ninv = self.ninftau(v)
     b[self.offset] /= 1. + dt*ninv
