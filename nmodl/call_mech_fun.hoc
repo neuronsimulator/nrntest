@@ -1,0 +1,9 @@
+create a, b
+forall nseg = 3
+forall insert foo
+
+i=0
+forall for(x, 0) { x_foo(x) = i   i += 1 }
+
+i=10
+forall for(x, 0) { printf("\n%s %g %g\n", secname(), x, bar_foo(x, i)) }
