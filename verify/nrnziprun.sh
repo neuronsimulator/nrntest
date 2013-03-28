@@ -55,7 +55,7 @@ cd $dir
 if [ -r mosinit.hoc ] ; then
 	first=./mosinit.hoc
 else
-	first=`find . -name mosinit.hoc -print |sed -n 1p`
+	first=`find . -name mosinit.hoc -print |sort|sed -n 1p`
 fi
 
 if [ -z "$first" ] ; then
@@ -67,7 +67,8 @@ startdir=`dirname $first`
 if test "$moddirs" = "" ; then
 	moddirs="`sed -n '1s;^//moddir;;p' < $first | tr -d '\r'`"
 fi
-
+echo "moddirs = |$moddirs|"
+echo "startdir = |$startdir|"
 (cd $startdir
 if test "$moddirs" != "" ; then
 	modfiles='yes'

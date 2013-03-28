@@ -110,7 +110,6 @@ run()
 verify_graph_()
 
 BahmerLangner2007 87454
-//moddir NEURON_Chopper_Network_Simulation
 chdir("NEURON_Chopper_Network_Simulation")
 xopen("mosinit.hoc")
 runhere()
@@ -162,7 +161,6 @@ run()
 verify_graph_()
 
 CA1_multi 20212
-//moddir mechanism
 chdir("mechanism")
 xopen("mosinit.hoc")
 unix_spike_atten_hof()
@@ -289,8 +287,6 @@ run()
 verify_graph_()
 
 DendroDendriticInhibition 116094
-//moddir LongDendrite
-chdir("LongDendrite")
 load_file("mosinit.hoc")
 run_experiment("fig2ace")
 tstop=40
