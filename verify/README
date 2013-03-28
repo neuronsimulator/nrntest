@@ -3,9 +3,9 @@ set the variables as for example
 export mdbtest=6.0.882
 export standard=5.9.10
 
-sh senselabmodels.sh will copy all the ModelDB NEURON model zip files
-into the modeldb directory.  They are named in the format 
-object_id_number.zip
+./senselabmodels.py (replaces "sh senselabmodels.sh") will copy all
+the ModelDB NEURON model zip files into the modeldb directory.  They
+are named in the format object_id_number.zip
 
 sh mkmap.sh will regenerate a file map.txt that lists model object ids
 paired with the name of the top level directory name from the model
