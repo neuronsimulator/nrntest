@@ -1,3 +1,8 @@
+145836
+' mylibs/TFparams.hoc > temp.tmp
+mv temp.tmp  mylibs/TFparams.hoc
+endscript */
+
 2VN 139654
 
 5chan 3673
@@ -25,6 +30,8 @@ verify_graph_()
 
 Alle_et_al_2009 135838
 
+alzheimer 144976
+
 amirdevor03 51022
 verify_graph_()
 
@@ -40,6 +47,8 @@ aradi1999 116740
 {init() run()}
 verify_graph_()
 
+arm1d 144538
+
 Arsiero_et_al2007 83590
 /* beginscript
 sed 's/mustart  = -0.400/mustart  = 0.800/
@@ -47,6 +56,8 @@ sed 's/mustart  = -0.400/mustart  = 0.800/
 ' mylibs/TFparams.hoc > temp.tmp
 mv temp.tmp  mylibs/TFparams.hoc
 endscript */
+
+aubieEtAl2012 144511
 
 b 62285
 verify_graph_()
@@ -109,6 +120,8 @@ init()
 run()
 verify_graph_()
 
+BahlEtAl2012 146026
+
 BahmerLangner2007 87454
 chdir("NEURON_Chopper_Network_Simulation")
 xopen("mosinit.hoc")
@@ -142,6 +155,10 @@ boosting 7386
 runc()
 verify_graph_()
 
+bpap 144490
+
+Branch_Point_Tapering 146509
+
 Branco_2010 140828
 
 brill77 9848
@@ -160,6 +177,10 @@ CA1_Aged 119266
 run()
 verify_graph_()
 
+Ca1_Bianchi 143719
+
+CA1_Gomez_2011 144450
+
 CA1_multi 20212
 chdir("mechanism")
 xopen("mosinit.hoc")
@@ -168,6 +189,8 @@ verify_graph_()
 
 ca3_2002 20007
 verify_graph_()
+
+CA3Atrophy 147867
 
 ca3b 101629
 tstop=250
@@ -205,6 +228,8 @@ verify_graph_()
 
 CarvalhoBuonomano 125689
 
+CasaleEtAl2011 143635
+
 CaT 19920
 run()
 verify_graph_()
@@ -234,6 +259,10 @@ verify_graph_()
 chen2002 3793
 restart("fig5a")
 verify_graph_()
+
+Chirp 147539
+
+Chloride_Model 148253
 
 CN_Bushy_Stellate 37857
 run()
@@ -271,6 +300,8 @@ damodel 83547
 run()
 verify_graph_()
 
+DAmodel 141272
+
 db 3289
 run()
 verify_graph_()
@@ -285,6 +316,8 @@ dendre 17663
 restart("re1_cc")
 run()
 verify_graph_()
+
+dendritic_complexity 147514
 
 DendroDendriticInhibition 116094
 load_file("mosinit.hoc")
@@ -318,6 +351,10 @@ develop 126814
 dgbc 3801
 run()
 verify_graph_()
+
+DG_BC 140789
+
+DiFrancescoNoble1985 144520
 
 djurisic2008 136026
 
@@ -385,6 +422,8 @@ fietkiewicz2011 139418
 
 Figure5 140471
 
+Fineberg_et_al_2012 145672
+
 fink2000 125745
 
 FleidervishEtAl2010 136715
@@ -394,7 +433,11 @@ use_mcell_ran4(1)
 run()
 verify_graph_()
 
+FoustEtAl2011 143442
+
 FRB 125857
+
+FRBGamma 144579
 
 fs_internrn_neuron 113435
 init()
@@ -426,6 +469,8 @@ verify_graph_()
 GeneralizedCarnevaleHinesScheme 115357
 makeplusplus()
 verify_graph_()
+
+genet_PC 147218
 
 geomindu 19214
 Main(5)
@@ -460,6 +505,8 @@ loadfig9()
 tstop=100
 run()
 verify_graph_()
+
+GPeNeuronKitano 143100
 
 GPSingleCompartment 122329
 { load_file("withSKsoma.hoc") init() }
@@ -497,9 +544,13 @@ tstop=30000
 run()
 verify_graph_()
 
+HallermannEtAl2012 144526
+
 HB 2798
 run_c()
 verify_graph_()
+
+HBplusIh 141063
 
 HCN2k 19176
 experiment1()
@@ -548,6 +599,8 @@ newPlotV()
 run()
 verify_graph_()
 
+hoppy 144549
+
 Hossain 54903
 {load_file("Fig6-B.ses")}
 run()
@@ -574,12 +627,16 @@ IcaT 3533
 run()
 verify_graph_()
 
+Ih_current 144541
+
 ihmodel 8284
 run()
 verify_graph_()
 
 inhibnet 21329
 //do not run random seed different every time
+
+Interneuron 147460
 
 izh 39948
 p(5)
@@ -589,7 +646,7 @@ JohnsonMcIntyre2008 114685
 short_run()
 verify_graph_()
 
-JonesEtAl2009_r30 136803
+JonesEtAl2009 136803
 
 joyner80 9853
 verify_graph_()
@@ -666,6 +723,8 @@ kv31model 3454
 run(NetStim[0].interval=10)
 verify_graph_()
 
+kv72-R213QW-mutations 148094
+
 kx_photo 3802
 run()
 verify_graph_()
@@ -686,6 +745,8 @@ tstop=80
 run()
 verify_graph_()
 
+LavzinEtAl2012 146565
+
 leeEtAl2003 125378
 
 LetzkusEtAl2006 108459
@@ -693,6 +754,8 @@ run()
 verify_graph_()
 
 LFP 136310
+
+LGMD 144007
 
 lgnsigint 29942
 verify_graph_()
@@ -720,6 +783,8 @@ lsimp2 51196
 run()
 verify_graph_()
 
+LuthmanEtAl2011 144523
+
 lytton97 9889
 verify_graph_()
 
@@ -746,6 +811,8 @@ McCormickEtAl2007YuEtAl2008 135839
 mcn1 3511
 verify_graph_()
 
+mctavish_syncbylocation 144054
+
 migliore2010 127995
 
 mit4 2487
@@ -758,6 +825,8 @@ verify_graph_()
 
 mitral_1999 3342
 verify_graph_()
+
+modeldb 144392
 
 modeldb-etoh 112359
 tstop=2000
@@ -793,8 +862,12 @@ MT-GC 97263
 run()
 verify_graph_()
 
+MultiChirp 147578
+
 multisplit 97985
 verify_graph_()
+
+Munro_Kopell_corticalcontrol 136309
 
 murphy01 7988
 verify_graph_()
@@ -824,6 +897,8 @@ verify_graph_()
 nainact 18742
 restart("fig6A")
 verify_graph_()
+
+NarayananJohnston2010 147538
 
 na_rgc 3483
 run()
@@ -903,6 +978,8 @@ obliques 55035
 runm()
 verify_graph_()
 
+oconnoretal2012 146030
+
 olm-int 87546
 cvode_active(1)
 tstop=200
@@ -915,6 +992,8 @@ verify_graph_()
 oltedal 84655
 run()
 verify_graph_()
+
+package 144502
 
 PalmerStuart2009 120798
 
@@ -930,6 +1009,8 @@ pcell 82849
 load_file("fig2A.hoc")
 verify_graph_()
 
+PFCcell 144089
+
 plast 114665
 disp()
 verify_graph_()
@@ -939,6 +1020,8 @@ Poleg-PolskyDiamond2011 139150
 PospischilEtAl2008 123623
 run()
 verify_graph_()
+
+PowersEtAl2012 143671
 
 prknj 17664
 verify_graph_()
@@ -957,6 +1040,10 @@ verify_graph_()
 
 purkinje_ppr 126637
 
+Pyramidal 147459
+
+Pyramidal_STDP_Gomez_Delgado_2010 144482
+
 R859C 87585
 verify_graph_()
 
@@ -969,6 +1056,8 @@ rebound 126776
 ReConv 139883
 
 Recruitnet 135903
+
+reduction1.0 146376
 
 rejuvenation 97860
 run()
@@ -989,6 +1078,8 @@ ROD 95870
 run()
 verify_graph_()
 
+RomaniEtAl2013 147757
+
 RoyeckEtAl2008 115356
 short_test()
 verify_graph_()
@@ -1005,11 +1096,15 @@ sc-pp 19696
 runh()
 verify_graph_()
 
+SeqLearn_NEURON_code 147461
+
 SFS-IPS-WM-network 98017
 //do not run
 
 sheasbyfohlmeister1999 18501
 verify_graph_()
+
+ShepherdBrayton1979 144385
 
 ShortTermPlasticityMFGRC_Nieus2006 128446
 
@@ -1018,6 +1113,8 @@ shrager91 3798
 verify_graph_()
 
 ShuEtAl20062007 135787
+
+Skolnik_python_WinogradEtAl2008 144376
 
 slowinact 2937
 run3()
@@ -1073,6 +1170,8 @@ tstop=50
 tstop_changed()
 run()
 verify_graph_()
+
+stdpscalingpaper 147141
 
 sth-model 74298
 //takes too long
@@ -1154,6 +1253,8 @@ verify_graph_()
 
 Uebachs-et-al_2010 125152
 
+V1_PFC_ModelDB 144553
+
 v8sources 114355
 //moddir mechanisms
 forall delete_section()
@@ -1174,7 +1275,9 @@ init()
 run()
 verify_graph_()
 
-Vierling-Claassen_lightgamma_DB_9-2011 141273
+Vierling-ClaassenEtAl2010 141273
+
+VladimirovTuTraub2012 144401
 
 VNO 64212
 init()
@@ -1223,7 +1326,11 @@ xiaoshenli 71312
 NregNsyn(4)
 verify_graph_()
 
+YuEtAl2012 144570
+
 YuEtAlPNAS2007 135898
+
+ZhouColburn2010 143114
 
 zippedModels 53965
 // disregard
