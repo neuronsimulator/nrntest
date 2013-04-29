@@ -38,6 +38,8 @@ verify_graph_()
 anderson 3812
 verify_graph_()
 
+anetdemo 144586
+
 AnwarEtAl2010 138382
 
 anyas2005 53435
@@ -1278,11 +1280,6 @@ verify_graph_()
 Vierling-ClaassenEtAl2010 141273
 
 VladimirovTuTraub2012 144401
-
-VNO 64212
-init()
-run()
-verify_graph_()
 
 vs4_modelDB 116956
 run()
