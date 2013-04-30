@@ -1,14 +1,30 @@
 #!/bin/bash
 
+have_nrnpython=no
+have_nrnmpi=no
+if nrniv -nobanner -nogui -c 'nrnversion(6)' | grep nrnpython > /dev/null ; then
+  have_nrnpython=yes
+fi
+if nrniv -nobanner -nogui -c 'nrnversion(6)' | grep paranrn > /dev/null ; then
+  have_nrnmpi=yes
+fi
+export have_nrnpython
+export have_nrnmpi
+
 #list in "scripts", the scripts to run tests in subdirectories.
 #list in "compare", the folders to execute comparison tests
 #  for all the *.cmp files in those folders
 #
 
+
 scripts="
 fast/Readme
 infrastructure/Readme
 "
+
+if test $have_nrnpython = yes -a $have_nrnmpi = yes ; then
+  scripts="nrniv/Parallel/dotests.sh $scripts"
+fi
 
 compare="
 ivoc/Random ivoc/Pointer ivoc/Vector ivoc/Matrix
