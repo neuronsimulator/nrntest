@@ -1,0 +1,29 @@
+load_file("noload.hoc")
+
+create soma
+access soma
+{ L = diam = sqrt(100/PI) insert hh}
+
+objref stim
+stim = new IClamp(.5)
+{stim.dur = .1  stim.amp = .3 }
+
+begintemplate Max
+public V
+
+proc initial() {
+    V = v($1)
+}
+
+proc after_step() {
+    if (V < v($1)) {
+            V = v($1)
+    }
+}
+endtemplate Max
+
+make_mechanism("max", "Max")
+insert max
+run()
+print "V_max=", soma.V_max(.5)
+

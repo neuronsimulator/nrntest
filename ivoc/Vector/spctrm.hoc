@@ -17,7 +17,7 @@ MAXDUR = 1 // second, 1000 if t is in ms
 
 /////
 
-load_file("nrngui.hoc")
+{load_file("nrngui.hoc")}
 
 amp = AMP
 freq = MINFREQ*10
