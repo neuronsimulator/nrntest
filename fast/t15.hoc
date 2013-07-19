@@ -18,5 +18,5 @@ run()
 {hoc_stdout()}
 
 strdef s
-{system("sort temp > temp1 ; cmp temp1 t15.stdout", s)}
+{system("LC_ALL=C sort temp > temp1 ; cmp temp1 t15.stdout", s)}
 b = b || (strcmp(s, "") == 0)

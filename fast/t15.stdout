@@ -1,5 +1,9 @@
 Changed dt
 cvode
+entry FOR_NETCONS w=0 A=0 B=0.985784 tp=100
+entry FOR_NETCONS w=0 A=0 B=0.985784 tp=100
+entry FOR_NETCONS w=0 A=0 B=1.12123 tp=92
+entry FOR_NETCONS w=0 A=0 B=1.12123 tp=92
 entry flag=0 t=100 w=0 A=0 B=0.98402 tpre=88 tpost=-1e+09
 entry flag=0 t=100 w=0 A=0 B=0.98402 tpre=88 tpost=-1e+09
 entry flag=0 t=102 w=0 A=0.349666 B=0 tpre=92 tpost=100.025
@@ -8,12 +12,12 @@ entry flag=0 t=112 w=0 A=0.1847 B=0.5 tpre=102 tpost=100.025
 entry flag=0 t=112 w=0 A=0.185078 B=0.5 tpre=102 tpost=100.001
 entry flag=0 t=112 w=0 A=0.492168 B=0 tpre=100 tpost=100.025
 entry flag=0 t=112 w=0 A=0.492864 B=0 tpre=100 tpost=100.001
+entry flag=0 t=12 w=0 A=0 B=0.5 tpre=2 tpost=-1e+09
+entry flag=0 t=12 w=0 A=0 B=0.5 tpre=2 tpost=-1e+09
 entry flag=0 t=122 w=0 A=0.119765 B=0.777653 tpre=112 tpost=100.025
 entry flag=0 t=122 w=0 A=0.120056 B=0.777653 tpre=112 tpost=100.001
 entry flag=0 t=124 w=0 A=0.319137 B=0.5 tpre=112 tpost=100.025
 entry flag=0 t=124 w=0 A=0.319711 B=0.5 tpre=112 tpost=100.001
-entry flag=0 t=12 w=0 A=0 B=0.5 tpre=2 tpost=-1e+09
-entry flag=0 t=12 w=0 A=0 B=0.5 tpre=2 tpost=-1e+09
 entry flag=0 t=132 w=0 A=0.0883886 B=0.931836 tpre=122 tpost=100.025
 entry flag=0 t=132 w=0 A=0.0886256 B=0.931836 tpre=122 tpost=100.001
 entry flag=0 t=136 w=0 A=0.240305 B=0.746836 tpre=124 tpost=100.025
@@ -24,12 +28,12 @@ entry flag=0 t=148 w=0 A=0.198598 B=0.868693 tpre=136 tpost=100.025
 entry flag=0 t=148 w=0 A=0.19903 B=0.868693 tpre=136 tpost=100.001
 entry flag=0 t=152 w=0 A=0.0607842 B=1.065 tpre=142 tpost=100.025
 entry flag=0 t=152 w=0 A=0.0609649 B=1.065 tpre=142 tpost=100.001
+entry flag=0 t=16 w=0 A=0 B=0.5 tpre=4 tpost=-1e+09
+entry flag=0 t=16 w=0 A=0 B=0.5 tpre=4 tpost=-1e+09
 entry flag=0 t=160 w=0 A=0.174379 B=0.92885 tpre=148 tpost=100.025
 entry flag=0 t=160 w=0 A=0.174776 B=0.92885 tpre=148 tpost=100.001
 entry flag=0 t=162 w=0 A=0.0541945 B=1.0914 tpre=152 tpost=100.025
 entry flag=0 t=162 w=0 A=0.0543603 B=1.0914 tpre=152 tpost=100.001
-entry flag=0 t=16 w=0 A=0 B=0.5 tpre=4 tpost=-1e+09
-entry flag=0 t=16 w=0 A=0 B=0.5 tpre=4 tpost=-1e+09
 entry flag=0 t=172 w=0 A=0.0498163 B=1.10606 tpre=162 tpost=100.025
 entry flag=0 t=172 w=0 A=0.0499718 B=1.10606 tpre=162 tpost=100.001
 entry flag=0 t=172 w=0 A=0.159438 B=0.958548 tpre=160 tpost=100.025
@@ -42,18 +46,20 @@ entry flag=0 t=192 w=0 A=0.044717 B=1.11872 tpre=182 tpost=100.025
 entry flag=0 t=192 w=0 A=0.0448601 B=1.11872 tpre=182 tpost=100.001
 entry flag=0 t=196 w=0 A=0.143502 B=0.980447 tpre=184 tpost=100.025
 entry flag=0 t=196 w=0 A=0.143849 B=0.980447 tpre=184 tpost=100.001
+entry flag=0 t=2 w=0 A=0 B=0 tpre=-1e+09 tpost=-1e+09
+entry flag=0 t=2 w=0 A=0 B=0 tpre=-1e+09 tpost=-1e+09
 entry flag=0 t=202 w=0 A=0.0432221 B=1.12123 tpre=192 tpost=100.025
 entry flag=0 t=202 w=0 A=0.0433615 B=1.12123 tpre=192 tpost=100.001
 entry flag=0 t=208 w=0 A=0.139237 B=0.98402 tpre=196 tpost=100.025
 entry flag=0 t=208 w=0 A=0.139577 B=0.98402 tpre=196 tpost=100.001
 entry flag=0 t=212 w=0 A=0.0421454 B=1.12263 tpre=202 tpost=100.025
 entry flag=0 t=212 w=0 A=0.042282 B=1.12263 tpre=202 tpost=100.001
+entry flag=0 t=22 w=0 A=0 B=0.777653 tpre=12 tpost=-1e+09
+entry flag=0 t=22 w=0 A=0 B=0.777653 tpre=12 tpost=-1e+09
 entry flag=0 t=220 w=0 A=0.13633 B=0.985784 tpre=208 tpost=100.025
 entry flag=0 t=220 w=0 A=0.136664 B=0.985784 tpre=208 tpost=100.001
 entry flag=0 t=222 w=0 A=0.041363 B=1.1234 tpre=212 tpost=100.025
 entry flag=0 t=222 w=0 A=0.0414977 B=1.1234 tpre=212 tpost=100.001
-entry flag=0 t=22 w=0 A=0 B=0.777653 tpre=12 tpost=-1e+09
-entry flag=0 t=22 w=0 A=0 B=0.777653 tpre=12 tpost=-1e+09
 entry flag=0 t=232 w=0 A=0.0407908 B=1.12383 tpre=222 tpost=100.025
 entry flag=0 t=232 w=0 A=0.040924 B=1.12383 tpre=222 tpost=100.001
 entry flag=0 t=232 w=0 A=0.134329 B=0.986655 tpre=220 tpost=100.025
@@ -72,18 +78,16 @@ entry flag=0 t=268 w=0 A=0.13131 B=0.987402 tpre=256 tpost=100.025
 entry flag=0 t=268 w=0 A=0.131636 B=0.987402 tpre=256 tpost=100.001
 entry flag=0 t=272 w=0 A=0.0396609 B=1.12432 tpre=262 tpost=100.025
 entry flag=0 t=272 w=0 A=0.0397913 B=1.12432 tpre=262 tpost=100.001
+entry flag=0 t=28 w=0 A=0 B=0.746836 tpre=16 tpost=-1e+09
+entry flag=0 t=28 w=0 A=0 B=0.746836 tpre=16 tpost=-1e+09
 entry flag=0 t=280 w=0 A=0.13084 B=0.987453 tpre=268 tpost=100.025
 entry flag=0 t=280 w=0 A=0.131166 B=0.987453 tpre=268 tpost=100.001
 entry flag=0 t=282 w=0 A=0.0395348 B=1.12434 tpre=272 tpost=100.025
 entry flag=0 t=282 w=0 A=0.0396649 B=1.12434 tpre=272 tpost=100.001
-entry flag=0 t=28 w=0 A=0 B=0.746836 tpre=16 tpost=-1e+09
-entry flag=0 t=28 w=0 A=0 B=0.746836 tpre=16 tpost=-1e+09
 entry flag=0 t=292 w=0 A=0.0394412 B=1.12435 tpre=282 tpost=100.025
 entry flag=0 t=292 w=0 A=0.039571 B=1.12435 tpre=282 tpost=100.001
 entry flag=0 t=292 w=0 A=0.130512 B=0.987479 tpre=280 tpost=100.025
 entry flag=0 t=292 w=0 A=0.130836 B=0.987479 tpre=280 tpost=100.001
-entry flag=0 t=2 w=0 A=0 B=0 tpre=-1e+09 tpost=-1e+09
-entry flag=0 t=2 w=0 A=0 B=0 tpre=-1e+09 tpost=-1e+09
 entry flag=0 t=302 w=0 A=0.0393716 B=1.12436 tpre=292 tpost=100.025
 entry flag=0 t=302 w=0 A=0.0395012 B=1.12436 tpre=292 tpost=100.001
 entry flag=0 t=304 w=0 A=0.130281 B=0.987491 tpre=292 tpost=100.025
@@ -92,12 +96,12 @@ entry flag=0 t=312 w=0 A=0.0393198 B=1.12436 tpre=302 tpost=100.025
 entry flag=0 t=312 w=0 A=0.0394492 B=1.12436 tpre=302 tpost=100.001
 entry flag=0 t=316 w=0 A=0.13012 B=0.987498 tpre=304 tpost=100.025
 entry flag=0 t=316 w=0 A=0.130444 B=0.987498 tpre=304 tpost=100.001
+entry flag=0 t=32 w=0 A=0 B=0.931836 tpre=22 tpost=-1e+09
+entry flag=0 t=32 w=0 A=0 B=0.931836 tpre=22 tpost=-1e+09
 entry flag=0 t=322 w=0 A=0.0392812 B=1.12437 tpre=312 tpost=100.025
 entry flag=0 t=322 w=0 A=0.0394106 B=1.12437 tpre=312 tpost=100.001
 entry flag=0 t=328 w=0 A=0.130006 B=0.987501 tpre=316 tpost=100.025
 entry flag=0 t=328 w=0 A=0.13033 B=0.987501 tpre=316 tpost=100.001
-entry flag=0 t=32 w=0 A=0 B=0.931836 tpre=22 tpost=-1e+09
-entry flag=0 t=32 w=0 A=0 B=0.931836 tpre=22 tpost=-1e+09
 entry flag=0 t=332 w=0 A=0.0392525 B=1.12437 tpre=322 tpost=100.025
 entry flag=0 t=332 w=0 A=0.0393818 B=1.12437 tpre=322 tpost=100.001
 entry flag=0 t=340 w=0 A=0.129927 B=0.987502 tpre=328 tpost=100.025
@@ -122,22 +126,24 @@ entry flag=0 t=388 w=0 A=0.129785 B=0.987504 tpre=376 tpost=100.025
 entry flag=0 t=388 w=0 A=0.130108 B=0.987504 tpre=376 tpost=100.001
 entry flag=0 t=392 w=0 A=0.0391831 B=1.12437 tpre=382 tpost=100.025
 entry flag=0 t=392 w=0 A=0.0393122 B=1.12437 tpre=382 tpost=100.001
+entry flag=0 t=4 w=0 A=0 B=0 tpre=-1e+09 tpost=-1e+09
+entry flag=0 t=4 w=0 A=0 B=0 tpre=-1e+09 tpost=-1e+09
+entry flag=0 t=40 w=0 A=0 B=0.868693 tpre=28 tpost=-1e+09
+entry flag=0 t=40 w=0 A=0 B=0.868693 tpre=28 tpost=-1e+09
 entry flag=0 t=400 w=0 A=0.129771 B=0.987504 tpre=388 tpost=100.025
 entry flag=0 t=400 w=0 A=0.130094 B=0.987504 tpre=388 tpost=100.001
 entry flag=0 t=402 w=0 A=0.0391794 B=1.12437 tpre=392 tpost=100.025
 entry flag=0 t=402 w=0 A=0.0393085 B=1.12437 tpre=392 tpost=100.001
-entry flag=0 t=40 w=0 A=0 B=0.868693 tpre=28 tpost=-1e+09
-entry flag=0 t=40 w=0 A=0 B=0.868693 tpre=28 tpost=-1e+09
 entry flag=0 t=412 w=0 A=0.0391767 B=1.12437 tpre=402 tpost=100.025
 entry flag=0 t=412 w=0 A=0.0393058 B=1.12437 tpre=402 tpost=100.001
 entry flag=0 t=412 w=0 A=0.129761 B=0.987504 tpre=400 tpost=100.025
 entry flag=0 t=412 w=0 A=0.130085 B=0.987504 tpre=400 tpost=100.001
+entry flag=0 t=42 w=0 A=0 B=1.01745 tpre=32 tpost=-1e+09
+entry flag=0 t=42 w=0 A=0 B=1.01745 tpre=32 tpost=-1e+09
 entry flag=0 t=422 w=0 A=0.0391747 B=1.12437 tpre=412 tpost=100.025
 entry flag=0 t=422 w=0 A=0.0393038 B=1.12437 tpre=412 tpost=100.001
 entry flag=0 t=424 w=0 A=0.129755 B=0.987504 tpre=412 tpost=100.025
 entry flag=0 t=424 w=0 A=0.130078 B=0.987504 tpre=412 tpost=100.001
-entry flag=0 t=42 w=0 A=0 B=1.01745 tpre=32 tpost=-1e+09
-entry flag=0 t=42 w=0 A=0 B=1.01745 tpre=32 tpost=-1e+09
 entry flag=0 t=432 w=0 A=0.0391732 B=1.12437 tpre=422 tpost=100.025
 entry flag=0 t=432 w=0 A=0.0393023 B=1.12437 tpre=422 tpost=100.001
 entry flag=0 t=436 w=0 A=0.12975 B=0.987504 tpre=424 tpost=100.025
@@ -164,8 +170,6 @@ entry flag=0 t=492 w=0 A=0.0391695 B=1.12437 tpre=482 tpost=100.025
 entry flag=0 t=492 w=0 A=0.0392986 B=1.12437 tpre=482 tpost=100.001
 entry flag=0 t=496 w=0 A=0.129741 B=0.987504 tpre=484 tpost=100.025
 entry flag=0 t=496 w=0 A=0.130064 B=0.987504 tpre=484 tpost=100.001
-entry flag=0 t=4 w=0 A=0 B=0 tpre=-1e+09 tpost=-1e+09
-entry flag=0 t=4 w=0 A=0 B=0 tpre=-1e+09 tpost=-1e+09
 entry flag=0 t=52 w=0 A=0 B=0.92885 tpre=40 tpost=-1e+09
 entry flag=0 t=52 w=0 A=0 B=0.92885 tpre=40 tpost=-1e+09
 entry flag=0 t=52 w=0 A=0 B=1.065 tpre=42 tpost=-1e+09
@@ -188,8 +192,4 @@ entry flag=1 t=0
 entry flag=1 t=0
 entry flag=2 t=100.001 tpost=-1e+09
 entry flag=2 t=100.025 tpost=-1e+09
-entry FOR_NETCONS w=0 A=0 B=0.985784 tp=100
-entry FOR_NETCONS w=0 A=0 B=0.985784 tp=100
-entry FOR_NETCONS w=0 A=0 B=1.12123 tp=92
-entry FOR_NETCONS w=0 A=0 B=1.12123 tp=92
 fixed step
