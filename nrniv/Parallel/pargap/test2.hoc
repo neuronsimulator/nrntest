@@ -8,6 +8,10 @@ start = startsw()
 objref pc
 pc = new ParallelContext()
 
+nrnpython("from gap_verify import *")
+objref po
+po = new PythonObject()
+
 begintemplate Cell
 public soma
 create soma
@@ -46,6 +50,7 @@ proc mkgaps() { local gid, i  localobj gap
   // sources
   for celliter(&gid) {
     pc.source_var(&cells[gid].soma.v(.5), gid)
+    cells[gid].soma po.source_var(.5,gid)
   }
   // targets
   for celliter(&gid) {
@@ -53,6 +58,7 @@ proc mkgaps() { local gid, i  localobj gap
       for i=0, 1 {
 	cells[gid].soma gap = new HalfGap(.5)
         pc.target_var(gap, &gap.vgap, i)
+        po.target_var(gap, i)
         gap.r = rgap
         gaps.append(gap)
       }
@@ -60,6 +66,7 @@ proc mkgaps() { local gid, i  localobj gap
       for i=2, ncell-1 {
         cells[gid].soma gap = new HalfGap(.5)
         pc.target_var(gap, &gap.vgap, i)
+        po.target_var(gap, i)
         gap.r = rgap
         gaps.append(gap)
       }
@@ -96,8 +103,10 @@ if (pc.id == 0) {
 tstop = 10
 
 {load_file("test2.ses")}
+cvode.cache_efficient(1)
 proc prun() {
   pc.set_maxstep(100)
+  po.setup_transfer_verify()
   stdinit()
 pc.psolve(tstop)
 //continuerun(tstop)

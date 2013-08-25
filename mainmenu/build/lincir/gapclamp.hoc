@@ -1,0 +1,27 @@
+load_file("nrngui.hoc")
+create s1, s2
+forall {
+  insert hh
+  L = 10
+  diam = 10
+}
+s1 { insert extracellular  s1.xraxial = 1e9  s1.xg = 0 }
+
+load_file("gapclamp.ses")
+run()
+
+object_push(LinearCircuit[0])
+tool(3)
+object_pop()
+print "Simulate radio button is actually off. Do not turn on without"
+print " first executing \"objref gc\""
+
+load_file("gapclamp.tmp")
+objref gc
+gc = new LM()
+s1 gc.s1_loc(0.5)
+s2 gc.s2_loc(0.5)
+gc.E_vc = 10
+gc.install()
+
+run()
