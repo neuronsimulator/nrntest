@@ -17,6 +17,7 @@ run()
 verify_graph_()
 
 ACh_ModelDB 149739
+demo_run()
 
 AkemannEtAl2009 123453
 run_model(prot)
@@ -131,6 +132,7 @@ run()
 verify_graph_()
 
 DAmodel 141272
+//do not run Problem is that Vbox.dialog() steals the focus (complex to fix)
 
 DG_BC 140789
 
@@ -239,6 +241,7 @@ run_c()
 verify_graph_()
 
 HBplusIh 141063
+//do not run Problem is that Vbox.dialog() steals the focus (complex to fix)
 
 HCN2k 19176
 experiment1()
@@ -471,6 +474,9 @@ RoyeckEtAl2008 115356
 short_test()
 verify_graph_()
 
+SeqLearn 147461
+//do not run Minimum time would be 1/2 hr default time is about 8.3 hours
+
 SFS-IPS-WM-network 98017
 //do not run
 
@@ -501,8 +507,6 @@ verify_graph_()
 Sbpap_code 125385
 
 Schizophr 138205
-
-SeqLearn 147461
 
 ShepherdBrayton1979 144385
 
