@@ -1,9 +1,3 @@
-MoradiEtAl2012 145836
-ParmFitnessGui[0].run()
-
-KerrEtAl2013 147366
-//do not run
-
 2VN 139654
 
 5chan 3673
@@ -18,6 +12,7 @@ verify_graph_()
 
 ACh_ModelDB 149739
 demo_run()
+verify_graph_()
 
 AkemannEtAl2009 123453
 run_model(prot)
@@ -302,6 +297,9 @@ verify_graph_()
 
 Katona_et_al 136176
 
+KerrEtAl2013 147366
+//do not run
+
 KimEtAl2013 150288
 
 KoendgenEtAl2008 118631
@@ -364,6 +362,10 @@ MasurkarChen2011 140462
 McCormickEtAl2007YuEtAl2008 135839
 
 MiglioreMcTavish2013 149415
+
+MoradiEtAl2012 145836
+ParmFitnessGui[0].run()
+verify_graph_()
 
 MultiChirp 147578
 
@@ -586,6 +588,10 @@ YuEtAlPNAS2007 135898
 ZhouColburn2010 143114
 
 a2dmodeldb 150245
+tstop=100
+init()
+run()
+verify_graph_()
 
 acker_antic 117207
 restart("AckerAnticBasalBackprop")
@@ -659,6 +665,7 @@ run()
 verify_graph_()
 
 b11aug17 140881
+//do not run Lytton model takes too long to run and complex to edit
 
 ba 62284
 run()
@@ -846,6 +853,10 @@ xopen("fig2.hoc")
 verify_graph_()
 
 fdemo 138379
+mytstop=0.1e3
+tstop=mytstop
+finish_run()
+verify_graph_()
 
 fh 3507
 verify_graph_()
@@ -1165,6 +1176,7 @@ network 139656
 //do not run
 
 neuroprosthesis 141505
+//do not run Specialized installation environment
 
 nevian 124394
 
