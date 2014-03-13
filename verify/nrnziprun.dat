@@ -552,6 +552,7 @@ Stochastic 64195
 ThomasPetrou2013 149174
 
 TimeScales-master 150284
+//do not run Mattione Le Novere missing _run_me.hoc in parallel model
 
 Traub2003 20756
 pyr3_ = new pyr3( 21 ) 
