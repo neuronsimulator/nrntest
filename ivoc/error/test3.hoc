@@ -1,0 +1,28 @@
+// valid multiline statement
+{
+a = 2
+b = 3
+b += 2
+a += b
+print a, b
+}
+
+// syntax error in  multiline statement
+{
+a = 2
+b = 3
+b ++= 2
+a += b
+print a, b
+}
+
+// runtime error in multiline statement
+{
+a = 2
+b = 3
+b += sqrt(-1)
+a += b
+print a, b
+}
+
+

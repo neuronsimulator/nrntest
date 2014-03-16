@@ -1,0 +1,17 @@
+// multiline recursive error
+objref po
+po = new PythonObject()
+
+i += 1
+if (i < 5) {
+  po.test6()
+}
+
+{
+a = 2
+b = 3
+a ++ 2
+b = 4
+}
+
+

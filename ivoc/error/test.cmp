@@ -1,0 +1,530 @@
+begin run_from_stdin test2.hoc
+oc>//syntax error
+oc>a ++ 2
+nrniv: syntax error
+ near line 2
+ a ++ 2
+    ^
+oc>
+oc>// runtime error (should not get to this point unless stdin and isatty)
+oc>sqrt(-1)
+nrniv: sqrt argument out of domain
+ near line 5
+ sqrt(-1)
+         ^
+oc>
+oc>begin nrniv < test2.hoc
+nrniv: syntax error
+ near line 2
+ a ++ 2
+    ^
+begin nrniv test2.hoc
+nrniv: syntax error
+ in test2.hoc near line 2
+ a ++ 2
+    ^
+begin run_from_stdin test3.hoc
+oc>// valid multiline statement
+oc>{
+>	oc>a = 2
+first instance of a
+>	oc>b = 3
+first instance of b
+>	oc>b += 2
+>	oc>a += b
+>	oc>print a, b
+>	oc>}
+7 5 
+oc>
+oc>// syntax error in  multiline statement
+oc>{
+>	oc>a = 2
+>	oc>b = 3
+>	oc>b ++= 2
+nrniv: syntax error
+ near line 14
+ b ++= 2
+     ^
+oc>a += b
+oc>print a, b
+12 5 
+oc>}
+nrniv: syntax error
+ near line 17
+ }
+ ^
+oc>
+oc>// runtime error in multiline statement
+oc>{
+>	oc>a = 2
+>	oc>b = 3
+>	oc>b += sqrt(-1)
+>	oc>a += b
+>	oc>print a, b
+>	oc>}
+nrniv: sqrt argument out of domain
+ near line 26
+ }
+  ^
+oc>
+oc>begin nrniv < test3.hoc
+>	first instance of a
+>	first instance of b
+>	>	>	>	7 5 
+>	>	>	nrniv: syntax error
+ near line 14
+ b ++= 2
+     ^
+begin nrniv test3.hoc
+7 5 
+nrniv: syntax error
+ in test3.hoc near line 14
+ b ++= 2
+     ^
+begin run_from_stdin test4.hoc
+oc>
+oc>xopen("test2.hoc")
+nrniv: syntax error
+ in test2.hoc near line 2
+ a ++ 2
+    ^
+        xopen("test2.hoc")
+oc>execute("xopen(\"test2.hoc\")")
+nrniv: syntax error
+ in test2.hoc near line 2
+ a ++ 2
+    ^
+        xopen("test2.hoc")
+      execute("xopen("tes...")
+nrniv: execute error: xopen("test2.hoc")
+ in test2.hoc near line 3
+ ^
+oc>execute1("xopen(\"test2.hoc\")")
+nrniv: syntax error
+ in test2.hoc near line 2
+ a ++ 2
+    ^
+        xopen("test2.hoc")
+      execute1("xopen("tes...")
+	0 
+oc>execute1("xopen(\"test2.hoc\")", 0)
+	0 
+oc>load_file(1, "test2.hoc")
+nrniv: syntax error
+ in test2.hoc near line 2
+ a ++ 2
+    ^
+        xopen("test2.hoc")
+      execute1("{xopen("te...")
+    load_file(1, "test2.hoc")
+	0 
+oc>
+oc>xopen("test3.hoc")
+7 5 
+nrniv: syntax error
+ in test3.hoc near line 14
+ b ++= 2
+     ^
+        xopen("test3.hoc")
+oc>execute("xopen(\"test3.hoc\")")
+7 5 
+nrniv: syntax error
+ in test3.hoc near line 14
+ b ++= 2
+     ^
+        xopen("test3.hoc")
+      execute("xopen("tes...")
+nrniv: execute error: xopen("test3.hoc")
+ in test3.hoc near line 15
+ ^
+oc>execute1("xopen(\"test3.hoc\")")
+7 5 
+nrniv: syntax error
+ in test3.hoc near line 14
+ b ++= 2
+     ^
+        xopen("test3.hoc")
+      execute1("xopen("tes...")
+	0 
+oc>execute1("xopen(\"test3.hoc\")", 0)
+7 5 
+	0 
+oc>load_file(1, "test3.hoc")
+7 5 
+nrniv: syntax error
+ in test3.hoc near line 14
+ b ++= 2
+     ^
+        xopen("test3.hoc")
+      execute1("{xopen("te...")
+    load_file(1, "test3.hoc")
+	0 
+oc>
+oc>i=0
+first instance of i
+oc>xopen("test5.hoc")
+nrniv: syntax error
+ in test5.hoc near line 11
+ a ++ 2
+    ^
+        xopen("test5.hoc")
+      xopen("test5.hoc")
+    xopen("test5.hoc")
+  xopen("test5.hoc")
+and others
+oc>i=0
+oc>execute("xopen(\"test5.hoc\")")
+nrniv: syntax error
+ in test5.hoc near line 11
+ a ++ 2
+    ^
+        xopen("test5.hoc")
+      xopen("test5.hoc")
+    xopen("test5.hoc")
+  xopen("test5.hoc")
+and others
+nrniv: execute error: xopen("test5.hoc")
+ in test5.hoc near line 13
+ ^
+oc>i=0
+oc>execute1("xopen(\"test5.hoc\")")
+nrniv: syntax error
+ in test5.hoc near line 11
+ a ++ 2
+    ^
+        xopen("test5.hoc")
+      xopen("test5.hoc")
+    xopen("test5.hoc")
+  xopen("test5.hoc")
+and others
+	0 
+oc>i=0
+oc>execute1("xopen(\"test5.hoc\")", 0)
+	0 
+oc>i=0
+oc>load_file(1, "test5.hoc")
+nrniv: syntax error
+ in test5.hoc near line 11
+ a ++ 2
+    ^
+        xopen("test5.hoc")
+      xopen("test5.hoc")
+    xopen("test5.hoc")
+  xopen("test5.hoc")
+and others
+	0 
+oc>
+oc>begin nrniv < test4.hoc
+nrniv: syntax error
+ in test2.hoc near line 2
+ a ++ 2
+    ^
+        xopen("test2.hoc")
+nrniv: syntax error
+ in test2.hoc near line 2
+ a ++ 2
+    ^
+        xopen("test2.hoc")
+      execute("xopen("tes...")
+nrniv: execute error: xopen("test2.hoc")
+ in test2.hoc near line 3
+ ^
+nrniv: syntax error
+ in test2.hoc near line 2
+ a ++ 2
+    ^
+        xopen("test2.hoc")
+      execute1("xopen("tes...")
+	0 
+	0 
+nrniv: syntax error
+ in test2.hoc near line 2
+ a ++ 2
+    ^
+        xopen("test2.hoc")
+      execute1("{xopen("te...")
+    load_file(1, "test2.hoc")
+	0 
+7 5 
+nrniv: syntax error
+ in test3.hoc near line 14
+ b ++= 2
+     ^
+        xopen("test3.hoc")
+7 5 
+nrniv: syntax error
+ in test3.hoc near line 14
+ b ++= 2
+     ^
+        xopen("test3.hoc")
+      execute("xopen("tes...")
+nrniv: execute error: xopen("test3.hoc")
+ in test3.hoc near line 15
+ ^
+7 5 
+nrniv: syntax error
+ in test3.hoc near line 14
+ b ++= 2
+     ^
+        xopen("test3.hoc")
+      execute1("xopen("tes...")
+	0 
+7 5 
+	0 
+7 5 
+nrniv: syntax error
+ in test3.hoc near line 14
+ b ++= 2
+     ^
+        xopen("test3.hoc")
+      execute1("{xopen("te...")
+    load_file(1, "test3.hoc")
+	0 
+first instance of i
+nrniv: syntax error
+ in test5.hoc near line 11
+ a ++ 2
+    ^
+        xopen("test5.hoc")
+      xopen("test5.hoc")
+    xopen("test5.hoc")
+  xopen("test5.hoc")
+and others
+nrniv: syntax error
+ in test5.hoc near line 11
+ a ++ 2
+    ^
+        xopen("test5.hoc")
+      xopen("test5.hoc")
+    xopen("test5.hoc")
+  xopen("test5.hoc")
+and others
+nrniv: execute error: xopen("test5.hoc")
+ in test5.hoc near line 13
+ ^
+nrniv: syntax error
+ in test5.hoc near line 11
+ a ++ 2
+    ^
+        xopen("test5.hoc")
+      xopen("test5.hoc")
+    xopen("test5.hoc")
+  xopen("test5.hoc")
+and others
+	0 
+	0 
+nrniv: syntax error
+ in test5.hoc near line 11
+ a ++ 2
+    ^
+        xopen("test5.hoc")
+      xopen("test5.hoc")
+    xopen("test5.hoc")
+  xopen("test5.hoc")
+and others
+	0 
+begin nrniv test4.hoc
+nrniv: syntax error
+ in test2.hoc near line 2
+ a ++ 2
+    ^
+        xopen("test2.hoc")
+begin nrniv -python test2.py
+TEST
+TEST
+z = h('xopen("test2.hoc")'); print "result=",z
+nrniv: syntax error
+ in test2.hoc near line 2
+ a ++ 2
+    ^
+        xopen("test2.hoc")
+result= 0
+TEST
+z = h.xopen('test2.hoc'); print "result=",z
+nrniv: syntax error
+ in test2.hoc near line 2
+ a ++ 2
+    ^
+        xopen("test2.hoc")
+<type 'exceptions.RuntimeError'> :  hoc error
+TEST
+z = h.execute('xopen("test2.hoc")'); print "result=",z
+nrniv: syntax error
+ in test2.hoc near line 2
+ a ++ 2
+    ^
+        xopen("test2.hoc")
+      execute("xopen("tes...")
+<type 'exceptions.RuntimeError'> :  hoc error
+TEST
+z = h.execute1('xopen("test2.hoc")'); print "result=",z
+nrniv: syntax error
+ in test2.hoc near line 2
+ a ++ 2
+    ^
+        xopen("test2.hoc")
+      execute1("xopen("tes...")
+result= 0.0
+TEST
+z = h.load_file('test2.hoc'); print "result=",z
+nrniv: syntax error
+ in test2.hoc near line 2
+ a ++ 2
+    ^
+        xopen("test2.hoc")
+      execute1("{xopen("te...")
+    load_file("test2.hoc")
+nrniv: syntax error
+ in test2.hoc near line 2
+ a ++ 2
+    ^
+nrniv: syntax error
+ in test2.hoc near line 2
+ a ++ 2
+    ^
+        execute("//syntax e...")
+nrniv: syntax error
+ in test2.hoc near line 2
+ a ++ 2
+    ^
+        execute1("//syntax e...")
+result= 0.0
+TEST
+z = h(b); print "result=",z
+result= 0
+TEST
+z = h.execute(b); print "result=",z
+<type 'exceptions.RuntimeError'> :  hoc error
+TEST
+z = h.execute1(b); print "result=",z
+result= 0.0
+TEST
+TEST
+z = h('xopen("test3.hoc")'); print "result=",z
+7 5 
+nrniv: syntax error
+ in test3.hoc near line 14
+ b ++= 2
+     ^
+        xopen("test3.hoc")
+result= 0
+TEST
+z = h.xopen('test3.hoc'); print "result=",z
+7 5 
+nrniv: syntax error
+ in test3.hoc near line 14
+ b ++= 2
+     ^
+        xopen("test3.hoc")
+<type 'exceptions.RuntimeError'> :  hoc error
+TEST
+z = h.execute('xopen("test3.hoc")'); print "result=",z
+7 5 
+nrniv: syntax error
+ in test3.hoc near line 14
+ b ++= 2
+     ^
+        xopen("test3.hoc")
+      execute("xopen("tes...")
+<type 'exceptions.RuntimeError'> :  hoc error
+TEST
+z = h.execute1('xopen("test3.hoc")'); print "result=",z
+7 5 
+nrniv: syntax error
+ in test3.hoc near line 14
+ b ++= 2
+     ^
+        xopen("test3.hoc")
+      execute1("xopen("tes...")
+result= 0.0
+TEST
+z = h.load_file('test3.hoc'); print "result=",z
+7 5 
+nrniv: syntax error
+ in test3.hoc near line 14
+ b ++= 2
+     ^
+        xopen("test3.hoc")
+      execute1("{xopen("te...")
+    load_file("test3.hoc")
+nrniv: syntax error
+ in test3.hoc near line 14
+ b ++= 2
+     ^
+nrniv: syntax error
+ in test3.hoc near line 14
+ b ++= 2
+     ^
+        execute("// valid m...")
+nrniv: syntax error
+ in test3.hoc near line 14
+ b ++= 2
+     ^
+        execute1("// valid m...")
+result= 0.0
+TEST
+z = h(b); print "result=",z
+7 5 
+result= 0
+TEST
+z = h.execute(b); print "result=",z
+<type 'exceptions.RuntimeError'> :  hoc error
+TEST
+z = h.execute1(b); print "result=",z
+7 5 
+result= 0.0
+begin nrniv -python test6.py
+nrniv: syntax error
+ in test6.hoc near line 13
+ a ++ 2
+    ^
+        xopen("test6.hoc")
+      xopen("test6.hoc")
+    xopen("test6.hoc")
+  xopen("test6.hoc")
+and others
+Traceback (most recent call last):
+  File "test6.py", line 3, in test6
+    h.xopen("test6.hoc")
+RuntimeError: hoc error
+nrniv: PyObject method call failed: test6
+ in test6.hoc near line 8
+ ^
+        xopen("test6.hoc")
+      xopen("test6.hoc")
+    xopen("test6.hoc")
+  xopen("test6.hoc")
+Traceback (most recent call last):
+  File "test6.py", line 3, in test6
+    h.xopen("test6.hoc")
+RuntimeError: hoc error
+nrniv: PyObject method call failed: test6
+ in test6.hoc near line 8
+ ^
+        xopen("test6.hoc")
+      xopen("test6.hoc")
+    xopen("test6.hoc")
+Traceback (most recent call last):
+  File "test6.py", line 3, in test6
+    h.xopen("test6.hoc")
+RuntimeError: hoc error
+nrniv: PyObject method call failed: test6
+ in test6.hoc near line 8
+ ^
+        xopen("test6.hoc")
+      xopen("test6.hoc")
+Traceback (most recent call last):
+  File "test6.py", line 3, in test6
+    h.xopen("test6.hoc")
+RuntimeError: hoc error
+nrniv: PyObject method call failed: test6
+ in test6.hoc near line 8
+ ^
+        xopen("test6.hoc")
+Traceback (most recent call last):
+  File "test6.py", line 5, in <module>
+    test6()
+  File "test6.py", line 3, in test6
+    h.xopen("test6.hoc")
+RuntimeError: hoc error
+>>> 

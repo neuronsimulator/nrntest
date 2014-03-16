@@ -1,0 +1,4 @@
+print "no error in test1.hoc"
+1+1
+sqrt(2)
+

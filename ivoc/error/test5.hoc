@@ -1,0 +1,15 @@
+// multiline recursive error
+
+i += 1
+if (i < 5) {
+  xopen("test5.hoc")
+}
+
+{
+a = 2
+b = 3
+a ++ 2
+b = 4
+}
+
+
