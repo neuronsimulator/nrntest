@@ -1,0 +1,7 @@
+//syntax error
+a ++ 2
+
+// runtime error (should not get to this point unless stdin and isatty)
+sqrt(-1)
+
+

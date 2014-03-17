@@ -1,0 +1,25 @@
+
+xopen("test2.hoc")
+execute("xopen(\"test2.hoc\")")
+execute1("xopen(\"test2.hoc\")")
+execute1("xopen(\"test2.hoc\")", 0)
+load_file(1, "test2.hoc")
+
+xopen("test3.hoc")
+execute("xopen(\"test3.hoc\")")
+execute1("xopen(\"test3.hoc\")")
+execute1("xopen(\"test3.hoc\")", 0)
+load_file(1, "test3.hoc")
+
+i=0
+xopen("test5.hoc")
+i=0
+execute("xopen(\"test5.hoc\")")
+i=0
+execute1("xopen(\"test5.hoc\")")
+i=0
+execute1("xopen(\"test5.hoc\")", 0)
+i=0
+load_file(1, "test5.hoc")
+
+
