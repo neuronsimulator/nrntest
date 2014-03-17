@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/BBBBusr/bin/bash
 
 run_from_stdin()
 {
@@ -19,6 +19,7 @@ for i in test2.py test6.py ; do
   echo "begin nrniv -python $i"
   nrniv -nobanner -python $i < /dev/null
 done
-) > temp.cmp 2>&1
+) >temp.stdout 2>temp.stderr
 
-diff test.cmp temp.cmp
+diff test.stdout temp.stdout
+diff test.stderr temp.stderr

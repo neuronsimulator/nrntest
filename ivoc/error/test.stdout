@@ -1,0 +1,163 @@
+begin run_from_stdin test2.hoc
+oc>//syntax error
+oc>a ++ 2
+oc>
+oc>// runtime error (should not get to this point unless stdin and isatty)
+oc>sqrt(-1)
+oc>
+oc>begin nrniv < test2.hoc
+begin nrniv test2.hoc
+begin run_from_stdin test3.hoc
+oc>// valid multiline statement
+oc>{
+>	oc>a = 2
+first instance of a
+>	oc>b = 3
+first instance of b
+>	oc>b += 2
+>	oc>a += b
+>	oc>print a, b
+>	oc>}
+7 5 
+oc>
+oc>// syntax error in  multiline statement
+oc>{
+>	oc>a = 2
+>	oc>b = 3
+>	oc>b ++= 2
+oc>a += b
+oc>print a, b
+12 5 
+oc>}
+oc>
+oc>// runtime error in multiline statement
+oc>{
+>	oc>a = 2
+>	oc>b = 3
+>	oc>b += sqrt(-1)
+>	oc>a += b
+>	oc>print a, b
+>	oc>}
+oc>
+oc>begin nrniv < test3.hoc
+>	first instance of a
+>	first instance of b
+>	>	>	>	7 5 
+>	>	>	begin nrniv test3.hoc
+7 5 
+begin run_from_stdin test4.hoc
+oc>
+oc>xopen("test2.hoc")
+oc>execute("xopen(\"test2.hoc\")")
+oc>execute1("xopen(\"test2.hoc\")")
+	0 
+oc>execute1("xopen(\"test2.hoc\")", 0)
+	0 
+oc>load_file(1, "test2.hoc")
+	0 
+oc>
+oc>xopen("test3.hoc")
+7 5 
+oc>execute("xopen(\"test3.hoc\")")
+7 5 
+oc>execute1("xopen(\"test3.hoc\")")
+7 5 
+	0 
+oc>execute1("xopen(\"test3.hoc\")", 0)
+7 5 
+	0 
+oc>load_file(1, "test3.hoc")
+7 5 
+	0 
+oc>
+oc>i=0
+first instance of i
+oc>xopen("test5.hoc")
+oc>i=0
+oc>execute("xopen(\"test5.hoc\")")
+oc>i=0
+oc>execute1("xopen(\"test5.hoc\")")
+	0 
+oc>i=0
+oc>execute1("xopen(\"test5.hoc\")", 0)
+	0 
+oc>i=0
+oc>load_file(1, "test5.hoc")
+	0 
+oc>
+oc>begin nrniv < test4.hoc
+	0 
+	0 
+	0 
+7 5 
+7 5 
+7 5 
+	0 
+7 5 
+	0 
+7 5 
+	0 
+first instance of i
+	0 
+	0 
+	0 
+begin nrniv test4.hoc
+begin nrniv -python test2.py
+TEST
+TEST
+z = h('xopen("test2.hoc")'); print "result=",z
+result= 0
+TEST
+z = h.xopen('test2.hoc'); print "result=",z
+<type 'exceptions.RuntimeError'> :  hoc error
+TEST
+z = h.execute('xopen("test2.hoc")'); print "result=",z
+<type 'exceptions.RuntimeError'> :  hoc error
+TEST
+z = h.execute1('xopen("test2.hoc")'); print "result=",z
+result= 0.0
+TEST
+z = h.load_file('test2.hoc'); print "result=",z
+result= 0.0
+TEST
+z = h(b); print "result=",z
+result= 0
+TEST
+z = h.execute(b); print "result=",z
+<type 'exceptions.RuntimeError'> :  hoc error
+TEST
+z = h.execute1(b); print "result=",z
+result= 0.0
+TEST
+TEST
+z = h('xopen("test3.hoc")'); print "result=",z
+7 5 
+result= 0
+TEST
+z = h.xopen('test3.hoc'); print "result=",z
+7 5 
+<type 'exceptions.RuntimeError'> :  hoc error
+TEST
+z = h.execute('xopen("test3.hoc")'); print "result=",z
+7 5 
+<type 'exceptions.RuntimeError'> :  hoc error
+TEST
+z = h.execute1('xopen("test3.hoc")'); print "result=",z
+7 5 
+result= 0.0
+TEST
+z = h.load_file('test3.hoc'); print "result=",z
+7 5 
+result= 0.0
+TEST
+z = h(b); print "result=",z
+7 5 
+result= 0
+TEST
+z = h.execute(b); print "result=",z
+<type 'exceptions.RuntimeError'> :  hoc error
+TEST
+z = h.execute1(b); print "result=",z
+7 5 
+result= 0.0
+begin nrniv -python test6.py
