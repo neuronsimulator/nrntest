@@ -35,7 +35,7 @@ cell[0].s.amp = .3
 objref pc
 pc = new ParallelContext()
 for i=0, n-1 {
-	pc.source_var(&cell[i].soma.v(.5), i)
+	cell[i].soma pc.source_var(&cell[i].soma.v(.5), i)
 	pc.target_var(cell[(i+1)%2].gap, &cell[(i+1)%2].gap.vgap, i)
 }
 

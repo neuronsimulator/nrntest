@@ -49,7 +49,7 @@ proc mkgaps() { local gid, i  localobj gap
   gaps = new List()
   // sources
   for celliter(&gid) {
-    pc.source_var(&cells[gid].soma.v(.5), gid)
+    cells[gid].soma pc.source_var(&cells[gid].soma.v(.5), gid)
     cells[gid].soma po.source_var(.5,gid)
   }
   // targets
