@@ -2,9 +2,6 @@
 NEURON { SUFFIX nothing }
 
 VERBATIM
-extern double hoc_call_func();
-extern double hoc_pushx();
-extern Symbol* hoc_lookup();
 static Symbol* fhoc_;
 ENDVERBATIM
 

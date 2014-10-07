@@ -14,3 +14,4 @@ test.table_f(fvec, tvec)
 
 for (x=0; x < 4; x += .5) { print x, test.f(x) }
 
+print 2.8, test.g(2.8)

@@ -4,3 +4,6 @@ NEURON {
 
 FUNCTION_TABLE f(x)
 
+FUNCTION g(x) {
+  g = f(x)
+}
