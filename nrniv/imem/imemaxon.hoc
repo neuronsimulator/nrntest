@@ -1,0 +1,5 @@
+load_file("nrngui.hoc")
+//cvode.cache_efficient(1)
+cvode.use_fast_imem(1)
+load_file("imemaxon.ses")
+run()
