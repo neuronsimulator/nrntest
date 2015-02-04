@@ -1,0 +1,6 @@
+create s
+n1 = 3
+s.nseg=n1
+for (x, 0) cm(x) = x
+s.nseg *= 5
+for (x, 0) print x, cm(x)
