@@ -6,6 +6,8 @@
 import os
 import urllib2
 from urllib2 import urlopen, URLError, HTTPError, Request
+import sys
+
 
 def dlfile(url,filename):
     # Open the url
@@ -22,6 +24,34 @@ def dlfile(url,filename):
         print "HTTP Error:", e.code, url
     except URLError, e:
         print "URL Error:", e.reason, url
+
+
+leave_early=False
+for i in range(1,len(sys.argv)):
+  print "downloading ",sys.argv[i]
+  leave_early=True
+  objid = sys.argv[i]
+  dlfile('http://senselab.med.yale.edu/modeldb/eavBinDown.asp?o='+objid+'&a=23&mime=application/zip',
+      "modeldb/"+objid+".zip")
+  # If above fails try a=311 in case one of the alternate models.
+  # Judge as failure by the file size being less than 64 (2x32) bytes.  Note that currently the file is
+  # written with a "(white space) File not found!(white space)" error message that is 32 bytes long
+  file_size = os.path.getsize("modeldb/"+objid+".zip")
+  if file_size < 64: # note that currently the smallest zip file in modeldb is length 799 (modeldb/155731.zip)
+    # try again with the alternate model attribute a=311
+    print "Woops: did not find as default model, trying again as an alternate model"
+    dlfile('http://senselab.med.yale.edu/modeldb/eavBinDown.asp?o='+objid+'&a=311&mime=application/zip',
+      "modeldb/"+objid+".zip")
+    file_size = os.path.getsize("modeldb/"+objid+".zip")
+    if file_size < 64:
+      # if failure this time then print an error message and delete error message in zip file
+      print "Error: senselab could not find the model accession number ", objid
+      os.remove("modeldb/"+objid+".zip")
+
+if leave_early:
+  exit()
+
+print "There were no arguments (objids separated by spaces) so we are downloading all the NEURON models"
   
 # get a fresh copy of the web page listing the NEURON models in ModelDB
 #

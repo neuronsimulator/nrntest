@@ -126,6 +126,9 @@ D2modulation 98005
 run()
 verify_graph_()
 
+DAcomparison 167772
+//do not run Tried "initDialog.unmap(1)" - didnt work.  Need to change archive
+
 DAmodel 141272
 //do not run Problem is that Vbox.dialog() steals the focus (complex to fix)
 

@@ -4,8 +4,12 @@ export mdbtest=6.0.882
 export standard=5.9.10
 
 ./senselabmodels.py will copy all the ModelDB NEURON model zip files
-into the modeldb directory.  They are named in the format
-object_id_number.zip
+into the modeldb directory.  Alternatively one or more model object
+ids can be passed on the command line to restrict the downloaded files
+to these, e.g.
+./senselabmodels.py object_id_1 object_id_2 object_id_3
+The downloaded files are named in the format
+modeldb/object_id_number.zip
 
 sh mkmap.sh will regenerate a file map.txt that lists model object ids
 paired with the name of the top level directory name from the model
