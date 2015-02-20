@@ -2,7 +2,7 @@
 #test harness for case when $1.hoc output is to be compared to $1.cmp
 err=0
 
-# if mod file exisgts, run nrnivmodl
+# if mod file exists, run nrnivmodl
 modfiles="`ls *.mod 2>/dev/null`"
 if test "$modfiles" != "" ; then
   nrnivmodl >& /dev/null

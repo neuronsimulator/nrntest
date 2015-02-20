@@ -1,0 +1,23 @@
+// there were several types of bugs possible when a POINT_PROCESS needed an ion
+
+create dend, axon
+forall nseg=5
+objref pp
+dend pp = new Foo(.5)
+pp.g = .001
+dend psection()
+axon psection()
+
+finitialize(-65)
+dend for (x, 0) print x, ena(x), ina(x)
+
+axon pp.loc(.5)
+finitialize(-65)
+axon for (x, 0) print x, ena(x), ina(x)
+axon psection()
+
+dend pp.loc(.01)
+finitialize(-65)
+dend for (x, 0) print x, ena(x), ina(x)
+dend psection()
+

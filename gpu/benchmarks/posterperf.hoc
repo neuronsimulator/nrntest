@@ -29,6 +29,7 @@ forall ion_style("na_ion",1,2,1,1,1)
 forall ion_style("k_ion",1,2,1,1,1)
 
  
+print "numSections=",numSections
 for i=0,numSections-1 {
 a[i] {
     s[i] = new IClamp(0.5)
@@ -61,3 +62,5 @@ for (nt = 1; nt < 5; nt *=2) {
 }else{
 gg(ns, nt)
 }
+
+quit()

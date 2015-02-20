@@ -2,7 +2,7 @@ load_file("nrngui.hoc")
 load_file("stdlib.hoc")
 load_file("pascell.hoc")
 
-ncell = 100
+ncell = 1000
 objref cell[ncell]
 for i=0, ncell - 1 {
 	cell[i] = new Cell()

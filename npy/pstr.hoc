@@ -11,7 +11,11 @@ p = new PythonObject()
 nrnpython("s = 'hello'")
 print "start"
 s = new S(p.s)
-s.get(p.s)
+print s.s
+s.set("goodbye")
+print s.s
+//s.get(p.s) // memory error for Python 2 and will not change p.s for Python 3
+p.s = s.s
 print p.s
 
 
