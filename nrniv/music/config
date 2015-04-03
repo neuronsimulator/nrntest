@@ -1,0 +1,13 @@
+[nrn1]
+  binary = nrniv
+  args = -nobanner -mpi -python test1.py
+  np = 2
+  p12 -> nrn2.p12
+
+[nrn2]
+  binary = nrniv
+  args = -nobanner -mpi -python test2.py
+  np = 3
+  p21 -> nrn1.p21
+
+

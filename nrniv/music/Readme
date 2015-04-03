@@ -1,0 +1,20 @@
+MUSIC=$HOME/soft/music
+
+#build music
+svn co http://svn.incf.org/svn/music
+cd music/trunk
+sh autogen.sh
+./configure --prefix=$MUSIC
+make
+make install
+
+#build NEURON
+$ ./configure --prefix=`pwd` --with-paranrn --with-nrnpython \
+  --with-music=$MUSIC
+make
+make install
+
+#run
+export PYTHONPATH=$MUSIC/lib/python2.7/site-packages
+mpirun -n 5 $MUSIC/bin/music config
+
