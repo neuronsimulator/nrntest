@@ -1,5 +1,8 @@
 #!/bin/bash
 
+sh testutil/clean
+neurondemo -c 'quit()'
+
 have_nrnpython=no
 have_nrnmpi=no
 if nrniv -nobanner -nogui -c 'nrnversion(6)' | grep nrnpython > /dev/null ; then
