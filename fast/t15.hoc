@@ -4,7 +4,7 @@
 
 objref pc
 pc = new ParallelContext()
-b = (execute1("{pc.nthread(2,1)}",0) == 0)
+b = (execute1("{pc.nthread(2,1)}",0) == 1)
 
 dt = 0.025
 {hoc_stdout("temp")}
@@ -19,4 +19,4 @@ run()
 
 strdef s
 {system("LC_ALL=C sort temp > temp1 ; cmp temp1 t15.stdout", s)}
-b = b || (strcmp(s, "") == 0)
+b = b && (strcmp(s, "") == 0)
