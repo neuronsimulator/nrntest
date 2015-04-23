@@ -1,3 +1,5 @@
+#must use openmpi
+
 MUSIC=$HOME/soft/music
 
 #build music
@@ -9,6 +11,7 @@ make
 make install
 
 #build NEURON
+export PATH=$HOME/soft/openmpi/bin:$PATH
 $ ./configure --prefix=`pwd` --with-paranrn --with-nrnpython \
   --with-music=$MUSIC
 make
@@ -16,5 +19,5 @@ make install
 
 #run
 export PYTHONPATH=$MUSIC/lib/python2.7/site-packages
-mpirun -n 5 $MUSIC/bin/music config
+mpirun -n 5 $MUSIC/bin/music test3.music
 
