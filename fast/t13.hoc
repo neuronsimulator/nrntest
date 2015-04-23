@@ -50,4 +50,4 @@ for i=0, n-1 cells[i].pr()
 
 strdef s
 {system("cmp temp t13.stdout", s)}
-b = b || (strcmp(s, "") == 0)
+b = b && (strcmp(s, "") == 0)
