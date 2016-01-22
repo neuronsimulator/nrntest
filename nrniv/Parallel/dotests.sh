@@ -2,21 +2,27 @@
 
 err=0
 
-i=alltoall.py
+files="alltoall.py alltoall_dict.py"
 
-a=`mpiexec -n 4 nrniv -nobanner -mpi -python $i |sed -n '$p'`
 
-f() (
+echo $files
+
+function f() {
+  echo "hello $1"
+  a=`mpiexec -n 4 nrniv -nobanner -mpi -python $1 2>/dev/null | sed -n '$p'`
   if test "$a" != 0 ; then
-    echo "$i failed"
+    echo "$1 failed"
     err=1
   else
-    echo "$i succeeded"
+    echo "$1 succeeded"
   fi
   exit $err
-)
+}
 
-f
+for i in $files ; do
+ echo $i
+ f $i
+done
 
 cd pargap
 nrnivmodl
