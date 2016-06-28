@@ -7,4 +7,3 @@ def efun(v):
 h.attr_praxis(1e-5, .5, 0)
 e = h.fit_praxis(efun, v)
 print "e=%g x=%g y=%g\n"%(e, v.x[0], v.x[1])
-

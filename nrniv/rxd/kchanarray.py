@@ -133,7 +133,7 @@ def mk():
   stim.amp = 3
 mk()
 
-#h.load_file("temp.ses")
+h.load_file("temp.ses")
 
 def prun():
   xx = h.startsw()

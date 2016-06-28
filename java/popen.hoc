@@ -20,7 +20,7 @@ while(1) {
 
 // the -isatty arg flushes every line but also produces an oc> prompt
 // with no newline when the interpreter is ready to accept input
-sprint(tstr, "/home/hines/neuron/nrnobj/i686/bin/nrniv -isatty")
+sprint(tstr, "/home/hines/neuron/nrnjava/x86_64/bin/nrniv -isatty")
 po = new POpen(tstr)
 
 proc hoccmd() {
@@ -42,7 +42,8 @@ proc result() { // blocking read lines into $s1 til "done"
 		js = po.getLine()
 		// the initial oc> is the prompt after
 		// the end of the substantive command
-		if (js.equals("oc>done")) {
+		// if (js.equals("oc>done")) {
+		if (js.equals("done")) {
 			break
 		}
 print js.toCharArray
