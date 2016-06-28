@@ -3,12 +3,15 @@
 // gid 0 and 1 have nmid cells between them.
 // 0 and 1 are connected by gap junctions to all nmid cells
 
+if (name_declared("cv") == 0) { execute("cv = 0") }
+if (name_declared("nt") == 0) { execute("nt = 1") }
+
 start = startsw()
 {load_file("nrngui.hoc")}
 objref pc
 pc = new ParallelContext()
 
-nrnpython("from gap_verify import *")
+nrnpython("import gap_verify")
 objref po
 po = new PythonObject()
 
@@ -50,7 +53,7 @@ proc mkgaps() { local gid, i  localobj gap
   // sources
   for celliter(&gid) {
     cells[gid].soma pc.source_var(&cells[gid].soma.v(.5), gid)
-    cells[gid].soma po.source_var(.5,gid)
+    cells[gid].soma po.gap_verify.source_var(.5,gid)
   }
   // targets
   for celliter(&gid) {
@@ -58,7 +61,7 @@ proc mkgaps() { local gid, i  localobj gap
       for i=0, 1 {
 	cells[gid].soma gap = new HalfGap(.5)
         pc.target_var(gap, &gap.vgap, i)
-        po.target_var(gap, i)
+        po.gap_verify.target_var(gap, i)
         gap.r = rgap
         gaps.append(gap)
       }
@@ -66,7 +69,7 @@ proc mkgaps() { local gid, i  localobj gap
       for i=2, ncell-1 {
         cells[gid].soma gap = new HalfGap(.5)
         pc.target_var(gap, &gap.vgap, i)
-        po.target_var(gap, i)
+        po.gap_verify.target_var(gap, i)
         gap.r = rgap
         gaps.append(gap)
       }
@@ -106,7 +109,7 @@ tstop = 10
 cvode.cache_efficient(1)
 proc prun() {
   pc.set_maxstep(100)
-  po.setup_transfer_verify()
+  po.gap_verify.setup_transfer_verify()
   stdinit()
 pc.psolve(tstop)
 //continuerun(tstop)

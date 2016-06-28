@@ -1,7 +1,36 @@
+'''
+Gap junction consistency tests.
+
+0) Every HalfGap.vgap receives information from some source.
+1) After a transfer, every HalfGap.vgap value has a valid encoded source rank
+2) All the HalfGap.vgap that have the same source, have the same value.
+3) For all the  HalfGap.vgap value of encoded source sid and rank, that
+     source sid actually exists on the source rank.
+
+The tests are prepared by calling
+  target_var(halfgap_instance, sid)
+  source_var(x, sid)
+for every call of the corresponding pc.target_var and pc.source_var calls.
+Note that x is location in the currently accessed section. If the real
+gaps are setup using Python, it may be more convenient to call the alternative
+  src_var(seg, sid)
+
+The tests are carried out by calling
+  setup_transfer_verify()
+just before stdinit() (after setup_transfer and set_maxstep).
+
+Note, this presumes the name, HalfGap.vgap . If the POINT_PROCESS is not
+HalfGap or the relevant range variable is not vgap, change appropriately
+below.
+
+
+'''
+
 from neuron import h
 
-rank = int(h.pc.id())
-nhost = int(h.pc.nhost())
+pc = h.ParallelContext()
+rank = int(pc.id())
+nhost = int(pc.nhost())
 
 sid2src = {}  # sid key specifies only one source (globally but only tested locally)
 src2sids = {} # possibly several sids associated with same src
@@ -10,29 +39,31 @@ tar2sid = {}  # target key has only one sid
 
 def target_var(g, id):
   sid = int(id)
-  if tar2sid.has_key(g):
-    print '%d %s with sid %d reregistered with sid %d'%(rank,g.hname(),tar2sid[g],id)
+  if g in tar2sid:
+    print ('%d %s with sid %d reregistered with sid %d'%(rank,g.hname(),tar2sid[g],id))
     raise RuntimeError
-  tar2sid.update({g:sid})
-  if sid2tars.has_key(sid):
-    sid2tars[sid].append(g)
-  else:
-    sid2tars.update({sid:[g]})
+  tar2sid[g] = sid
+  if sid not in sid2tars:
+    sid2tars[sid] = []
+  sid2tars[sid].append(g)
 
 def source_var(x, id):
+  src_var(h.cas()(x), id)
+
+def src_var(seg, id):
   sid = int(id)
-  sec = h.cas()
-  seg = sec(x)
-  if sid2src.has_key(sid):
-    s1 = h.secname(sec = sid2src[sid].sec)
-    s2 = h.secname(sec = sec)
-    print '%d source var sid %d already in use for %s and %s'%(rank,id,s1,s2)
+  if sid in sid2src:
+    s1 = name(seg)
+    s2 = name(sid2src[sid])
+    print ('%d source var sid %d for %s already in use for %s'%(rank,id,s1,s2))
     raise RuntimeError
-  sid2src.update({sid:seg})
-  if src2sids.has_key(seg):
-    src2sids[seg].append(sid)
-  else:
-    src2sids.update({seg:[sid]})
+  sid2src[sid] = seg
+  if seg not in src2sids:
+    src2sids[seg] = []
+  src2sids[seg].append(sid)
+
+def name(seg):
+  return '%s(%g)' % (seg.sec.name(), seg.x)
 
 def rank2frac(r):
   return float(r)/(2.**18)
@@ -42,7 +73,7 @@ def frac2rank(f):
   frac = x - float(int(x))
   xi = frac*(2.**18)
   if xi != float(int(xi)):
-    print '%d frac2rank f=%g x=%g xi=%g'%(rank, f, x, xi)
+    print ('%d frac2rank f=%g x=%g xi=%g'%(rank, f, x, xi))
     raise RunTimeError
   return int(xi)
 
@@ -52,14 +83,15 @@ def decode_vgap_val(v):
   return (r, sid)
 
 def pr(data, label):
-  h.pc.barrier()
+  pc.barrier()
   for i in range(nhost):
     if i == rank:
-      print '%d %s\n'%(rank,label),data
-      h.pc.barrier()
+      print ('%d %s'%(rank,label))
+      print (data)
+      pc.barrier()
 
 def setup_transfer_verify():
-  if rank == 0 : print 'setup_transfer_verify'
+  if rank == 0 : print ('setup_transfer_verify')
   h.finitialize(-65)
   frac = rank2frac(rank)
   for sec in h.allsec():
@@ -78,12 +110,12 @@ def setup_transfer_verify():
   # test 0. No transferred values are negative
   for tar in tar2sid:
     if tar.vgap < 0.0:
-      print '%d %s sid=%d vgap=%g'%(rank, tar.hname(), tar2sid[tar], tar.vgap)
+      print ('%d %s sid=%d vgap=%g'%(rank, tar.hname(), tar2sid[tar], tar.vgap))
       raise RuntimeError
   # test 1. All the transferred values make sense in terms of rank
   for tar in tar2sid:
     if frac2rank(tar.vgap) >= nhost:
-      print '%d %s has invalid rank code %d with value %g'%(rank, tar.hname(), frac2rank(tar.vgap), tar.vgap)
+      print ('%d %s has invalid rank code %d with value %g'%(rank, tar.hname(), frac2rank(tar.vgap), tar.vgap))
       raise RuntimeError
 
   # test 2. All the targets for a given sid should have the same value
@@ -91,29 +123,27 @@ def setup_transfer_verify():
     x0 = sid2tars[sid][0].vgap
     for tar in sid2tars[sid]:
       if tar.vgap != x0:
-        print '%d %s %g != %g %s'%(rank, sid2tars[sid][0].hname(),x0, tar.vgap, tar.hname())
+        print ('%d %s %g != %g %s'%(rank, sid2tars[sid][0].hname(),x0, tar.vgap, tar.hname()))
         raise RuntimeError
 
   # test 3. Send sid and vgap's sid back to rank it came from and verify on
   # the source rank that those sid's exist and have the same source
   # Because of test 2, only need to test first target of an sid
-  data = []
-  for i in range(nhost):
-    data.append(None)
-  for sid in sid2tars:
-    r,ssid = decode_vgap_val(sid2tars[sid][0].vgap)
+  data = [None]*nhost
+  for sid, segs in sid2tars.items():
+    r,ssid = decode_vgap_val(segs[0].vgap)
     if data[r] == None:
       data[r] = []
     data[r].append((sid, ssid))
 
-  pr(data, 'source')
-  data = h.pc.py_alltoall(data)
-  pr(data, 'destination')
+  #pr(data, 'source')
+  data = pc.py_alltoall(data)
+  #pr(data, 'destination')
 
   for r,x in enumerate(data):
     if x:
       for pair in x:
         for sid in pair:
-          if not sid2src.has_key(sid):
-            print '%d target sid %d from %d not associated with source here'%(rank,sid,r)
+          if sid not in sid2src:
+            print ('%d target sid %d from %d not associated with source here'%(rank,sid,r))
             raise RuntimeError
