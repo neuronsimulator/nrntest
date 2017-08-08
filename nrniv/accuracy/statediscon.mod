@@ -1,5 +1,5 @@
 NEURON {
-	POINT_PROCESS ExpGSyn
+	POINT_PROCESS ExpGSynStateDiscon
 	RANGE tau, e, i
 	NONSPECIFIC_CURRENT i
 }
@@ -35,11 +35,13 @@ BREAKPOINT {
 }
 
 DERIVATIVE state {
-	g' = -g/tau
+	LOCAL rate : forces use of ode_matsol for adjustment
+	rate = 1/tau
+	g' = -g*rate
 :printf("DERIVATIVE t=%g g=%g\n", t, g)
 }
 
 NET_RECEIVE(weight (uS)) {
 :printf("NET_RECEIVE g = %g + weight=%g\n", g, weight)
-	g = g + weight
+	state_discontinuity(g, g + weight) : deprecated but works
 }

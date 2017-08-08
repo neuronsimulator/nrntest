@@ -68,7 +68,8 @@ proc meth() {local dt, t, tau_u, tau_i, ua, ia, uf, ifwd, ub, ib
 }
 
 load_file("itest.ses")
-//secondorder=2
+netrec_state_adjust_ExpISyn=1
+secondorder=2
 run()
 meth(dt)
 
