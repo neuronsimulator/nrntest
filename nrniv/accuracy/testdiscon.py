@@ -80,7 +80,8 @@ class Model():
       vvec.record(self.syn, self.vc._ref_i, 0.1)
     else:
       vvec.label("v")
-      vvec.record(self.syn, self.soma(.5)._ref_v, 0.1)
+      #vvec.record(self.syn, self.soma(.5)._ref_v, 0.1)
+      vvec.record(self.syn, self.syn._ref_A_AMPA, 0.1)
     tvec.record(self.syn, h._ref_t, 0.1)
     h.cvode.atol(1e-10)
 
@@ -137,6 +138,8 @@ class Model():
 
 def one(mechname):
   m = Model(mechname)
+  if 'ProbAMPANMDA_EMS'in  mechname:
+    m.syn.setRNG(3,1)
   h.psection()
   dtsav = h.dt
   try:
@@ -161,8 +164,9 @@ def all(substring, start=0, end=-1):
       if substring not in mechname:
         continue
       if uses_pointer(mechname):
-        print ("\n%d> %s has a POINTER"%(i, mechname))
-        continue
+          print ("\n%d> %s has a POINTER"%(i, mechname))
+          if 'ProbAMPANMDA_EMS' not in  mechname:
+            continue
       print ("\n%d of %d"%(i, cnt))
       print (mechname)
       for h.secondorder in [0, 2]:
@@ -201,7 +205,7 @@ if __name__ == '__main__':
     h.secondorder=2
     m.run()
   else:
-    results = all("", start=0, end=-1)
+    results = all("ProbAMPA", start=0, end=-1)
     for so in [0, 2]:
       print ("\nsecondorder=%d"%so)
       for r in results:
