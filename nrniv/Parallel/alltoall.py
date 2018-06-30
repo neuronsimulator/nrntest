@@ -40,7 +40,7 @@ for r in serialize():
 pc.runworker()
 
 from os import system
-print system('cmp temp alltoall.cmp')
+print (system('cmp temp alltoall.cmp'))
 
 pc.done()
 h.quit()
