@@ -49,5 +49,7 @@ for i=0, n-1 cells[i].pr()
 {hoc_stdout()}
 
 strdef s
-{system("cmp temp t13.stdout", s)}
-b = b && (strcmp(s, "") == 0)
+//{system("cmp temp t13.stdout", s)}
+//b = b && (strcmp(s, "") == 0)
+{load_file("compare.hoc")}
+b = b && compare_files("temp", "t13.stdout", 1e-8)
