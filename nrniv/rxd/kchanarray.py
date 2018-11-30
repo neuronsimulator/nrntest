@@ -23,7 +23,7 @@ class kchan():
     self.call = [self.setup, self.initialize,
       self.current, self.conductance, self.fixed_step_solve,
       self.ode_count, self.ode_reinit, self.ode_fun, self.ode_solve, None,
-      None
+      None, self.statename
     ]
     self.gkbar = .036
     nbs.register(self.call)
@@ -90,10 +90,13 @@ class kchan():
     self.pv.gather(self.hv)
     self.n = y[self.offset:last]
     #print "ode_fun t=%g v=%g n=%g"%(h.t, v, self.n)
-    if ydot == None:
+    if ydot is None:
       return
     ninf, ninv = self.ninftau(self.v)
     ydot[self.offset:last] = (ninf - self.n)*ninv
+
+  def statename(self, i):
+    return "%dth state of %s" %((i - self.offset), str(self))
 
   def ode_solve(self, dt, t, b, y): #solve mx=b replace b with x (y available if m depends on it
     last = self.offset + len(self.n)
@@ -121,7 +124,7 @@ class kchan():
 
 def mk():
   global s, stim
-  s = h.Section()
+  s = h.Section(name='cable')
   s.nseg = 10000
   s.diam = 1
   s.L = 20000
@@ -131,17 +134,19 @@ def mk():
   stim.delay = 0.5
   stim.dur = 0.1
   stim.amp = 3
-mk()
-
-h.load_file("temp.ses")
 
 def prun():
   xx = h.startsw()
   h.run()
   print h.startsw() - xx
 
-prun()
+if __name__ == '__main__':
+  from neuron import gui
+  mk()
+  h.load_file("kchanarray.ses")
 
-s.gkbar_hh = 0
-k = kchan()
-prun()
+  prun()
+
+  s.gkbar_hh = 0
+  k = kchan()
+  prun()
