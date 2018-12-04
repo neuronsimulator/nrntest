@@ -27,6 +27,10 @@ PROCEDURE proced() {
 	printf("SOLVE METHOD after_cvode index=%g t=%g v=%g\n", index, t, v)
 }
 
+BEFORE STEP {
+	printf("BEFORE STEP index=%g t=%g v=%g\n", index, t, v)
+}
+
 BEFORE BREAKPOINT {
 	printf("BEFORE BREAKPOINT index=%g t=%g v=%g\n", index, t, v)
 }
