@@ -37,11 +37,10 @@ for r in serialize():
   f.write(str(rank)+str(data)+'\n')
   f.flush()
 
-pc.runworker()
+if rank == 0:
+  from os import system
+  print (system('cmp temp alltoall.cmp'))
 
-from os import system
-print (system('cmp temp alltoall.cmp'))
-
-pc.done()
+pc.barrier()
 h.quit()
 

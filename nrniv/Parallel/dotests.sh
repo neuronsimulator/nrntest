@@ -2,7 +2,7 @@
 
 err=0
 
-files="alltoall.py alltoall_dict.py"
+files="alltoall.py alltoall_dict.py collective.py"
 
 arg=""
 osname=`uname -s`
