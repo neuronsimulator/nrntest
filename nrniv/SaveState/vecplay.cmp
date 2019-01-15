@@ -2,7 +2,6 @@
 	1 
 	1 
 	1 
-	1 
 fixed step
  PlayRecordEvent 4 VecPlayStep Vector[4].x[2]
 SaveState.fwrite

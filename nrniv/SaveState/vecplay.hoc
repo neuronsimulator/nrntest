@@ -1,7 +1,7 @@
 load_file("nrngui.hoc")
 load_file("vecplay.ses")
 load_file("sscommon.hoc")
-MakeCurve[0].vy.play(&IClamp[0].amp, MakeCurve[0].vx)
+{MakeCurve[0].vy.play(&IClamp[0].amp, MakeCurve[0].vx)}
 run()
 
 print "fixed step"
