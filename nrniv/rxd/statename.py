@@ -1,5 +1,5 @@
 from kchanarray import kchan
-from neuron import h
+from neuron import h, gui
 s = h.Section(name='soma')
 s.diam = 10
 s.L = 3

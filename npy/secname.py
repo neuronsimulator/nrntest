@@ -8,10 +8,6 @@ dend.connect(soma(.5))
 
 h.topology()
 
-soma.push()
-h.load_file('temp.ses')
-h.pop_section()
-
 #class with no hname
 class Cell1:
   def __init__(self):
@@ -25,11 +21,11 @@ c1 = Cell1()
 class Cell2:
   index = 0
   def __init__(self):
+    self.name = 'Cell2_'+str(Cell2.index)
+    Cell2.index += 1
     self.soma = h.Section(name = 'soma', cell=self)
     self.dend = h.Section(cell=self)
     self.dend.connect(self.soma(.5))
-    self.name = 'Cell2_'+str(Cell2.index)
-    Cell2.index += 1
 
   def __str__(self):
     return self.name
