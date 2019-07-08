@@ -3,8 +3,8 @@
 objref cvode
 cvode = new CVode()
 {cvode.active(1)}
-b = t9result(10, 10)
+b = t9result(10, 10, 1)
 if (b != 1) { quit() }
 {cvode.use_daspk(1)}
-b = t9result(10, 7)
+b = t9result(10, 7, 0)
 if (b != 1) { quit() }

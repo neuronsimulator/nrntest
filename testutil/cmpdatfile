@@ -23,6 +23,8 @@ s/\.cmp$//'`
   r=$?
   if [ $r = 0 ] ; then
       echo "$f.hoc succeeded"
+  elif cmp $f.cmp.c3 temp ; then
+      echo "$f.hoc succeeded"
   else
       echo "$f.hoc failed"
       err=1

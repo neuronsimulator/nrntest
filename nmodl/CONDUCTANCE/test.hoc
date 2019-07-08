@@ -1,5 +1,6 @@
 {load_file("nrngui.hoc")}
 
+{cvode.atol(1e-4)}
 create s[3]
 s[0] insert hh
 s[1] insert hhc
