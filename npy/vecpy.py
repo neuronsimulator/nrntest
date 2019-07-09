@@ -29,6 +29,6 @@ except:
   print("no numpy")
 
 v = neuron.h.Vector()
-mytime('v.from_python(x for x in xrange(1, 1000000))')
+mytime('v.from_python(x for x in range(1, 1000000))')
 l = mytime('[x for x in v]')
 

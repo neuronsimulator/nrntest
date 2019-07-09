@@ -30,7 +30,7 @@ e('s7 = h.__nrnsec_0xaaaa')
 del(s)
 print(s2)
 print(s2.name())
-sn = 'print h.'+ s2.hoc_internal_name() + '.L'
+sn = 'print (h.'+ s2.hoc_internal_name() + '.L)'
 e(sn)
 del(s2)
 e(sn)

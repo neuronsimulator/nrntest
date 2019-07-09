@@ -8,5 +8,5 @@ h.nrnpython("a = [1,2,3]")
 h.o = h.p.a
 h.nrnpython("import hoc")
 h.nrnpython("h = hoc.HocObject()")
-h.nrnpython("print h.o")
+h.nrnpython("print (h.o)")
 
