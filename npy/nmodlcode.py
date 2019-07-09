@@ -6,5 +6,5 @@ for j in range(2):
     mt.select(i)
     mt.selected(name)
     a = mt.code().split(sep='\n')
-    print("%s : %s" % (name[0], a[0]))
+    print(("%s : %s" % (name[0], a[0])))
 

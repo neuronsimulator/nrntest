@@ -30,4 +30,4 @@ class LoopTimer(threading.Thread) :
 
 timer = LoopTimer(.05, f)
 timer.start()
-print "hello"
+print("hello")

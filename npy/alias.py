@@ -12,7 +12,7 @@ f = h.Foo()
 sf = h.StringFunctions()
 sf.alias(f, "bar", h._ref_x)
 def p():
-  print h.x, f.bar, f._ref_bar[0]
+  print(("%g %g %g"%(h.x, f.bar, f._ref_bar[0])))
 p()
 f.bar = 5
 p()

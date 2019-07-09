@@ -8,6 +8,6 @@ h.o2 = h.o1
 h.o2 = h.o1
 h.o2 = h.o1
 h.o2 = h.o1
-print h.nil
+print(h.nil)
 h.o2 = None
 h.o1 = h.nil

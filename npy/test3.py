@@ -17,35 +17,35 @@ obfunc newcell() { return new Cell() }
 ''')
 
 c = h.newcell()
-print c.axon.name()
-print c.dend
-print c.dend[1]
-print c.dend[1].name()
+print(c.axon.name())
+print(c.dend)
+print(c.dend[1])
+print(c.dend[1].name())
 
 import sys
 def e(stmt) :
   try:
-    print stmt
+    print(stmt)
     exec(stmt)
   except:
-    print sys.exc_info()[0], ': ', sys.exc_info()[1]
+    print(sys.exc_info()[0], ': ', sys.exc_info()[1])
 
 e('c.axon = 1')
 e('c.dend[1] = 1')
 
 
 from nrn import * # otherwise hh needs to be nrn.hh
-print c
-print c.axon
-print c.axon.name()
-print c.axon(.5)
-print c.axon(.5).hh
-print c.axon(.5).hh.name()
-print c.axon(.5).hh.gnabar
+print(c)
+print(c.axon)
+print(c.axon.name())
+print(c.axon(.5))
+print(c.axon(.5).hh)
+print(c.axon(.5).hh.name())
+print(c.axon(.5).hh.gnabar)
 
-print c.dend[1].name()
-print c.dend[1](.5)
-print c.dend[1](.5).pas
-print c.dend[1](.5).pas.name()
-print c.dend[1](.5).pas.g
+print(c.dend[1].name())
+print(c.dend[1](.5))
+print(c.dend[1](.5).pas)
+print(c.dend[1](.5).pas.name())
+print(c.dend[1](.5).pas.g)
 

@@ -6,11 +6,11 @@ m.setval(2,2,200)
 def sparse_print(m):
   j = h.ref(0)
   for i in range(int(m.nrow())):
-    print i,
+    print(i, end=' ')
     for jx in range(int(m.sprowlen(i))):
       x = m.spgetrowval(i, jx, j)
-      print "  %d:%g"%(j[0],x)
-    print
+      print("  %d:%g"%(j[0],x))
+    print()
 
 sparse_print(m)
 

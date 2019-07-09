@@ -1,7 +1,7 @@
 from neuron import h
 
 def u(n):
-  print n, h.units(n)
+  print(n, h.units(n))
 
 u('t')
 u('dt')

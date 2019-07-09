@@ -10,7 +10,7 @@ h.topology()
 h.soma.push() ; sr = h.SectionRef() ; h.pop_section()
 
 for s in sr.child :
-  print s.name()
+  print(s.name())
 
 h('objref sr')
 h.sr = sr

@@ -27,11 +27,11 @@ h.dt = 0.1
 neuron.init()
 neuron.run(1.0)
 
-print "hoc record() v"
+print("hoc record() v")
 h.vm1.printf()
-print "python record() v"
+print("python record() v")
 vm2.printf()
-print "python record() i_pas"
+print("python record() i_pas")
 ip.printf()
-print "python record() pas.i"
+print("python record() pas.i")
 pi.printf()

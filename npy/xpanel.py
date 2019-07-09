@@ -14,7 +14,7 @@ h.hs = 'hello'
 h.hx = 1
 
 h('change(&hx, ho, hs)')
-print h.hx, h.ho, h.hs
+print(h.hx, h.ho, h.hs)
 
 
 

@@ -1,6 +1,6 @@
 from neuron import h
 
-from cStringIO import StringIO
+from io import StringIO
 import sys
 
 old_stderr = sys.stderr
@@ -12,4 +12,4 @@ sys.stderr = old_stderr
 
 if status == 0:  
   print ("load_file failed. Following is contents of mystderr.getvalue()...")
-  print (mystderr.getvalue())
+  print((mystderr.getvalue()))

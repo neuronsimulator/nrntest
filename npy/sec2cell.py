@@ -16,6 +16,6 @@ c1 = PCell()
 c2 = h.HCell()
 
 for sec in h.allsec():
-  print sec.name(), sec.cell()
+  print(sec.name(), sec.cell())
 
-print c2.hname(), c2.soma.cell().hname()
+print(c2.hname(), c2.soma.cell().hname())

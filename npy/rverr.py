@@ -3,10 +3,10 @@ h = neuron.h
 import sys
 def e(stmt) :
   try:
-    print stmt
+    print(stmt)
     exec(stmt)
   except:
-    print sys.exc_info()[0], ': ', sys.exc_info()[1]
+    print(sys.exc_info()[0], ': ', sys.exc_info()[1])
 
 h(''' create soma
 insert hh

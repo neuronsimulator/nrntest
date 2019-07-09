@@ -5,5 +5,5 @@ def e(stmt) :
     print(stmt)
     exec(stmt, __main__.__dict__)
   except:
-    print(str(sys.exc_info()[0]) + ': ' + str(sys.exc_info()[1]))
+    print((str(sys.exc_info()[0]) + ': ' + str(sys.exc_info()[1])))
 

@@ -5,7 +5,7 @@ def hclass(c) :
   class hc(neuron.hoc.HocObject) :
     def __new__(cls, *args, **kwds) :
       kwds.update({"hocbase":cls.htype})
-      #print "__new__ ", cls, args, kwds
+      #print ("__new__ ", cls, args, kwds)
       return neuron.hoc.HocObject.__new__(cls, *args, **kwds)
   setattr(hc, 'htype', c)
   return hc
@@ -13,20 +13,20 @@ def hclass(c) :
 class MyVector(hclass(h.Vector)) :
   y = "I am a MyVector"
   def pr(self) :
-    print self
-    print self.size()
+    print (self)
+    print((self.size()))
     self.printf()
 
 
 class MyList(hclass(h.List)) :
   def pr(self) :
-    print self
-    print self.count()
+    print (self)
+    print((self.count()))
 
 
 v = MyVector(4)
 v.pr()
-print v.y
+print((v.y))
 l = MyList()
 l.pr()
 
@@ -35,32 +35,32 @@ class My2Vector(MyVector) :
   z = ['one', 'two']
   x = "override x"
   def resize(self, n) :
-    print self, "resize to", n
+    print((self, "resize to", n))
     neuron.hoc.HocObject.baseattr(self, 'resize')(n)
 
 v = My2Vector(4)
-print v
+print (v)
 v.printf()
 v.resize(2)
 v.printf()
 v.pr()
-print v.y
-print v.z
-print v.z[1]
+print((v.y))
+print((v.z))
+print((v.z[1]))
 v.z[1] = 'three'
-print v.z[1]
-print v.x
-print v.x[1]
+print((v.z[1]))
+print((v.x))
+print((v.x[1]))
 v.z = "changed z"
-print v.z
+print((v.z))
 v.y = "changed y"
-print v.y
+print((v.y))
 v.x = 5
-print v.x
+print((v.x))
 zz = neuron.hoc.HocObject.baseattr(v, 'x')
-print zz
+print (zz)
 neuron.hoc.HocObject.baseattr(v, 'x')[1] = .5
-print neuron.hoc.HocObject.baseattr(v, 'x')[1]
+print((neuron.hoc.HocObject.baseattr(v, 'x')[1]))
 v.printf()
 
-print v.x[1]
+print((v.x[1]))

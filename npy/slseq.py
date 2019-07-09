@@ -10,7 +10,7 @@ print("")
 
 for x in sl:
   for y in sl:
-    print (x, y)
+    print((x, y))
 print("")
 
 h('''
@@ -20,10 +20,10 @@ z = z.sl
 ''')
 for x in h.z:
   for y in h.z:
-    print (x, y)
+    print((x, y))
 
 h('objref z')
 sl = h.Vector()
 sls = h.List("SectionList")
-print ("number of SectionList", sls.count())
+print(("number of SectionList", sls.count()))
 h.allobjects()

@@ -45,31 +45,31 @@ class Demo(object):
     self.box.map("Demo")
 
   def bact(self, i):
-    print "bact", i
+    print("bact", i)
 
   def bact_noarg(self):
-    print "bact_noarg"
+    print("bact_noarg")
 
   def bact_2arg(self, a1, a2):
-    print "bact_2arg", a1, a2
+    print("bact_2arg", a1, a2)
 
   def chgx(self):
-    print "x =", self.x
+    print("x =", self.x)
     self.ss = 'x is ' + str(self.x)
 
   def cb(self):
-    print "cbstate=", self.cbstate
+    print("cbstate=", self.cbstate)
 
   def st(self):
-    print 'sbut=', self.sbut
+    print('sbut=', self.sbut)
 
   def slide(self):
-    print 'slide x=', self.x
+    print('slide x=', self.x)
 
   def gcb(self, mode, x, y, key):
-    print mode, x, y, key
+    print(mode, x, y, key)
 
   def gsel(self, i):
-    print 'menu tool', i, 'selected'
+    print('menu tool', i, 'selected')
 
 Demo()

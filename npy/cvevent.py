@@ -1,11 +1,11 @@
 # launch with neurondemo -python cvevent.py
 
-import hoc
+from neuron import hoc
 h = hoc.HocObject()
 h('demo(3)')
 
 def callback() :
-  print h.t
+  print((h.t))
   h.cvode.event(h.t + .1, 'p.callback()')
 
 h('''

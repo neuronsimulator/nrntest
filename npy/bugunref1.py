@@ -17,9 +17,9 @@ proc me() { localobj x \
 ''')
 
 vl = h.List('Vector')
-print vl.count()
+print((vl.count()))
 l = []
 for i in range(5):
   h.me()
-print vl.count()
+print((vl.count()))
 

@@ -9,5 +9,5 @@ for seg in s:
   seg.xg[1] = 2*seg.x
 
 for seg in s:
-  print (seg.xraxial[0], seg.xraxial[1], seg.x, seg.xg[0], seg.xg[1])
+  print((seg.xraxial[0], seg.xraxial[1], seg.x, seg.xg[0], seg.xg[1]))
 

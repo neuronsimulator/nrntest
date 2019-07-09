@@ -12,10 +12,10 @@ for sec in h.allsec():
       for n in dir(mech):
         if "__" not in n and n not in ['name', 'next', 'is_ion', 'segment']:
           nm = "%s(%g).%s.%s"%(sname, seg.x, mech.name(), n)
-          print ("%s = %s" % (nm, str(eval(nm))))
+          print(("%s = %s" % (nm, str(eval(nm)))))
           if ision:
             nm = "%s(%g).%s"%(sname, seg.x, n)
           else:
             nm = "%s(%g).%s_%s"%(sname, seg.x, n, mechname)
-          print ("%s = %s" % (nm, str(eval(nm))))
+          print(("%s = %s" % (nm, str(eval(nm)))))
 

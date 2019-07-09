@@ -11,8 +11,8 @@ sec = axon
 soma = h.Section() #not same as hoc soma
 
 for seg in sec:
-	print seg.x
+	print(seg.x)
 
-print sec, sec.nseg, sec.L
+print(sec, sec.nseg, sec.L)
 
 h('forall psection()')

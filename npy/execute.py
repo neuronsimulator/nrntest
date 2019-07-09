@@ -12,5 +12,5 @@ forall { \
 }
 ''')
 
-print secnames
+print(secnames)
 

@@ -11,14 +11,14 @@ stdinit()
 ''')
 
 sec = h.cas()
-print sec.name()
+print(sec.name())
 
 for m in sec(.5) :
- print m , m.name()
+ print(m , m.name())
 
-print sec(.5).hh.gnabar
+print(sec(.5).hh.gnabar)
 
 sec.insert('pas')
 for m in sec(.5) :
- print m , m.name()
+ print(m , m.name())
 

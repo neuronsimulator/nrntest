@@ -19,7 +19,7 @@ h.apical.connect(soma(.5))
 s = h.ref("")
 for sec in h.allsec():
   h.sectionname(s)
-  print (sec.name(), s[0], h.secname(1), sec.hoc_internal_name())
+  print((sec.name(), s[0], h.secname(1), sec.hoc_internal_name()))
 
 h('''forall print secname(), " ", secname(1)''')
 
@@ -30,7 +30,7 @@ for s in names:
 
 if False: # direct Python access to h._pysec.name does not work
   for s in names:
-    print ("h.%s"%s + ".name()")
-    print ("python %s %s"% (s, eval("h.%s"%s + ".name()")))
+    print(("h.%s"%s + ".name()"))
+    print(("python %s %s"% (s, eval("h.%s"%s + ".name()"))))
 
 h.load_file("pysecname.ses")

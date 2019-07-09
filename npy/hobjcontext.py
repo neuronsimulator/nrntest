@@ -10,17 +10,17 @@ h("objref o")
 h.x = 4
 h.s = "hello"
 h.o = h.List()
-print h.x
-print h.s
-print h.o.hname()
+print(h.x)
+print(h.s)
+print(h.o.hname())
 
 h("double y[3]")
 h("objref oo[2]")
 h.y[1] = 25
 h.oo[1] = h.Vector()
-print h.y[1]
-print h.oo[1].hname()
+print(h.y[1])
+print(h.oo[1].hname())
 
 h("func f() { return x*x }")
-print h.f()
+print(h.f())
 

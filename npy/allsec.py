@@ -7,7 +7,7 @@ allsec = []
 h('forall nrnpython("allsec.append(h.cas())")')
 
 for sec in allsec :
-  print ( sec.name(), " ", sec.nseg, sec(.5).v )
+  print(( "%s %d %g"%(sec.name(), sec.nseg, sec(.5).v )))
 
 for sec in h.allsec() :
-  print ( sec.name(), " ", sec.nseg, sec(.5).v )
+  print(( "%s %d %g"%(sec.name(), sec.nseg, sec(.5).v )))

@@ -1,7 +1,7 @@
 from neuron import h
 
 def do_test(test, val, correct_val):
-    print('%30s   %8r  %8r  %s' % (test, val, correct_val, 'passed' if val == correct_val else 'failed'))
+    print(('%30s   %8r  %8r  %s' % (test, val, correct_val, 'passed' if val == correct_val else 'failed')))
 
 a = h.ref(0)
 b = h.ref(0)

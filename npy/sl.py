@@ -15,22 +15,22 @@ sl = h.SectionList()
 sl.wholetree()
 
 for s in sl :
-  print s
+  print(s)
 
 for s in h.allsec() :
-  print s
+  print(s)
 
 dends[1].push() ; sr = h.SectionRef() ; h.pop_section()
 
-sr.sec.push() ; print h.secname(), sr.sec, dends[1] ; h.pop_section()
-print sr.sec == dends[1]
-print sr.root == soma
+sr.sec.push() ; print(h.secname(), sr.sec, dends[1]) ; h.pop_section()
+print(sr.sec == dends[1])
+print(sr.root == soma)
 
 soma.push() ; sr = h.SectionRef() ; h.pop_section()
-print sr.nchild(), len(sr.child)
-print sr.child[2] == dends[0]
+print(sr.nchild(), len(sr.child))
+print(sr.child[2] == dends[0])
 for x in sr.child :
-  print x
+  print(x)
 
 soma=0
 dends=0

@@ -34,7 +34,7 @@ def info(sec, pr=False):
   s3 = name(tp.sec, tp.x) if tp else "None"
   if pr:
     h.topology()
-    print '%s parent: %s trueparent: %s'%(s1, s2, s3)
+    print('%s parent: %s trueparent: %s'%(s1, s2, s3))
   return (o, p.x, s3)
 
 for rx in [0,.1,1]:
@@ -45,7 +45,7 @@ for rx in [0,.1,1]:
       child.connect(root(rx), o)
       r = info(child)
       if r != (o,rx,s3):
-        print r, (o, rx,s3)
+        print(r, (o, rx,s3))
         assert(r == (o, rx, s3))
 
 np = 2
@@ -78,11 +78,11 @@ for rx in [0, .1, 1]:
           '''
 
 remake(4, False)
-print root.children()
+print(root.children())
 for i in range(4):
   parent[i].connect(root(i/4.))
 c = root.children()
-print c
+print(c)
 for s in c:
-  print s.parentseg().x
+  print(s.parentseg().x)
 

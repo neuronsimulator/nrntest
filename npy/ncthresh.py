@@ -5,7 +5,7 @@ nc.threshold = -20
 
 tvec = h.Vector()
 def p() :
-  print h.t, soma(.5).v
+  print(h.t, soma(.5).v)
 
 nc.record(p)
 nc.record(tvec)

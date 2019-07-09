@@ -15,12 +15,12 @@ endtemplate A
 ''')
 
 def callback():
-  print 'callback'
-  print h.f()
+  print('callback')
+  print(h.f())
   h.x = 4
-  print h.x
+  print(h.x)
   h.y[2] = 6
-  print h.y[2]
+  print(h.y[2])
 
 
 a = h.A()
@@ -46,6 +46,6 @@ endtemplate B
 ''')
 
 h.finitialize()
-print 'ok so far'
+print('ok so far')
 b = h.B()
 b.call()

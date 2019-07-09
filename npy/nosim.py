@@ -3,9 +3,9 @@
 from neuron import h, gui
 
 def pr():
-  print ("cache_efficient is %d" %h.cvode.cache_efficient(1))
+  print(("cache_efficient is %d" %h.cvode.cache_efficient(1)))
   for sec in h.allsec():
-    print (sec.name())
+    print((sec.name()))
   h.topology()
   h.run()
 

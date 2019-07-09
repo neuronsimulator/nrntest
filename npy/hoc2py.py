@@ -27,12 +27,12 @@ a     = HocToPy.get('a','int')
 pi    = HocToPy.get('pi','float')
 hello = HocToPy.get('hello','string')
 
-print "a = ", a
-print "pi = ", pi
-print hello
+print("a = ", a)
+print("pi = ", pi)
+print(hello)
 
 hoc.execute('create soma')
 hoc.execute('{finitialize(-70)}')
 v = HocToPy.get('soma.v(.5)', 'float')
-print 'v = ', v
+print('v = ', v)
 
