@@ -1,0 +1,10 @@
+create a, b
+a connect b(0), 1
+a ax=this_section()
+b px=parent_section()
+print ax == px
+
+a anode = this_node(1)
+b pnode = parent_node()
+print anode == pnode
+
