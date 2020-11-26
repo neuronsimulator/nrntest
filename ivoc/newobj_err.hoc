@@ -1,0 +1,46 @@
+{load_file("stdlib.hoc")}
+
+begintemplate Foo
+endtemplate Foo
+            
+begintemplate NewObj
+objref this, ob, foo1, foo2
+proc init() {localobj s 
+  foo1 = new Foo() // Constructed before error, even partial constructions fill this field.
+  if ($1 == 0) {
+    execerror("generate an error") // All NewObj instances undergoing construction
+  } else if ($1 == $2) {
+    // This and all NewObj instances prior to this will construct successfully.
+    // All after this will be partially constructed.
+    // The execerror should cause only the partially constructed NewObj to
+    // be destroyed.
+    s = new String()
+    sprint(s.s, "ob = new NewObj(%d, %d)", $1-1, $2)
+    execute1(s.s, this)
+  } else {
+    ob = new NewObj($1-1, $2) 
+  }
+  foo2 = new Foo() // Only instances prior to execute1 reach here.
+}
+endtemplate NewObj
+
+proc pr() {localobj b, c, nil
+  b = new List("NewObj")
+  c = new List("Foo")
+  printf("#NewObj and #Foo in existence %d %d\n", b.count(), c.count())
+}
+
+proc test() {localobj a, nil
+  a = new NewObj($1, $2)
+  pr()
+  a = nil
+}
+
+test(4, 0) // error on load
+// can test without manual entry with
+// nrniv newobj_err.hoc -c '{pr() test(4,2) pr()}' 2>/dev/null
+// and should print
+// #NewObj and #Foo in existence 0 0
+// #NewObj and #Foo in existence 3 6
+// #NewObj and #Foo in existence 0 0
+// Also works for calls to test from em
