@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export NRNUNIT_USE_LEGACY=1
+
 sh testutil/clean
 neurondemo -c 'quit()'
 

@@ -7,3 +7,7 @@ for i in range(len(a)):
 
 pv.scatter(a)
 b.printf()
+
+print(pv.label())
+pv.label("hello")
+print(pv.label())

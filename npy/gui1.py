@@ -1,4 +1,4 @@
-from neuron import h
+from neuron import h, gui
 class Demo(object):
   def __init__(self):
     self.x = 2
