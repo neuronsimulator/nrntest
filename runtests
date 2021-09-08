@@ -2,8 +2,9 @@
 
 export NRNUNIT_USE_LEGACY=1
 
-sh testutil/clean
-neurondemo -c 'quit()'
+CURRENT_DIR=$(readlink -f $(dirname $0))
+sh "$CURRENT_DIR/testutil/clean"
+sh neurondemo -c 'quit()'
 
 have_nrnpython=no
 have_nrnmpi=no
@@ -22,12 +23,9 @@ export have_nrnmpi
 #
 
 
-scripts="
-fast/Readme
-infrastructure/Readme
-"
+scripts="${CURRENT_DIR}/fast/Readme"
 
-if test $have_nrnpython = yes -a $have_nrnmpi = yes ; then
+if [[ "$have_nrnpython" = yes ]] && [[ "$have_nrnmpi" = yes ]] ; then
   scripts="nrniv/Parallel/dotests.sh $scripts"
 fi
 
@@ -40,38 +38,38 @@ nmodl/CONDUCTANCE
 "
 
 
-cmpprog=`pwd`/testutil/cmpdatfile
+cmpprog="$CURRENT_DIR/testutil/cmpdatfile"
 
 err=0
 
 runscript()
 {
-  d=`dirname $1`
-  s=`basename $1`
+  working_dir=$(dirname "$1")
+  script=$(basename "$1")
   echo "
 Running test $1"
-  (cd $d && bash $s)
+  (cd "$working_dir" && bash "$script")
   return $?
 }
 
 runcompare()
 {
-  d=$1
+  working_dir=$1
   echo "
 Running cmpdatfile in $1"
-  (cd $d && $cmpprog *.cmp)
+  (cd "$working_dir" && "$cmpprog" *.cmp)
   return $?
 }
 
 for i in $scripts ; do
-    runscript $i
+    runscript "$i"
     if [ $? -ne 0 ] ; then
         err=1
     fi
 done
 
 for i in $compare ; do
-    runcompare $i
+    runcompare "$CURRENT_DIR/$i"
     if [ $? -ne 0 ] ; then
         err=1
     fi

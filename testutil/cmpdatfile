@@ -4,7 +4,7 @@ err=0
 
 # if mod file exists, run nrnivmodl
 modfiles="`ls *.mod 2>/dev/null`"
-if test "$modfiles" != "" ; then
+if [[ -n "$modfiles" ]] ; then
   nrnivmodl >& /dev/null
   r=$?
   if [ $r != 0 ] ; then
