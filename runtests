@@ -4,15 +4,17 @@ export NRNUNIT_USE_LEGACY=1
 
 CURRENT_DIR=$(realpath "$(dirname "${BASH_SOURCE[0]}")")
 sh "$CURRENT_DIR/testutil/clean"
-sh neurondemo -c 'quit()'
+neurondemo -c 'quit()'
 
-have_nrnpython=no
-have_nrnmpi=no
-if nrniv -nobanner -nogui -c 'nrnversion(6)' | grep nrnpython > /dev/null ; then
-  have_nrnpython=yes
+have_nrnpython=yes
+have_nrnmpi=yes
+if nrniv -nobanner -nogui -c 'nrnversion(6)' | grep "NRN_ENABLE_PYTHON=OFF" > /dev/null ; then
+  have_nrnpython=no
+  echo "Python is disabled: NRN_ENABLE_PYTHON=OFF"
 fi
-if nrniv -nobanner -nogui -c 'nrnversion(6)' | grep paranrn > /dev/null ; then
-  have_nrnmpi=yes
+if nrniv -nobanner -nogui -c 'nrnversion(6)' | grep "NRN_ENABLE_MPI=OFF" > /dev/null ; then
+  have_nrnmpi=no
+  echo "MPI is disabled: NRN_ENABLE_MPI=OFF"
 fi
 export have_nrnpython
 export have_nrnmpi
