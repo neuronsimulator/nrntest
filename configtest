@@ -56,7 +56,7 @@ tconfig () {
 	read a
 	if test "$tstmpi" = "yes" ; then
 		echo "begin mpiexec $prefix nrniv $*"
-		mpiexec -n 4 $bin/nrniv -mpi $N/src/parallel/test0.hoc
+		mpiexec --oversubscribe -n 4 $bin/nrniv -mpi $N/src/parallel/test0.hoc
 		echo "end mpiexec $prefix nrniv $*"
 		read a
 	fi
@@ -78,7 +78,7 @@ tconfig () {
 			echo "begin mpiexec python $prefix $*"
 			( NEURON_INIT_MPI=1
 			export NEURON_INIT_MPI
-			mpiexec -n 4 python $N/src/parallel/test0.py
+			mpiexec --oversubscribe -n 4 python $N/src/parallel/test0.py
 			)
 			echo "end mpiexec python $prefix $*"
 			read a

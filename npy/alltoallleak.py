@@ -1,4 +1,4 @@
-#mpiexec -n 8 nrniv -python -mpi alltoallleak.py
+#mpiexec --oversubscribe -n 8 nrniv -python -mpi alltoallleak.py
 import os
 from neuron import h
 pc = h.ParallelContext()

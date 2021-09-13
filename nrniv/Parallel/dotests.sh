@@ -26,6 +26,6 @@ done
 cd pargap
 nrnivmodl
 i=msgap.py
-a=$(mpiexec -n 2 nrniv -nobanner -mpi -python $i |sed -n '$p')
+a=$(mpiexec --oversubscribe -n 2 nrniv -nobanner -mpi -python $i |sed -n '$p')
 f
 
