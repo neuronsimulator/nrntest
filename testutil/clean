@@ -1,5 +1,5 @@
 #!/bin/bash
-a=`which nrnivmodl`
+a=$(which nrnivmodl)
 arch="$(sed -n '/^ARCH=/s/ARCH=//p' $a)"
 echo $arch
 
