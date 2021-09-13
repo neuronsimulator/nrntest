@@ -29,13 +29,13 @@ if [[ "$have_nrnpython" = yes ]] && [[ "$have_nrnmpi" = yes ]] ; then
   scripts="nrniv/Parallel/dotests.sh $scripts"
 fi
 
-compare="
-ivoc/Random ivoc/Pointer ivoc/Vector ivoc/Matrix
-nrniv nrniv/NetCon nrniv/SaveState
-nmodl nmodl/FOR_NETCONS nmodl/functiontable nmodl/LONGDIFUS
-nmodl/order nmodl/WATCH
-nmodl/CONDUCTANCE
-"
+compare=(
+  "ivoc/Random" "ivoc/Pointer" "ivoc/Vector" "ivoc/Matrix"
+  "nrniv" "nrniv/NetCon" "nrniv/SaveState"
+  "nmodl" "nmodl/FOR_NETCONS" "nmodl/functiontable" "nmodl/LONGDIFUS"
+  "nmodl/order" "nmodl/WATCH"
+  "nmodl/CONDUCTANCE"
+)
 
 
 cmpprog="$CURRENT_DIR/testutil/cmpdatfile"
