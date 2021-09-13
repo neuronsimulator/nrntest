@@ -17,9 +17,13 @@ env:
 
 jobs:
   coverage:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
-    name: NRNTEST
+    name: ${{ matrix.os }} - NRNTEST
+
+    strategy:
+      matrix:
+        os: [ macOS-latest, ubuntu-latest ]
 
     timeout-minutes: 5
     
