@@ -4,7 +4,12 @@ export NRNUNIT_USE_LEGACY=1
 
 CURRENT_DIR=$(realpath "$(dirname "${BASH_SOURCE[0]}")")
 sh "$CURRENT_DIR/testutil/clean"
-neurondemo -c 'quit()'
+if [[ -x "$(which neurondemo)" ]]
+then
+    neurondemo -c 'quit()'
+else
+    sh neurondemo -c 'quit()'
+fi
 
 have_nrnpython=yes
 have_nrnmpi=yes
