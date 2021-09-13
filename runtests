@@ -33,7 +33,7 @@ export have_nrnmpi
 scripts="${CURRENT_DIR}/fast/Readme"
 
 if [[ "$have_nrnpython" = yes ]] && [[ "$have_nrnmpi" = yes ]] ; then
-  scripts="nrniv/Parallel/dotests.sh $scripts"
+  scripts="${CURRENT_DIR}/nrniv/Parallel/dotests.sh $scripts"
 fi
 
 compare=(
