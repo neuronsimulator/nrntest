@@ -25,7 +25,7 @@ func series() {local x, y, b
 	return b
 }
 b = 1
-b = b && series(0, 1, -76.0275849641, 1e-10)
+b = b && series(0, 1, -76.0275849641, 1e-2) //note this was 1e-10
 // following discrepencies between 32 and 64 bit need to be checked out
 b = b && series(2, 1, -50.4120993151, 10)
 b = b && series(2, 2, -52.1380842779, 10)
