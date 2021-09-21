@@ -7,7 +7,7 @@ run() {
 		cmp $j $1dat/$j
 	done
 	rm out*.dat
-	mpiexec --oversubscribe -np $3 $NRN -mpi $2.hoc >/dev/null
+	mpiexec -np $3 $NRN -mpi $2.hoc >/dev/null
 	for j in out*.dat; do
 		cmp $j $1dat/$j
 	done

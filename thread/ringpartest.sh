@@ -1,7 +1,7 @@
 #!/bin/sh
 
 function run() {
-	mpiexec --oversubscribe -n $1 nrniv -nobanner -mpi -c nt=$2 -c cv=$3 ringpar.hoc
+	mpiexec -n $1 nrniv -nobanner -mpi -c nt=$2 -c cv=$3 ringpar.hoc
 	sortspike out.dat temp
 	diff ringpar_$3.dat temp
 }

@@ -13,7 +13,7 @@ run() {
 	cmp temp2 out$1.std
 	rm -f recv.dat out.dat
 	echo "mpi $ct $2"
-	mpiexec --oversubscribe -n 4 $NRN -mpi -nobanner -c "$ct" -c "{$2}" init.hoc > /dev/null
+	mpiexec -n 4 $NRN -mpi -nobanner -c "$ct" -c "{$2}" init.hoc > /dev/null
 	./sortrecv recv.dat temp3
 	cmp temp3 temp1
 	sortspike out.dat temp4

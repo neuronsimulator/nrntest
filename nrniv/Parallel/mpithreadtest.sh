@@ -1,7 +1,7 @@
 #!/bin/sh
 
 function niv() {
-	mpiexec --oversubscribe -np $1 nrniv -mpi -nobanner -c nt=$2 -c s=$3 -c cv=$4 mpithreadtest.hoc
+	mpiexec -np $1 nrniv -mpi -nobanner -c nt=$2 -c s=$3 -c cv=$4 mpithreadtest.hoc
 }
 
 function run() {
