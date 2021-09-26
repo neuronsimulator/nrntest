@@ -52,4 +52,6 @@ strdef s
 //{system("cmp temp t13.stdout", s)}
 //b = b && (strcmp(s, "") == 0)
 {load_file("compare.hoc")}
-b = b && (compare_files("temp", "t13.stdout", 1e-8) || compare_files("temp", "t13.stdout.c3", 1e-8))
+if (strcmp(nrnversion(8), "arm64-Darwin") != 0) { // use_long_double(1) same as double
+  b = b && (compare_files("temp", "t13.stdout", 1e-8) || compare_files("temp", "t13.stdout.c3", 1e-8))
+}
