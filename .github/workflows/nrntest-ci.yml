@@ -25,6 +25,11 @@ jobs:
     
     steps:
 
+      - name: Install apt packages
+        run: |
+          sudo apt-get install build-essential libopenmpi-dev libmpich-dev libx11-dev libxcomposite-dev mpich openmpi-bin
+        shell: bash
+        
       - name: Set up Python@${{ env.PY_VERSION }}
         uses: actions/setup-python@v2
         with:

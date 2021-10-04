@@ -22,6 +22,7 @@ nrnivmodl
 err=0
 for i in t*.hoc ; do
 	a="`nrniv -nobanner -nogui $i -c 'if (name_declared("b")==5){execute("printf(\\\"%d\\\n\\\", b)")}else{printf(\"%d\n\", bb)}' 2>&1 `"
+	echo "${i} stdout: ${a}"
 	if test "$a" = "2" ; then
 		echo "$i invalid test"
 		err=1

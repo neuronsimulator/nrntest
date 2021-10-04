@@ -37,5 +37,5 @@ run()
 
 {load_file("compare.hoc")}
 b = b && system("sortspike temp temp1") == 0
-b = b && (compare_files("temp1", "t12.stdout", 1e-7) || compare_files("temp1", "t12.stdout.c3", 1e-7))
+b = b && (compare_files("temp1", "t12.stdout", 1e-7) || compare_files("temp1", "t12.stdout.c3", 1e-7) || compare_files("temp1", "t12.stdout.ci", 1e-7))
 

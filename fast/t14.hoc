@@ -64,6 +64,8 @@ prun("temp.cvode.3")
 {load_file("compare.hoc")}
 b = 1
 b = b && compare_files("temp.fixed", "temp.fixed.3", 1e-11)
-b = b && compare_files("temp.fixed", "t14.fixed.stdout", 1e-10)
-b = b && (compare_files("temp.cvode", "temp.cvode.3", 1e-11))
-b = b && (compare_files("temp.cvode", "t14.cvode.stdout", 1e-6) || compare_files("temp.cvode", "t14.cvode.stdout.c3", 1e-6))
+b = b && (compare_files("temp.fixed", "t14.fixed.stdout", 1e-10) || compare_files("temp.fixed", "t14.fixed.stdout.ci", 1e-10))
+if (strcmp(nrnversion(8), "arm64-Darwin") != 0) { // use_long_double(1) same as double
+  b = b && (compare_files("temp.cvode", "temp.cvode.3", 1e-11))
+}
+b = b && (compare_files("temp.cvode", "t14.cvode.stdout", 1e-6) || compare_files("temp.cvode", "t14.cvode.stdout.c3", 1e-6) || compare_files("temp.cvode", "t14.cvode.stdout.ci", 1e-6))

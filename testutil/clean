@@ -1,10 +1,10 @@
 #!/bin/bash
-a=`which nrnivmodl`
-arch="`sed -n '/^ARCH=/s/ARCH=//p' $a`"
+a=$(which nrnivmodl)
+arch="$(sed -n '/^ARCH=/s/ARCH=//p' $a)"
 echo $arch
 
 for i in fast ivoc nmodl npy nrniv nrnoc thread ; do
-   a="`find $i -name $arch -print`"
+   a="$(find $i -name $arch -print 2>/dev/null)"
    for j in $a ; do
       echo $j
       rm -r -f $j

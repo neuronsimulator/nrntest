@@ -14,7 +14,7 @@ func tst() {localobj ss
 	tstop = 20
 	ss.restore()
 	continuerun(tstop)
-	return abs(C_Cell[0].soma.v(.5) - $1) < 1e-10
+	return abs(C_Cell[0].soma.v(.5) - $1) < 1e-2 // note this was 1e-10
 }
 
 proc prun() {local pp
