@@ -39,7 +39,7 @@ for r in serialize():
 
 if rank == 0:
   from os import system
-  print (system('cmp temp alltoall.cmp'))
+  print((system('cmp temp alltoall.cmp')))
 
 pc.barrier()
 h.quit()

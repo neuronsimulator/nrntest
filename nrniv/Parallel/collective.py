@@ -74,12 +74,12 @@ def bigtest(n):
     test()
   for j in range(n):
     pc.barrier()
-    if rank == 0: print ("checkleak %d of up to %d" % (j, n))
+    if rank == 0: print(("checkleak %d of up to %d" % (j, n)))
     sz = h.nrn_mallinfo(1)
     for i in range(1000):
       test()
     sz = h.nrn_mallinfo(1) - sz
-    print("%d sizedif = %d" % (rank, sz))
+    print(("%d sizedif = %d" % (rank, sz)))
     sz = pc.allreduce(sz, 1)
     if sz == 0 and j > 0:
       break
@@ -89,5 +89,5 @@ def bigtest(n):
 #print("%d change in nonecount %d from %d" % (rank, sys.getrefcount(None) - nonecount, nonecount))
 
 pc.barrier()
-if rank == 0: print (0)
+if rank == 0: print((0))
 h.quit()

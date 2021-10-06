@@ -2,30 +2,24 @@
 
 err=0
 
-files=("alltoall.py" "alltoall_dict.py" "collective.py")
-
-echo $files $np
+files=("alltoall.py" "alltoall_dict.py" "collective.py" "pargap/msgap.py")
+nrnivmodl pargap
 
 function f() {
-  echo "hello $1"
+  echo "Running nrniv/Parallel/${1}"
   a=$(mpiexec --oversubscribe -n 4 nrniv -nobanner -mpi -python $1 2>/dev/null | sed -n '$p')
+  echo "${1} stdout: ${a}"
   if test "$a" != 0 ; then
     echo "$1 failed"
     err=1
   else
     echo "$1 succeeded"
   fi
-  exit $err
+  
 }
 
-for i in $files ; do
- echo $i
+for i in ${files[@]}; do
  f $i
 done
-
-cd pargap
-nrnivmodl
-i=msgap.py
-a=$(mpiexec -n 2 nrniv -nobanner -mpi -python $i |sed -n '$p')
-f
+exit $err
 

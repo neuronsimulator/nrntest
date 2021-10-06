@@ -54,8 +54,8 @@ if __name__ == "__main__":
   nhost = int(pc.nhost())
   id = int(pc.id())
   def f(arg):
-    print ("arg=%d nhost_world=%d id_world=%d nhost_bbs=%d id_bbs=%d nhost=%d id=%d"%
-      (arg, nhost_world, id_world, nhost_bbs, id_bbs, nhost, id))
+    print(("arg=%d nhost_world=%d id_world=%d nhost_bbs=%d id_bbs=%d nhost=%d id=%d"%
+      (arg, nhost_world, id_world, nhost_bbs, id_bbs, nhost, id)))
 
   f(1)
   time.sleep(.1) #enough time to print

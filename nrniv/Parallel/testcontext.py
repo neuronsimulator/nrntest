@@ -11,8 +11,8 @@ id_bbs = int(pc.id_bbs())
 nhost = int(pc.nhost())
 id = int(pc.id())
 def f(arg):
-  print ("arg=%d world (%d of %d)  bbs (%d of %d)  id/nhost (%d of %d)"%
-    (arg, id_world, nhost_world, id_bbs, nhost_bbs, id, nhost))
+  print(("arg=%d world (%d of %d)  bbs (%d of %d)  id/nhost (%d of %d)"%
+    (arg, id_world, nhost_world, id_bbs, nhost_bbs, id, nhost)))
 
 f(1)
 time.sleep(.1) #enough time to print

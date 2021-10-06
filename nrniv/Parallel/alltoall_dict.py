@@ -5,16 +5,16 @@ nhost = int(pc.nhost())
 rank = int(pc.id())
 err = 1
 
-src = {i:(100+i) for i in range(nhost)}
-print src
+src = [(i,(100+i)) for i in range(nhost)]
+#print(src)
 
 try:
   dest = pc.py_alltoall(src)
-  err = 1
-except:
   err = 0
+except:
+  err = 1
 
 err = int(pc.allreduce(err, 1))
-print err
+print(err)
 h.quit()
 

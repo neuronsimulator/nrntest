@@ -18,7 +18,7 @@ x = 0
 while pc.working():
   x = pc.retval()
   
-print h.startsw() - tt
+print((h.startsw() - tt))
 
 pc.done()
 h.quit()

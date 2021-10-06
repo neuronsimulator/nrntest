@@ -54,7 +54,7 @@ def mkgap(i):
 mkgap(0)
 
 def callback():
-  print 't=', h.t
+  print(('t=', h.t))
 
 def prun():
   pc.timeout(1)
@@ -68,6 +68,6 @@ def prun():
 if __name__ == '__main__':
   prun()
   pc.barrier()
-  print 0
+  print((0))
   h.quit()
 

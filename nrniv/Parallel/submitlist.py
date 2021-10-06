@@ -21,7 +21,7 @@ while pc.working():
   pc.take(i)
   pid = int(pc.upkscalar())
   v = pc.upkvec()
-  print 'i=', i,  'from host', pid, list(va), list(v)
+  print(('i=', i,  'from host', pid, list(va), list(v)))
 
 pc.done()
 h.quit()
