@@ -9,7 +9,7 @@ err = 1
 # A nice improvement to pc.py_alltoall() is that it accept a dict as an arg.
 if nhost > 1:
     if rank == 0:
-        print((0))
+        print(0)
     pc.barrier()
     quit()
 

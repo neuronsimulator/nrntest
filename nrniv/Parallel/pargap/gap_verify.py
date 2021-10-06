@@ -86,7 +86,7 @@ def frac2rank(f):
     frac = x - float(int(x))
     xi = frac * (2.0 ** 18)
     if xi != float(int(xi)):
-        print(("%d frac2rank f=%g x=%g xi=%g" % (rank, f, x, xi)))
+        print("%d frac2rank f=%g x=%g xi=%g" % (rank, f, x, xi))
         raise RunTimeError
     return int(xi)
 
@@ -101,7 +101,7 @@ def pr(data, label):
     pc.barrier()
     for i in range(nhost):
         if i == rank:
-            print(("%d %s" % (rank, label)))
+            print("%d %s" % (rank, label))
             print(data)
             pc.barrier()
 

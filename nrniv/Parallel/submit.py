@@ -7,7 +7,7 @@ pc = h.ParallelContext()
 def f(arg):
     sleep(0.1)
     x = arg * arg
-    print(("%d %g = f(%g)" % (pc.id(), x, arg)))
+    print("%d %g = f(%g)" % (pc.id(), x, arg))
     return x
 
 
@@ -21,7 +21,7 @@ x = 0
 while pc.working():
     r = pc.pyret()
     x += r
-    print(("f(%g)=%g  x=%g" % (pc.upkscalar(), r, x)))
+    print("f(%g)=%g  x=%g" % (pc.upkscalar(), r, x))
     if i < 10:
         pc.submit(f, i)
         i += 1
