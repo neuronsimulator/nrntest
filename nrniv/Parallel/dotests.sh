@@ -2,7 +2,7 @@
 
 err=0
 
-files=("alltoall.py" "alltoall_dict.py" "collective.py" "pargap/msgap.py")
+files=("alltoall.py" "collective.py" "pargap/msgap.py")
 nrnivmodl pargap
 
 function f() {
