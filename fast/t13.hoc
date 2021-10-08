@@ -37,7 +37,7 @@ objref pc
 pc = new ParallelContext()
 b = execute1("{pc.nthread(3,1)}",0)
 
-{hoc_stdout("temp")}
+{hoc_stdout("temp13")}
 {printf("fixed step\n")}
 run()
 for i=0, n-1 cells[i].pr()
@@ -53,5 +53,5 @@ strdef s
 //b = b && (strcmp(s, "") == 0)
 {load_file("compare.hoc")}
 if (strcmp(nrnversion(8), "arm64-Darwin") != 0) { // use_long_double(1) same as double
-  b = b && (compare_files("temp", "t13.stdout", 1e-8) || compare_files("temp", "t13.stdout.c3", 1e-8) || compare_files("temp", "t13.stdout.ci", 1e-8))
+  b = b && (compare_files("temp13", "t13.stdout", 1e-8) || compare_files("temp13", "t13.stdout.c3", 1e-8) || compare_files("temp13", "t13.stdout.ci", 1e-8) || compare_files("temp13", "t13.stdout.ci.nvhpc", 1e-8))
 }
