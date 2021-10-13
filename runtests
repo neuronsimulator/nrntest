@@ -70,7 +70,7 @@ for i in $scripts ; do
     fi
 done
 
-for i in $compare ; do
+for i in ${compare[@]} ; do
     runcompare "$CURRENT_DIR/$i"
     if [ $? -ne 0 ] ; then
         err=1
