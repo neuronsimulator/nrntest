@@ -18,13 +18,15 @@ for i in $* ; do
   # If the $i file contains the .hoc or .cmp extension, remove it
   f=`echo $i | sed 's/\.hoc$//
 s/\.cmp$//'`
-  nrniv -nogui -nobanner $f.hoc >& temp
-  cmp $f.cmp temp
+  nrniv -nogui -nobanner $f.hoc >& $f.temp
+  cmp $f.cmp $f.temp
   r=$?
   if [ $r = 0 ] ; then
-      echo "$f.hoc succeeded"
-  elif [[ -e $f.cmp.c3 ]] && cmp $f.cmp.c3 temp ; then
-      echo "$f.hoc succeeded"
+      echo "$f.hoc succeeded ($f.cmp)"
+  elif [[ -e $f.cmp.c3 ]] && cmp $f.cmp.c3 $f.temp ; then
+      echo "$f.hoc succeeded ($f.cmp.c3)"
+  elif [[ -e $f.cmp.ci ]] && cmp $f.cmp.ci $f.temp ; then
+      echo "$f.hoc succeeded ($f.cmp.ci) "
   else
       echo "$f.hoc failed"
       err=1

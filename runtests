@@ -36,7 +36,7 @@ compare=(
   "nrniv" "nrniv/NetCon" "nrniv/SaveState"
   "nmodl" "nmodl/FOR_NETCONS" "nmodl/functiontable" "nmodl/LONGDIFUS"
   "nmodl/order" "nmodl/WATCH"
-  "nmodl/CONDUCTANCE"
+  #"nmodl/CONDUCTANCE"
 )
 
 
