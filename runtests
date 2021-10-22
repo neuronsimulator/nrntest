@@ -17,7 +17,7 @@ if nrniv -nobanner -nogui -c 'nrnversion(6)' | grep "NRN_ENABLE_MPI=OFF" > /dev/
   have_nrnmpi=no
   echo "MPI is disabled: NRN_ENABLE_MPI=OFF"
 fi
-if nrniv -nobanner -nogui -c 'nrnversion(6)' | grep "NRN_ENABLE_CORENEURON=ON" > /dev/null ; then
+if nrniv -nobanner -nogui -c 'nrnversion(6)' | grep -E "NRN_ENABLE_CORENEURON=(ON|TRUE)" > /dev/null ; then
   have_coreneuron=yes
   echo "CORENEURON is enabled: NRN_ENABLE_CORENEURON=ON"
 fi
