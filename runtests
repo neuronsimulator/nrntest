@@ -5,7 +5,7 @@ export NRNUNIT_USE_LEGACY=1
 CURRENT_DIR="$(cd -- "$(dirname -- "$0")" &> /dev/null && pwd)"
 sh "$CURRENT_DIR/testutil/clean"
 neurondemo -c 'quit()'
-
+  
 have_nrnpython=yes
 have_nrnmpi=yes
 have_coreneuron=no
