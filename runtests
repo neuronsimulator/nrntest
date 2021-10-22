@@ -8,6 +8,7 @@ neurondemo -c 'quit()'
 
 have_nrnpython=yes
 have_nrnmpi=yes
+have_coreneuron=no
 if nrniv -nobanner -nogui -c 'nrnversion(6)' | grep "NRN_ENABLE_PYTHON=OFF" > /dev/null ; then
   have_nrnpython=no
   echo "Python is disabled: NRN_ENABLE_PYTHON=OFF"
@@ -16,8 +17,13 @@ if nrniv -nobanner -nogui -c 'nrnversion(6)' | grep "NRN_ENABLE_MPI=OFF" > /dev/
   have_nrnmpi=no
   echo "MPI is disabled: NRN_ENABLE_MPI=OFF"
 fi
+if nrniv -nobanner -nogui -c 'nrnversion(6)' | grep "NRN_ENABLE_CORENEURON=ON" > /dev/null ; then
+  have_coreneuron=yes
+  echo "CORENEURON is enabled: NRN_ENABLE_CORENEURON=ON"
+fi
 export have_nrnpython
 export have_nrnmpi
+export have_coreneuron
 
 #list in "scripts", the scripts to run tests in subdirectories.
 #list in "compare", the folders to execute comparison tests
@@ -70,7 +76,7 @@ for i in $scripts ; do
     fi
 done
 
-for i in $compare ; do
+for i in ${compare[@]} ; do
     runcompare "$CURRENT_DIR/$i"
     if [ $? -ne 0 ] ; then
         err=1
