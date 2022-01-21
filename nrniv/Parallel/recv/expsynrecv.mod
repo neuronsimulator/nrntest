@@ -43,13 +43,9 @@ typedef struct RecvInfo {
 	void* srcvec;
 	void* tarvec;
 } RecvInfo;
-extern void* vector_arg(int iarg);
-extern void vector_resize(void* vec, int size);
-extern int vector_capacity(void* vec);
-extern double* vector_vec(void* vec);
 #define INFOCAST(ip) RecvInfo** ip = (RecvInfo**)(&(_p_vecs))
 #define APPEND(vector,val) \
-	vec = (*rip)->vector; \
+	vec = reinterpret_cast<IvocVect*>((*rip)->vector); \
 	n = vector_capacity(vec); \
 	vector_resize(vec, n+1); \
 	pd = vector_vec(vec); \
@@ -65,8 +61,8 @@ VERBATIM
 {
 		int n;
 		double* pd;
-		void* vec;
 		INFOCAST(rip);
+		IvocVect *vec{};
 		if (*rip) {
 			APPEND(tvec, t);
 			APPEND(srcvec, _args[1]); /* srcgid */
