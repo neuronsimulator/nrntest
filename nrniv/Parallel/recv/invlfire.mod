@@ -53,22 +53,15 @@ FUNCTION M() {
 
 VERBATIM
 typedef struct RecvInfo {
-	void* tvec;
-	void* srcvec;
-	void* tarvec;
+	IvocVect* tvec;
+	IvocVect* srcvec;
+	IvocVect* tarvec;
 } RecvInfo;
-extern void* vector_arg(int iarg);
-extern void vector_resize(void* vec, int size);
-extern int vector_capacity(void* vec);
-extern double* vector_vec(void* vec);
-#define INFOCAST(ip) RecvInfo** ip = (RecvInfo**)(&(_p_vecs))
-#define APPEND(vector,val) \
-	vec = (*rip)->vector; \
-	n = vector_capacity(vec); \
-	vector_resize(vec, n+1); \
-	pd = vector_vec(vec); \
-	pd[n] = val;
-
+#ifndef __cplusplus
+typedef struct Rand Rand;
+Rand* nrn_random_arg(int);
+double nrn_random_pick(Rand*);
+#endif
 ENDVERBATIM
 
 NET_RECEIVE (w, srcgid) {
@@ -78,17 +71,12 @@ NET_RECEIVE (w, srcgid) {
 	if (flag == 0) {
 		:printf("%g %g %g\n", t, srcgid, gid)
 VERBATIM
-{
-		int n;
-		double* pd;
-		void* vec;
-		INFOCAST(rip);
-		if (*rip) {
-			APPEND(tvec, t);
-			APPEND(srcvec, _args[1]); /* srcgid */
-			APPEND(tarvec, gid);
+		RecvInfo* rip = (RecvInfo*)_p_vecs;
+		if (rip) {
+			vector_append(rip->tvec, t);
+			vector_append(rip->srcvec, _args[1]); /* srcgid */
+			vector_append(rip->tarvec, gid);
 		}
-}
 ENDVERBATIM
 		ninput = ninput + 1
 		m = m + w
@@ -114,11 +102,10 @@ FUNCTION firetime()(ms) { : m < 1 and minf > 1
 
 PROCEDURE specify_invl() {
 VERBATIM {
-	extern double nrn_random_pick(void*);
 	if (!_p_r) {
 		return 0.;
 	}
-	invl = nrn_random_pick((void*)_p_r);
+	invl = nrn_random_pick((Rand*)_p_r);
 }
 ENDVERBATIM
 	minf = 1/(1 - exp(-invl*tau1)) : so natural spike interval is invl
@@ -127,9 +114,7 @@ ENDVERBATIM
 
 PROCEDURE set_rand() {
 VERBATIM {
-	extern void* nrn_random_arg(int);
-	void** ppr;
-	ppr = (void**)(&(_p_r));
+	Rand** ppr = (Rand**)(&(_p_r));
 	*ppr = nrn_random_arg(1);
 }
 ENDVERBATIM
@@ -137,23 +122,18 @@ ENDVERBATIM
 
 PROCEDURE set_record() {
 VERBATIM
-	void *a, *b, *c;
-	INFOCAST(rip);
-	a = vector_arg(1);
-	b = vector_arg(2);
-	c = vector_arg(3);
+	RecvInfo** rip = (RecvInfo**)(&(_p_vecs));
 	if (!(*rip)) {
 		*rip = (RecvInfo*)hoc_Emalloc(sizeof(RecvInfo)); hoc_malchk();
 	}
-	(*rip)->tvec = a;
-	(*rip)->srcvec = b;
-	(*rip)->tarvec = c;
+	(*rip)->tvec = vector_arg(1);
+	(*rip)->srcvec = vector_arg(2);
+	(*rip)->tarvec = vector_arg(3);
 ENDVERBATIM
 }
 
 DESTRUCTOR {
 VERBATIM
-	INFOCAST(rip);
-	if (*rip) { free((void*)(*rip)); }
+	if (_p_vecs) { free(_p_vecs); }
 ENDVERBATIM
 }
