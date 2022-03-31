@@ -57,11 +57,6 @@ typedef struct RecvInfo {
 	IvocVect* srcvec;
 	IvocVect* tarvec;
 } RecvInfo;
-#ifndef __cplusplus
-typedef struct Rand Rand;
-Rand* nrn_random_arg(int);
-double nrn_random_pick(Rand*);
-#endif
 ENDVERBATIM
 
 NET_RECEIVE (w, srcgid) {
