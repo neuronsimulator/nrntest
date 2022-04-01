@@ -39,22 +39,10 @@ DERIVATIVE state {
 
 VERBATIM
 typedef struct RecvInfo {
-	void* tvec;
-	void* srcvec;
-	void* tarvec;
+	IvocVect* tvec;
+	IvocVect* srcvec;
+	IvocVect* tarvec;
 } RecvInfo;
-extern void* vector_arg(int iarg);
-extern void vector_resize(void* vec, int size);
-extern int vector_capacity(void* vec);
-extern double* vector_vec(void* vec);
-#define INFOCAST(ip) RecvInfo** ip = (RecvInfo**)(&(_p_vecs))
-#define APPEND(vector,val) \
-	vec = (*rip)->vector; \
-	n = vector_capacity(vec); \
-	vector_resize(vec, n+1); \
-	pd = vector_vec(vec); \
-	pd[n] = val;
-
 ENDVERBATIM
 
 NET_RECEIVE (w (microsiemens), srcgid) {
@@ -62,40 +50,30 @@ NET_RECEIVE (w (microsiemens), srcgid) {
 		g = g + w
 		:printf("%g %g %g\n", t, srcgid, gid)
 VERBATIM
-{
-		int n;
-		double* pd;
-		void* vec;
-		INFOCAST(rip);
-		if (*rip) {
-			APPEND(tvec, t);
-			APPEND(srcvec, _args[1]); /* srcgid */
-			APPEND(tarvec, gid);
+		RecvInfo* rip = (RecvInfo*)_p_vecs;
+		if (rip) {
+			vector_append(rip->tvec, t);
+			vector_append(rip->srcvec, _args[1]); /* srcgid */
+			vector_append(rip->tarvec, gid);
 		}
-}
 ENDVERBATIM
 		ninput = ninput + 1
 }
 
 PROCEDURE set_record() {
 VERBATIM
-	void *a, *b, *c;
-	INFOCAST(rip);
-	a = vector_arg(1);
-	b = vector_arg(2);
-	c = vector_arg(3);
+	RecvInfo** rip = (RecvInfo**)(&(_p_vecs));
 	if (!(*rip)) {
 		*rip = (RecvInfo*)hoc_Emalloc(sizeof(RecvInfo)); hoc_malchk();
 	}
-	(*rip)->tvec = a;
-	(*rip)->srcvec = b;
-	(*rip)->tarvec = c;
+	(*rip)->tvec = vector_arg(1);
+	(*rip)->srcvec = vector_arg(2);
+	(*rip)->tarvec = vector_arg(3);
 ENDVERBATIM
 }
 
 DESTRUCTOR {
 VERBATIM
-	INFOCAST(rip);
-	if (*rip) { free((void*)(*rip)); }
+	if (_p_vecs) { free(_p_vecs); }
 ENDVERBATIM
 }
