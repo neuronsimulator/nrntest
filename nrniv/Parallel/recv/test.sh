@@ -24,7 +24,7 @@ run() {
 	RUN_WITH_MPI="${have_nrnmpi-yes}"
 	if [ "${RUN_WITH_MPI}" = "yes" ] ; then
 		echo "run with mpi -> $ct $2 <-"
-		mpiexec ${MPIEXEC_OVERSUBSCRIBE---oversubscribe} -n 4 nrniv -mpi -nobanner -nogui -c "$ct" -c "{$2}" init.hoc > /dev/null
+		${MPIEXEC_NAME} ${MPIEXEC_OVERSUBSCRIBE---oversubscribe} -n 4 nrniv -mpi -nobanner -nogui -c "$ct" -c "{$2}" init.hoc > /dev/null
 		./sortrecv recv.dat recv$1.dat.sorted.mpi
 		cmp recv$1.dat.sorted.mpi recv$1.dat.sorted
 		if [ $? -ne 0 ]; then

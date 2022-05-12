@@ -1,7 +1,7 @@
 #!/bin/sh
 
 function niv() {
-	mpiexec -np $1 nrniv -mpi -nobanner -c nt=$2 -c cv=$3 test2.hoc
+	${MPIEXEC_NAME} -np $1 nrniv -mpi -nobanner -c nt=$2 -c cv=$3 test2.hoc
 }
 
 function run() {
