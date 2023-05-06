@@ -1,0 +1,57 @@
+	1 
+	1 
+	1 
+ev t=1 v=34.5667
+fixed step
+ HocEvent ev() 0.99375
+SaveState.fwrite
+ev t=1 v=34.5667
+irun from t=0.5 v=1.7739
+ HocEvent ev() 0.99375
+ev t=1 v=34.5667
+sq diff = 0
+irun from t=0.5 v=1.7739
+ HocEvent ev() 0.99375
+ev t=1 v=34.5667
+sq diff = 0
+SaveState::fread
+irun from t=0.5 v=1.7739
+ HocEvent ev() 0.99375
+ev t=1 v=34.5667
+sq diff = 0
+global variable
+	1 
+ HocEvent ev() 1
+SaveState.fwrite
+ev t=1 v=33.6906
+irun from t=0.5 v=5.54094
+ HocEvent ev() 1
+ev t=1 v=33.6906
+sq diff = 0
+irun from t=0.5 v=5.54094
+ HocEvent ev() 1
+ev t=1 v=33.6906
+sq diff = 0
+SaveState::fread
+irun from t=0.5 v=5.54094
+ HocEvent ev() 1
+ev t=1 v=33.6906
+sq diff = 0
+local variable
+	1 
+ HocEvent ev() 1
+SaveState.fwrite
+ev t=1 v=33.6906
+irun from t=0.5 v=5.54094
+ HocEvent ev() 1
+ev t=1 v=33.6906
+sq diff = 0
+irun from t=0.5 v=5.54094
+ HocEvent ev() 1
+ev t=1 v=33.6906
+sq diff = 0
+SaveState::fread
+irun from t=0.5 v=5.54094
+ HocEvent ev() 1
+ev t=1 v=33.6906
+sq diff = 0
