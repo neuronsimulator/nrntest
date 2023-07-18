@@ -25,7 +25,7 @@ s/\.cmp$//'`
       echo "$f.hoc succeeded ($f.cmp)"
   elif [[ -e $f.cmp.c3 ]] && cmp $f.cmp.c3 $f.temp ; then
       echo "$f.hoc succeeded ($f.cmp.c3)"
-  elif [[ "$have_coreneuron" = "yes" ]] && [[ -e $f.cmp.ci ]] && cmp $f.cmp.ci $f.temp ; then
+  elif [[ -e $f.cmp.ci ]] && cmp $f.cmp.ci $f.temp ; then
       echo "$f.hoc succeeded ($f.cmp.ci) "
   else
       echo "$f.hoc failed"
