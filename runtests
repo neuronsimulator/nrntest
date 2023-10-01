@@ -1,7 +1,5 @@
 #!/bin/bash
 
-export NRNUNIT_USE_LEGACY=1
-
 CURRENT_DIR="$(cd -- "$(dirname -- "$0")" &> /dev/null && pwd)"
 sh "$CURRENT_DIR/testutil/clean"
 neurondemo -c 'quit()'
