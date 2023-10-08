@@ -13,7 +13,7 @@ rm -f out.dat
 bgrun $7 $6 $1 init_.hoc
 mv temp.$1 stdout$1.$2.$3.$4.$5
 if test -f out.dat ; then
-  sort -k 1n,1n -k 2n,2n out.dat > out$1.$2.$3.$4.$5
+  (unset LC_ALL; sort -k 1n,1n -k 2n,2n out.dat > out$1.$2.$3.$4.$5)
 fi
 }
 
