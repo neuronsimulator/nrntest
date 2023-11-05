@@ -1,7 +1,5 @@
 #!/bin/bash
 
-export NRNUNIT_USE_LEGACY=1
-
 CURRENT_DIR="$(cd -- "$(dirname -- "$0")" &> /dev/null && pwd)"
 sh "$CURRENT_DIR/testutil/clean"
 neurondemo -c 'quit()'
@@ -17,7 +15,7 @@ if nrniv -nobanner -nogui -c 'nrnversion(6)' | grep "NRN_ENABLE_MPI=OFF" > /dev/
   have_nrnmpi=no
   echo "MPI is disabled: NRN_ENABLE_MPI=OFF"
 fi
-if nrniv -nobanner -nogui -c 'nrnversion(6)' | grep -E "NRN_ENABLE_CORENEURON=(ON|TRUE)" > /dev/null ; then
+if nrniv -nobanner -nogui -c 'nrnversion(6)' | grep -i -E "NRN_ENABLE_CORENEURON=(ON|TRUE|YES|Y|1)" > /dev/null ; then
   have_coreneuron=yes
   echo "CORENEURON is enabled: NRN_ENABLE_CORENEURON=ON"
 fi

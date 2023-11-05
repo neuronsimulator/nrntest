@@ -2,7 +2,6 @@
 create a
 access a
 insert test
-cvode.cache_efficient(0)
 init()
 step()
 
