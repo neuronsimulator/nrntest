@@ -2,7 +2,7 @@ load_file("nrngui.hoc")
 load_file("stdlib.hoc")
 load_file("hhcell.hoc")
 
-ncell = 100
+ncell = 1000
 objref cell[ncell]
 for i=0, ncell - 1 {
 	cell[i] = new Cell()
@@ -11,6 +11,7 @@ for i=0, ncell - 1 {
 }
 
 usetable_hh = 0
+usetable_hhh = 0
 objref pc
 pc = new ParallelContext()
 is_multicore = execute1("pc.nthread()", 0)
@@ -35,9 +36,10 @@ func perun() {
 	return prun($2,$3)
 }
 proc perf() {local r0, r1, nt
-	printf("nt\t cache0\t cache1\n")
-	for case(&nt, 1, 2, 4, 8) {
-		printf("%d\t %g\t %g\n", nt, perun(0, nt, 1), perun(1, nt, 1))
+	printf("nt\t cache1\n")
+	for case(&nt, 1) {
+		//printf("%d\t %g\t %g\n", nt, perun(0, nt, 1), perun(1, nt, 1))
+		printf("%d\t %g\n", nt, perun(1, nt, 1))
 		if (!is_multicore) {break}
 	}
 }
