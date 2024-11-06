@@ -17,14 +17,14 @@ nrnivmodl
 
 err=0
 for script in t*.hoc; do
-    a="$(nrniv -nobanner -nogui "${script}" -c 'if (name_declared("b")==5){execute("printf(\"%d\\n\", b)")}else{printf("%d\n", bb)}' 2>&1)"
-    echo "${script} stdout: ${a}"
-    if test "$a" = "2"; then
+    output="$(nrniv -nobanner -nogui "${script}" -c 'if (name_declared("b")==5){execute("printf(\"%d\\n\", b)")}else{printf("%d\n", bb)}' 2>&1)"
+    echo "${script} stdout: ${output}"
+    if test "${output}" = "2"; then
         echo "${script} invalid test"
         err=1
         continue
     fi
-    if test "$a" != "1"; then
+    if test "${output}" != "1"; then
         echo "${script} failed"
         err=1
         continue
