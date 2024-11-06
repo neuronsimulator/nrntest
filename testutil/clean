@@ -2,12 +2,6 @@
 
 set -eu
 
-if ! command -v nrnivmodl
-then
-    echo "nrnivmodl not found, please set it before running this script"
-    exit 1
-fi
-
 nrnivmodl_path="$(command -v nrnivmodl)"
 arch="$(sed -n '/^ARCH=/s/ARCH=//p' "${nrnivmodl_path}")"
 
