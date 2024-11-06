@@ -2,7 +2,7 @@
 set -eu
 
 CURRENT_DIR="$(cd -- "$(dirname -- "$0")" &>/dev/null && pwd)"
-sh "$CURRENT_DIR/testutil/clean"
+sh "$CURRENT_DIR/testutil/clean.sh"
 neurondemo -c 'quit()'
 
 have_nrnpython=yes
@@ -45,7 +45,7 @@ compare=(
     "nmodl/CONDUCTANCE"
 )
 
-cmpprog="$CURRENT_DIR/testutil/cmpdatfile"
+cmpprog="$CURRENT_DIR/testutil/cmpdatfile.sh"
 
 # list of all tests that fail to actually run
 failed_runs=()

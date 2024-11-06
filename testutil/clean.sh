@@ -5,7 +5,6 @@ set -eu
 nrnivmodl_path="$(command -v nrnivmodl)"
 arch="$(sed -n '/^ARCH=/s/ARCH=//p' "${nrnivmodl_path}")"
 
-for name in fast ivoc nmodl npy nrniv nrnoc thread
-do
-   find "${name}" -name "${arch}" -prune -exec rm -fr {} \;
+for name in fast ivoc nmodl npy nrniv nrnoc thread; do
+    find "${name}" -name "${arch}" -prune -exec rm -fr {} \;
 done
