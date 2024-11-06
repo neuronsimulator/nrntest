@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -u
+
 nrnivmodl
 
 ERR=0
@@ -9,7 +11,7 @@ run() {
 	ct="celltype=$1"
 	echo "run with -> $ct $2 <-"
 	nrniv -nobanner -nogui -c "$ct" -c "{$2}" init.hoc > /dev/null
-	./sortrecv recv.dat recv$1.dat.sorted
+	./sortrecv.sh recv.dat recv$1.dat.sorted
 	cmp recv$1.dat.sorted recv$1.std
 	if [ $? -ne 0 ]; then
 		ERR=1
@@ -25,7 +27,7 @@ run() {
 	if [ "${RUN_WITH_MPI}" = "yes" ] ; then
 		echo "run with mpi -> $ct $2 <-"
 		mpiexec ${MPIEXEC_OVERSUBSCRIBE---oversubscribe} -n 4 nrniv -mpi -nobanner -nogui -c "$ct" -c "{$2}" init.hoc > /dev/null
-		./sortrecv recv.dat recv$1.dat.sorted.mpi
+		./sortrecv.sh recv.dat recv$1.dat.sorted.mpi
 		cmp recv$1.dat.sorted.mpi recv$1.dat.sorted
 		if [ $? -ne 0 ]; then
 			ERR=1
