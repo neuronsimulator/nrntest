@@ -1,12 +1,17 @@
-#!/bin/bash
-a=$(which nrnivmodl)
-arch="$(sed -n '/^ARCH=/s/ARCH=//p' $a)"
-echo $arch
+#!/usr/bin/env bash
 
-for i in fast ivoc nmodl npy nrniv nrnoc thread ; do
-   a="$(find $i -name $arch -print 2>/dev/null)"
-   for j in $a ; do
-      echo $j
-      rm -r -f $j
-   done
+set -eu
+
+if ! command -v nrnivmodl
+then
+    echo "nrnivmodl not found, please set it before running this script"
+    exit 1
+fi
+
+nrnivmodl_path="$(command -v nrnivmodl)"
+arch="$(sed -n '/^ARCH=/s/ARCH=//p' "${nrnivmodl_path}")"
+
+for name in fast ivoc nmodl npy nrniv nrnoc thread
+do
+   find "${name}" -name "${arch}" -prune -exec rm -fr {} \;
 done
