@@ -6,7 +6,7 @@
 # e.g
 # 	nrniv -nobanner t1.hoc -c '{printf("%d\n", b)}'
 #
-# When this Readme is executed by the shell, it runs all the t*.hoc and
+# When this script is executed by the shell, it runs all the t*.hoc and
 # indicates the tests that fail or print anything or has b != 1.  Tests that
 # need more than one file should still have the same prefix but use
 # different extensions, e.g.  t1.mod or t1.2.mod etc.  The t*.hoc file
@@ -17,7 +17,7 @@ nrnivmodl
 
 err=0
 for script in t*.hoc; do
-    a="$(nrniv -nobanner -nogui "${script}" -c 'if (name_declared("b")==5){execute("printf(\\\"%d\\\n\\\", b)")}else{printf(\"%d\n\", bb)}' 2>&1)"
+    a="$(nrniv -nobanner -nogui "${script}" -c 'if (name_declared("b")==5){execute("printf(\"%d\\n\", b)")}else{printf("%d\n", bb)}' 2>&1)"
     echo "${script} stdout: ${a}"
     if test "$a" = "2"; then
         echo "${script} invalid test"
