@@ -30,7 +30,7 @@ export have_coreneuron
 #
 
 scripts=(
-    "${CURRENT_DIR}/fast/Readme" "${CURRENT_DIR}/nrniv/Parallel/recv/test.sh"
+    "${CURRENT_DIR}/fast/test.sh" "${CURRENT_DIR}/nrniv/Parallel/recv/test.sh"
 )
 
 if [[ "$have_nrnpython" = yes ]] && [[ "$have_nrnmpi" = yes ]]; then
@@ -47,7 +47,11 @@ compare=(
 
 cmpprog="$CURRENT_DIR/testutil/cmpdatfile"
 
+# list of all tests that fail to actually run
 failed_runs=()
+
+# list of all tests that run successfully, but have differences w.r.t.
+# reference values
 failed_comparisons=()
 
 runscript() {
