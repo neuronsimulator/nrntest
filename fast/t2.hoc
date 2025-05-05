@@ -7,7 +7,7 @@ sf = new StringFunctions()
 if (unix_mac_pc() == 3) { // mingw
   sprint(s1, "%s/demo/release/nrnmech.dll", neuronhome())
 }else{
-  sprint(s1, "%s/demo/release/%s/.libs/libnrnmech.so", neuronhome(), arch)
+  sprint(s1, "%s/demo/release/%s/libnrnmech.so", neuronhome(), arch)
 }
 //{printf("|%s|\n", s1)}
 b = nrn_load_dll(s1)
