@@ -6,7 +6,9 @@ sf = new StringFunctions()
 {sscanf(nrnversion(8), "%[^-]", arch)}
 if (unix_mac_pc() == 3) { // mingw
   sprint(s1, "%s/demo/release/nrnmech.dll", neuronhome())
-}else{
+} else if (unix_mac_pc() == 4) { // Darwin
+  sprint(s1, "%s/demo/release/%s/libnrnmech.dylib", neuronhome(), arch)
+} else {
   sprint(s1, "%s/demo/release/%s/libnrnmech.so", neuronhome(), arch)
 }
 //{printf("|%s|\n", s1)}
